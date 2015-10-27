@@ -604,7 +604,12 @@ var parseReceiveRodTokenInformation = function(encodedCdb) {
 
 var parseTestUnitReady = function(encodedCdb) {
   var fields = [];
+  // Byte 0
   fields.push({ name: "OPERATION CODE", value: encodedCdb[0] });
+  // Byte 1 - 4
+  fields.push({ name: "Reserved", value: (encodedCdb[1] << 24) | (encodedCdb[2] << 16) | (encodedCdb[3] << 8) | encodedCdb[4], reserved: true });
+  // Byte 5
+  fields.push({ name: "CONTROL", value: encodedCdb[5] });
   return fields;
 };
 
@@ -698,9 +703,60 @@ var service_action_info = [
 var CDB = function() {
 };
 
+function parseInt16(value) {
+    return parseInt(value, 16);
+}
+
 CDB.prototype.decode = function(input) {
     if (input.length == 0) {
         return { truncated: true };
+    } else {
+        var input_array = input.split(" ");
+        console.log("Input Array: " + input_array);
+        input_array = input_array.map(function(value) {
+                return parseInt(value, 16);
+            });
+
+        console.log("Input Array: " + input_array);
+
+        var opcode = input_array[0];
+        var service_action;
+
+        for (var i = 0; i < service_action_info.length; i++) {
+            if (service_action_info[i].opcode == opcode) {
+                service_action = get_field(input_array,
+                                           service_action_info[i].byte_offset,
+                                           service_action_info[i].byte_length,
+                                           service_action_info[i].bitmask);
+                break;
+            }
+        }
+
+        // Identify the message type based on the OpCode and optional
+        // Service Action.
+        var name;
+        var length;
+
+        for (var i = 0; i < scsi_commands.length; i++) {
+            if (scsi_commands[i].opcode == opcode &&
+                scsi_commands[i].service_action == service_action) {
+                name = scsi_commands[i].name;
+                length = scsi_commands[i].length;
+                break;
+            }
+        }
+
+        console.log("Name: " + name);
+        console.log("Length: " + length);
+
+
+        var output = {
+            name: name,
+            fields: scsi_commands[i].parser(input_array),
+            truncated: false,
+        };
+
+        return output;
     }
 }
 
@@ -766,7 +822,7 @@ CDB.prototype.parse = function(encodedCdb) {
       this.name = name;
       this.fields = scsi_commands[i].parser(encodedCdb);
 
-      // Check for trunaction - complicated.
+      // Check for truncation - complicated.
       // Decode all fields.
     } else {
 
