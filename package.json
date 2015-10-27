@@ -1,0 +1,15 @@
+{
+  "name": "scsi-cdb",
+  "version": "0.0.1",
+  "description": "SCSI CDB Decoder / Encoder",
+  "main": "cdb.js"
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "assert": "^1.3.0",
+    "mocha": "^2.3.3"
+  }
+}
