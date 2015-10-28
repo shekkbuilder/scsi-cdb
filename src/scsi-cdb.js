@@ -6,17 +6,16 @@
 
 "use strict";
 
-var parseCompareAndWrite = function(encodedCdb) {
-  var fields = [];
+var compareAndWrite = [
   // Byte 0
-  fields.push({ name: "OPERATION CODE", value: encodedCdb[0] });
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
   // Byte 1
-  fields.push({ name: "WRPROTECT", value: ((encodedCdb[1] >> 5) & 0x07) });
-  fields.push({ name: "DPO", value: ((encodedCdb[1] >> 4) & 0x01) });
-  fields.push({ name: "FUA", value: ((encodedCdb[1] >> 3) & 0x01) });
-  fields.push({ name: "Reserved", value: ((encodedCdb[1] >> 2) & 0x01), reserved: true });
-  fields.push({ name: "FUA_NV", value: ((encodedCdb[1] >> 1) & 0x01) });
-  fields.push({ name: "Reserved", value: (encodedCdb[1] & 0x01), reserved: true });
+    { name: "Reserved", value: (encodedCdb[1] & 0x01), reserved: true });
+    { name: "FUA_NV", value: ((encodedCdb[1] >> 1) & 0x01) });
+    { name: "Reserved", value: ((encodedCdb[1] >> 2) & 0x01), reserved: true });
+    { name: "FUA", value: ((encodedCdb[1] >> 3) & 0x01) });
+    { name: "DPO", value: ((encodedCdb[1] >> 4) & 0x01) });
+    { name: "WRPROTECT", value: ((encodedCdb[1] >> 5) & 0x07) });
   // Byte 2 - 9
   var logicalBlockAddressHi = encodedCdb[2] << 24 |
                               encodedCdb[3] << 16 |
@@ -26,47 +25,46 @@ var parseCompareAndWrite = function(encodedCdb) {
                               encodedCdb[3] << 16 |
                               encodedCdb[4] << 8 |
                               encodedCdb[5];
-  fields.push({ name: "LOGICAL BLOCK ADDRESS", value: [ logicalBlockAddressHi, logicalBlockAddressLo ] });
+    { name: "LOGICAL BLOCK ADDRESS", value: [ logicalBlockAddressHi, logicalBlockAddressLo ] });
   // Byte 10 - 12
   var reserved1 = encodedCdb[10] << 16 | encodedCdb[11] << 8 | encodedCdb[12];
-  fields.push({ name: "Reserved", value: reserved1, reserved: true });
+    { name: "Reserved", value: reserved1, reserved: true });
   // Byte 13
-  fields.push({ name: "NUMBER OF LOGICAL BLOCKS", value: encodedCdb[13] });
+    { name: "NUMBER OF LOGICAL BLOCKS", value: encodedCdb[13] });
   // Byte 14
-  fields.push({ name: "Reserved", value: ((encodedCdb[14] >> 5) & 0x07), reserved: true });
-  fields.push({ name: "GROUP NUMBER", value: (encodedCDb[14] & 0x1f) });
+    { name: "Reserved", value: ((encodedCdb[14] >> 5) & 0x07), reserved: true });
+    { name: "GROUP NUMBER", value: (encodedCDb[14] & 0x1f) });
   // Byte 15
-  fields.push({ name: "CONTROL", value: encodedCdb[15] });
-  return fields;
-};
+    { name: "CONTROL", value: encodedCdb[15] });
+];
 
-var parseFormatUnit = function(encodedCdb) {
+var parseFormatUnit = [
   var fields = [];
   // Byte 0
-  fields.push({ name: "OPERATION CODE", value: encodedCdb[0] });
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
   // Byte 1
-  fields.push({ name: "FMTPINFO", value: ((encodedCdb[1] >> 6) & 0x03) });
-  fields.push({ name: "LONGLIST", value: ((encodedCdb[1] >> 5) & 0x01) });
-  fields.push({ name: "FMTDATA", value: ((encodedCdb[1] >> 4) & 0x01) });
-  fields.push({ name: "CMPLIST", value: ((encodedCdb[1] >> 3) & 0x01) });
-  fields.push({ name: "DEFECT LIST FORMAT", value: (encodedCdb[1] & 0x07) });
+    { name: "FMTPINFO", value: ((encodedCdb[1] >> 6) & 0x03) });
+    { name: "LONGLIST", value: ((encodedCdb[1] >> 5) & 0x01) });
+    { name: "FMTDATA", value: ((encodedCdb[1] >> 4) & 0x01) });
+    { name: "CMPLIST", value: ((encodedCdb[1] >> 3) & 0x01) });
+    { name: "DEFECT LIST FORMAT", value: (encodedCdb[1] & 0x07) });
   // Byte 2
-  fields.push({ name: "Vendor specific", value: encodedCdb[2] });
+    { name: "Vendor specific", value: encodedCdb[2] });
   // Byte 3 - 4
   var obsolete = encodedCdb[3] << 8 | encodedCdb[4];
-  fields.push({ name: "Obsolete", value: obsolete, obsolete: true });
+    { name: "Obsolete", value: obsolete, obsolete: true });
   // Byte 5
-  fields.push({ name: "CONTROL", value: encodedCdb[5] });
+    { name: "CONTROL", value: encodedCdb[5] });
   return fields;
 };
 
-var parseGetLbaStatus = function(encodedCdb) {
+var parseGetLbaStatus = [
   var fields = [];
   // Byte 0
-  fields.push({ name: "OPERATION CODE", value: encodedCdb[0] });
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
   // Byte 1
-  fields.push({ name: "Reserved", value: ((encodedCdb[1] >> 5) & 0x07), reserved: true });
-  fields.push({ name: "SERVICE ACTION", value: (encodedCdb[1] & 0x1f) });
+    { name: "Reserved", value: ((encodedCdb[1] >> 5) & 0x07), reserved: true });
+    { name: "SERVICE ACTION", value: (encodedCdb[1] & 0x1f) });
   // Byte 2 - 9
   var logicalBlockAddressHi = encodedCdb[2] << 24 |
                               encodedCdb[3] << 16 |
@@ -76,31 +74,31 @@ var parseGetLbaStatus = function(encodedCdb) {
                               encodedCdb[7] << 16 |
                               encodedCdb[8] << 8 |
                               encodedCdb[9];
-  fields.push({ name: "STARTING LOGICAL BLOCK ADDRESS", value: [ logicalBlockAddressHi, logicalBlockAddressLo ] });
+    { name: "STARTING LOGICAL BLOCK ADDRESS", value: [ logicalBlockAddressHi, logicalBlockAddressLo ] });
   // Byte 10 - 13
   var allocationLength = encodedCdb[10] << 24 |
                          encodedCdb[11] << 16 |
                          encodedCdb[12] << 8 |
                          encodedCdb[13];
-  fields.push({ name: "ALLOCATION LENGTH", value: allocationLength });
+    { name: "ALLOCATION LENGTH", value: allocationLength });
   // Byte 14
-  fields.push({ name: "Reserved", value: encodedCdb[14], reserved: true });
+    { name: "Reserved", value: encodedCdb[14], reserved: true });
   // Byte 15
-  fields.push({ name: "CONTROL", value: encodedCdb[15] });
+    { name: "CONTROL", value: encodedCdb[15] });
   return fields;
 }
 
-var parseOrwrite16 = function(encodedCdb) {
+var parseOrwrite16 = [
   var fields = [];
   // Byte 0
-  fields.push({ name: "OPERATION CODE", value: encodedCdb[0] });
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
   // Byte 1
-  fields.push({ name: "ORPROTECT", value: ((encodedCdb[1] >> 5) & 0x07) });
-  fields.push({ name: "DPO", value: ((encodedCdb[1] >> 4) & 0x01) });
-  fields.push({ name: "FUA", value: ((encodedCdb[1] >> 3) & 0x01) });
-  fields.push({ name: "Reserved", value: ((encodedCdb[1] >> 2) & 0x01), reserved: true });
-  fields.push({ name: "FUA_NV", value: ((encodedCdb[1] >> 1) & 0x01) });
-  fields.push({ name: "Reserved", value: (encodedCdb[1] & 0x01), reserved: true });
+    { name: "ORPROTECT", value: ((encodedCdb[1] >> 5) & 0x07) });
+    { name: "DPO", value: ((encodedCdb[1] >> 4) & 0x01) });
+    { name: "FUA", value: ((encodedCdb[1] >> 3) & 0x01) });
+    { name: "Reserved", value: ((encodedCdb[1] >> 2) & 0x01), reserved: true });
+    { name: "FUA_NV", value: ((encodedCdb[1] >> 1) & 0x01) });
+    { name: "Reserved", value: (encodedCdb[1] & 0x01), reserved: true });
   // Byte 2 - 9
   var logicalBlockAddressHi = encodedCdb[2] << 24 |
                               encodedCdb[3] << 16 |
@@ -110,51 +108,51 @@ var parseOrwrite16 = function(encodedCdb) {
                               encodedCdb[7] << 16 |
                               encodedCdb[8] << 8 |
                               encodedCdb[9];
-  fields.push({ name: "STARTING LOGICAL BLOCK ADDRESS", value: [ logicalBlockAddressHi, logicalBlockAddressLo ] });
+    { name: "STARTING LOGICAL BLOCK ADDRESS", value: [ logicalBlockAddressHi, logicalBlockAddressLo ] });
   // Byte 10 - 13
   var transferLength = encodedCdb[2] << 24 |
                        encodedCdb[3] << 16 |
                        encodedCdb[4] << 8 |
                        encodedCdb[5];
-  fields.push({ name: "TRANSFER LENGTH", value: transferLength });
+    { name: "TRANSFER LENGTH", value: transferLength });
   // Byte 14
-  fields.push({ name: "Reserved", value: ((encodedCdb[14] >> 5) & 0x07), reserved: true });
-  fields.push({ name: "GROUP NUMBER", value: (encodedCDb[14] & 0x1f) });
+    { name: "Reserved", value: ((encodedCdb[14] >> 5) & 0x07), reserved: true });
+    { name: "GROUP NUMBER", value: (encodedCDb[14] & 0x1f) });
   // Byte 15
-  fields.push({ name: "CONTROL", value: encodedCdb[15] });
+    { name: "CONTROL", value: encodedCdb[15] });
   return fields;
 }
 
-var parseOrwrite32 = function(encodedCdb) {
+var parseOrwrite32 = [
   // Byte 0
-  fields.push({ name: "OPERATION CODE", value: encodedCdb[0] });
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
   // Byte 1
-  fields.push({ name: "CONTROL", value: encodedCdb[1] });
+    { name: "CONTROL", value: encodedCdb[1] });
   // Byte 2
-  fields.push({ name: "Reserved", value: ((encodedCdb[2] >> 3) & 0x1f), reserved: true });
-  fields.push({ name: "BMOP", value: (encodedCdb[2] & 0x07) });
+    { name: "Reserved", value: ((encodedCdb[2] >> 3) & 0x1f), reserved: true });
+    { name: "BMOP", value: (encodedCdb[2] & 0x07) });
   //Byte 3
-  fields.push({ name: "Reserved", value: ((encodedCdb[3] >> 4) & 0x0f), reserved: true });
-  fields.push({ name: "PREVIOUS GENERATION PROCESSING", value: (encodedCdb[3] & 0x0f) });
+    { name: "Reserved", value: ((encodedCdb[3] >> 4) & 0x0f), reserved: true });
+    { name: "PREVIOUS GENERATION PROCESSING", value: (encodedCdb[3] & 0x0f) });
   // Byte 4 - 5
-  fields.push({ name: "Reserved", value: (encodedCdb[4] << 8) | encodedCdb[5], reserved: true });
+    { name: "Reserved", value: (encodedCdb[4] << 8) | encodedCdb[5], reserved: true });
   // Byte 6
-  fields.push({ name: "Reserved", value: ((encodedCdb[6] >> 5) & 0x07), reserved: true });
-  fields.push({ name: "GROUP NUMBER", value: (encodedCDb[6] & 0x1f) });
+    { name: "Reserved", value: ((encodedCdb[6] >> 5) & 0x07), reserved: true });
+    { name: "GROUP NUMBER", value: (encodedCDb[6] & 0x1f) });
   // Byte 7
-  fields.push({ name: "ADDITIONAL CDB LENGTH", value: encodedCdb[7] });
+    { name: "ADDITIONAL CDB LENGTH", value: encodedCdb[7] });
   // Byte 8 - 9
   var serviceAction = encodedCdb[8] << 8 | encodedCdb[9];
-  fields.push({ name: "SERVICE ACTION", value: serviceAction });
+    { name: "SERVICE ACTION", value: serviceAction });
   // Byte 10
-  fields.push({ name: "ORPROTECT", value: ((encodedCdb[10] >> 5) & 0x07) });
-  fields.push({ name: "DPO", value: ((encodedCdb[10] >> 4) & 0x01) });
-  fields.push({ name: "FUA", value: ((encodedCdb[10] >> 3) & 0x01) });
-  fields.push({ name: "Reserved", value: ((encodedCdb[10] >> 2) & 0x01), reserved: true });
-  fields.push({ name: "FUA_NV", value: ((encodedCdb[10] >> 1) & 0x01) });
-  fields.push({ name: "Reserved", value: (encodedCdb[10] & 0x01), reserved: true });
+    { name: "ORPROTECT", value: ((encodedCdb[10] >> 5) & 0x07) });
+    { name: "DPO", value: ((encodedCdb[10] >> 4) & 0x01) });
+    { name: "FUA", value: ((encodedCdb[10] >> 3) & 0x01) });
+    { name: "Reserved", value: ((encodedCdb[10] >> 2) & 0x01), reserved: true });
+    { name: "FUA_NV", value: ((encodedCdb[10] >> 1) & 0x01) });
+    { name: "Reserved", value: (encodedCdb[10] & 0x01), reserved: true });
   // Byte 11
-  fields.push({ name: "Reserved", value: encodedCdb[11] });
+    { name: "Reserved", value: encodedCdb[11] });
   // Byte 12 - 19
   var logicalBlockAddressHi = encodedCdb[12] << 24 |
                               encodedCdb[13] << 16 |
@@ -164,93 +162,93 @@ var parseOrwrite32 = function(encodedCdb) {
                               encodedCdb[17] << 16 |
                               encodedCdb[18] << 8 |
                               encodedCdb[19];
-  fields.push({ name: "LOGICAL BLOCK ADDRESS", value: [ logicalBlockAddressHi, logicalBlockAddressLo ] });
+    { name: "LOGICAL BLOCK ADDRESS", value: [ logicalBlockAddressHi, logicalBlockAddressLo ] });
   // Byte 20 - 23
   var expectedOrwGeneration = encodedCdb[20] << 24 |
                               encodedCdb[21] << 16 |
                               encodedCdb[22] << 8 |
                               encodedCdb[23];
-  fields.push({ name: "EXPECTED ORWGENERATION", value: expectedOrwGeneration });
+    { name: "EXPECTED ORWGENERATION", value: expectedOrwGeneration });
   // Byte 24 - 27
   var newOrwGeneration = encodedCdb[24] << 24 |
                          encodedCdb[25] << 16 |
                          encodedCdb[26] << 8 |
                          encodedCdb[27];
-  fields.push({ name: "NEW ORWGENERATION", value: newOrwGeneration });
+    { name: "NEW ORWGENERATION", value: newOrwGeneration });
   //Byte 28 - 31
   var transferLength = encodedCdb[28] << 24 |
                        encodedCdb[29] << 16 |
                        encodedCdb[30] << 8 |
                        encodedCdb[31];
-  fields.push({ name: "TRANSFER LENGTH", value: transferLength });
+    { name: "TRANSFER LENGTH", value: transferLength });
   return fields;
 }
 
-var parsePopulateToken = function(encodedCdb) {
+var parsePopulateToken = [
   var fields = [];
   // Byte 0
-  fields.push({ name: "OPERATION CODE", value: encodedCdb[0] });
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
   // Byte 1
-  fields.push({ name: "Reserved", value: ((encodedCdb[1] >> 5) & 0x07), reserved: true });
-  fields.push({ name: "SERVICE ACTION", value: (encodedCdb[1] & 0x1f) });
+    { name: "Reserved", value: ((encodedCdb[1] >> 5) & 0x07), reserved: true });
+    { name: "SERVICE ACTION", value: (encodedCdb[1] & 0x1f) });
   // Byte 2 - 5
   var reserved1 = encodedCdb[2] << 24 |
                   encodedCdb[3] << 16 |
                   encodedCdb[4] << 8 |
                   encodedCdb[5];
-  fields.push({ name: "Reserved", value: reserved1, reserved: true });
+    { name: "Reserved", value: reserved1, reserved: true });
   // Byte 6 - 9
   var listIdentifier = encodedCdb[6] << 24 |
                        encodedCdb[7] << 16 |
                        encodedCdb[8] << 8 |
                        encodedCdb[9];
-  fields.push({ name: "LIST IDENTIFIER", value: listIdentified });
+    { name: "LIST IDENTIFIER", value: listIdentified });
   // Byte 10 - 13
   var parameterListLength = encodedCdb[10] << 24 |
                             encodedCdb[11] << 16 |
                             encodedCdb[12] << 8 |
                             encodedCdb[13];
-  fields.push({ name: "PARAMETER LIST LENGTH", value: parameterListLength });
+    { name: "PARAMETER LIST LENGTH", value: parameterListLength });
   // Byte 14
-  fields.push({ name: "Reserved", value: ((encodedCdb[14] >> 5) & 0x07), reserved: true });
-  fields.push({ name: "GROUP NUMBER", value: (encodedCdb[14] & 0x1f) });
+    { name: "Reserved", value: ((encodedCdb[14] >> 5) & 0x07), reserved: true });
+    { name: "GROUP NUMBER", value: (encodedCdb[14] & 0x1f) });
   // Byte 15
-  fields.push({ name: "CONTROL", value: encodedCdb[15] });
+    { name: "CONTROL", value: encodedCdb[15] });
   return fields;
 }
 
-var parsePreFetch10 = function(encodedCdb) {
+var parsePreFetch10 = [
   var fields = [];
   // Byte 0
-  fields.push({ name: "OPERATION CODE", value: encodedCdb[0] });
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
   // Byte 1
-  fields.push({ name: "Reserved", value: ((encodedCdb[1] >> 2) & 0x3f), reserved: true });
-  fields.push({ name: "IMMED", value: ((encodedCdb[1] >> 1) & 0x01) });
-  fields.push({ name: "Obsolete", value: (encodedCdb[1] & 0x01), obsolete: true });
+    { name: "Reserved", value: ((encodedCdb[1] >> 2) & 0x3f), reserved: true });
+    { name: "IMMED", value: ((encodedCdb[1] >> 1) & 0x01) });
+    { name: "Obsolete", value: (encodedCdb[1] & 0x01), obsolete: true });
   // Byte 2 - 5
   var logicalBlockAddress = encodedCdb[2] << 24 |
                             encodedCdb[3] << 16 |
                             encodedCdb[4] << 8 |
                             encodedCdb[5];
-  fields.push({ name: "LOGICAL BLOCK ADDRESS", value: logicalBlockAddress });
+    { name: "LOGICAL BLOCK ADDRESS", value: logicalBlockAddress });
   // Byte 6
-  fields.push({ name: "Reserved", value: ((encodedCdb[6] >> 5) & 0x07), reserved: true });
-  fields.push({ name: "GROUP NUMBER", value: (encodedCdb[6] & 0x1f) });
+    { name: "Reserved", value: ((encodedCdb[6] >> 5) & 0x07), reserved: true });
+    { name: "GROUP NUMBER", value: (encodedCdb[6] & 0x1f) });
   // Byte 7 - 8
-  fields.push({ name: "PREFETCH LENGTH", value: (encodedCdb[7] << 8) | encodedCdb[8] });
+    { name: "PREFETCH LENGTH", value: (encodedCdb[7] << 8) | encodedCdb[8] });
   // Byte 9
-  fields.push({ name: "CONTROL", value: encodedCdb[9] });
+    { name: "CONTROL", value: encodedCdb[9] });
   return fields;
 }
 
-var parsePreFetch16 = function(encodedCdb) {
+var parsePreFetch16 = [
   var fields = [];
   // Byte 0
-  fields.push({ name: "OPERATION CODE", value: encodedCdb[0] });
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
   // Byte 1
-  fields.push({ name: "Reserved", value: ((encodedCdb[1] >> 2) & 0x3f), reserved: true });
-  fields.push({ name: "IMMED", value: ((encodedCdb[1] >> 1) & 0x01) });
-  fields.push({ name: "Obsolete", value: (encodedCdb[1] & 0x01), obsolete: true });
+    { name: "Reserved", value: ((encodedCdb[1] >> 2) & 0x3f), reserved: true });
+    { name: "IMMED", value: ((encodedCdb[1] >> 1) & 0x01) });
+    { name: "Obsolete", value: (encodedCdb[1] & 0x01), obsolete: true });
   // Byte 2 - 9
   var logicalBlockAddressHi = encodedCdb[2] << 24 |
                               encodedCdb[3] << 16 |
@@ -260,97 +258,97 @@ var parsePreFetch16 = function(encodedCdb) {
                               encodedCdb[7] << 16 |
                               encodedCdb[8] << 8 |
                               encodedCdb[9];
-  fields.push({ name: "LOGICAL BLOCK ADDRESS", value: [ logicalBlockAddressHi, logicalBlockAddressLo ] });
+    { name: "LOGICAL BLOCK ADDRESS", value: [ logicalBlockAddressHi, logicalBlockAddressLo ] });
   // Byte 10 - 13
   var prefetchLength = encodedCdb[10] << 24 |
                       encodedCdb[11] << 16 |
                       encodedCdb[12] << 8 |
                       encodedCdb[13];
-  fields.push({ name: "PREFETCH LENGTH", value: prefetchLength });
+    { name: "PREFETCH LENGTH", value: prefetchLength });
   // Byte 14
-  fields.push({ name: "Reserved", value: (encodedCdb[14] >> 5) & 0x07, reserved: true });
-  fields.push({ name: "GROUP NUMBER", value: (encodedCdb[14] & 0x1f) });
+    { name: "Reserved", value: (encodedCdb[14] >> 5) & 0x07, reserved: true });
+    { name: "GROUP NUMBER", value: (encodedCdb[14] & 0x1f) });
   // Byte 15
-  fields.push({ name: "CONTROL", value: encodedCdb[15] });
+    { name: "CONTROL", value: encodedCdb[15] });
   return fields;
 }
 
-var parsePreventAllowMediumRemoval = function(encodedCdb) {
+var parsePreventAllowMediumRemoval = [
   var fields = [];
   // Byte 0
-  fields.push({ name: "OPERATION CODE", value: encodedCdb[0] });
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
   // Byte 1
-  fields.push({ name: "Reserved", value: encodedCdb[1], reserved: true });
+    { name: "Reserved", value: encodedCdb[1], reserved: true });
   // Byte 2
-  fields.push({ name: "Reserved", value: encodedCdb[2], reserved: true });
+    { name: "Reserved", value: encodedCdb[2], reserved: true });
   // Byte 3
-  fields.push({ name: "Reserved", value: encodedCdb[3], reserved: true });
+    { name: "Reserved", value: encodedCdb[3], reserved: true });
   // Byte 4
-  fields.push({ name: "Reserved", value: (encodedCdb[4] >> 2) & 0x3f, reserved: true });
-  fields.push({ name: "PREVENT", value: (encodedCdb[4] & 0x03) });
+    { name: "Reserved", value: (encodedCdb[4] >> 2) & 0x3f, reserved: true });
+    { name: "PREVENT", value: (encodedCdb[4] & 0x03) });
   //Byte 5
-  fields.push({ name: "CONTROL", value: encodedCdb[5] });
+    { name: "CONTROL", value: encodedCdb[5] });
   return fields;
 }
 
-var parseRead10 = function(encodedCdb) {
+var parseRead10 = [
   var fields = [];
-  fields.push({ name: "OPERATION CODE", value: encodedCdb[0] });
-  fields.push({ name: "RDPROTECT", value: ((encodedCdb[1] >> 5) & 0x07) });
-  fields.push({ name: "DPO", value: ((encodedCdb[1] >> 4) & 0x01) });
-  fields.push({ name: "FUA", value: ((encodedCdb[1] >> 3) & 0x01) });
-  fields.push({ name: "RARC", value: ((encodedCdb[1] >> 2) & 0x01) });
-  fields.push({ name: "FUA_NV", value: ((encodedCdb[1] >> 1) & 0x01) });
-  fields.push({ name: "Obsolete", value: (encodedCdb[1] & 0x01), obsolete: true });
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "RDPROTECT", value: ((encodedCdb[1] >> 5) & 0x07) });
+    { name: "DPO", value: ((encodedCdb[1] >> 4) & 0x01) });
+    { name: "FUA", value: ((encodedCdb[1] >> 3) & 0x01) });
+    { name: "RARC", value: ((encodedCdb[1] >> 2) & 0x01) });
+    { name: "FUA_NV", value: ((encodedCdb[1] >> 1) & 0x01) });
+    { name: "Obsolete", value: (encodedCdb[1] & 0x01), obsolete: true });
   var logicalBlockAddress = encodedCdb[2] << 24 |
                             encodedCdb[3] << 16 |
                             encodedCdb[4] << 8 |
                             encodedCdb[5];
-  fields.push({ name: "LOGICAL BLOCK ADDRESS", value: logicalBlockAddress });
-  fields.push({ name: "Reserved", value: ((encodedCdb[6] >> 5) & 0x07), reserved: true });
-  fields.push({ name: "GROUP NUMBER", value: (encodedCdb[6] & 0x1f) });
+    { name: "LOGICAL BLOCK ADDRESS", value: logicalBlockAddress });
+    { name: "Reserved", value: ((encodedCdb[6] >> 5) & 0x07), reserved: true });
+    { name: "GROUP NUMBER", value: (encodedCdb[6] & 0x1f) });
   var transferLength = encodedCdb[7] << 8 |
                        encodedCdb[8];
-  fields.push({ name: "TRANSFER LENGTH", value: transferLength });
-  fields.push({ name: "CONTROL", value: ((encodedCdb[8])) });
+    { name: "TRANSFER LENGTH", value: transferLength });
+    { name: "CONTROL", value: ((encodedCdb[8])) });
   return fields;
 };
 
-var parseRead12 = function(encodedCdb) {
+var parseRead12 = [
   var fields = [];
-  fields.push({ name: "Operation Code", value: encodedCdb[0] });
-  fields.push({ name: "RDPROTECT", value: ((encodedCdb[1] >> 5) & 0x07) });
-  fields.push({ name: "DPO", value: ((encodedCdb[1] >> 4) & 0x01) });
-  fields.push({ name: "FUA", value: ((encodedCdb[1] >> 3) & 0x01) });
-  fields.push({ name: "RARC", value: ((encodedCdb[1] >> 2) & 0x01) });
-  fields.push({ name: "FUA_NV", value: ((encodedCdb[1] >> 1) & 0x01) });
-  fields.push({ name: "Obsolete", value: (encodedCdb[1] & 0x01), obsolete: true });
+    { name: "Operation Code", length: 8, byte: 0, bit: 0 },
+    { name: "RDPROTECT", value: ((encodedCdb[1] >> 5) & 0x07) });
+    { name: "DPO", value: ((encodedCdb[1] >> 4) & 0x01) });
+    { name: "FUA", value: ((encodedCdb[1] >> 3) & 0x01) });
+    { name: "RARC", value: ((encodedCdb[1] >> 2) & 0x01) });
+    { name: "FUA_NV", value: ((encodedCdb[1] >> 1) & 0x01) });
+    { name: "Obsolete", value: (encodedCdb[1] & 0x01), obsolete: true });
   var logicalBlockAddress = encodedCdb[2] << 24 |
                             encodedCdb[3] << 16 |
                             encodedCdb[4] << 8 |
                             encodedCdb[5];
-  fields.push({ name: "LOGICAL BLOCK ADDRESS", value: logicalBlockAddress });
+    { name: "LOGICAL BLOCK ADDRESS", value: logicalBlockAddress });
   var transferLength = encodedCdb[6] << 24 |
                        encodedCdb[7] << 16 |
                        encodedCdb[8] << 8 |
                        encodedCdb[9];
-  fields.push({ name: "TRANSFER LENGTH", value: transferLength });
-  fields.push({ name: "Restricted for MMC-6", value: ((encodedCdb[10] >> 7) & 0x01) });
-  fields.push({ name: "Reserved", value: ((encodedCdb[10] >> 5) & 0x03), reserved: true });
-  fields.push({ name: "GROUP NUMBER", value: (encodedCdb[10] & 0x1f) });
-  fields.push({ name: "CONTROL", value: encodedCdb[11] });
+    { name: "TRANSFER LENGTH", value: transferLength });
+    { name: "Restricted for MMC-6", value: ((encodedCdb[10] >> 7) & 0x01) });
+    { name: "Reserved", value: ((encodedCdb[10] >> 5) & 0x03), reserved: true });
+    { name: "GROUP NUMBER", value: (encodedCdb[10] & 0x1f) });
+    { name: "CONTROL", value: encodedCdb[11] });
   return fields;
 };
 
-var parseRead16 = function(encodedCdb) {
+var parseRead16 = [
   var fields = [];
-  fields.push({ name: "Operation Code", value: encodedCdb[0] });
-  fields.push({ name: "RDPROTECT", value: ((encodedCdb[1] >> 5) & 0x07) });
-  fields.push({ name: "DPO", value: ((encodedCdb[1] >> 4) & 0x01) });
-  fields.push({ name: "FUA", value: ((encodedCdb[1] >> 3) & 0x01) });
-  fields.push({ name: "RARC", value: ((encodedCdb[1] >> 2) & 0x01) });
-  fields.push({ name: "FUA_NV", value: ((encodedCdb[1] >> 1) & 0x01) });
-  fields.push({ name: "Obsolete", value: (encodedCdb[1] & 0x01), obsolete: true });
+    { name: "Operation Code", length: 8, byte: 0, bit: 0 },
+    { name: "RDPROTECT", value: ((encodedCdb[1] >> 5) & 0x07) });
+    { name: "DPO", value: ((encodedCdb[1] >> 4) & 0x01) });
+    { name: "FUA", value: ((encodedCdb[1] >> 3) & 0x01) });
+    { name: "RARC", value: ((encodedCdb[1] >> 2) & 0x01) });
+    { name: "FUA_NV", value: ((encodedCdb[1] >> 1) & 0x01) });
+    { name: "Obsolete", value: (encodedCdb[1] & 0x01), obsolete: true });
   var logicalBlockAddressHi = encodedCdb[2] << 24 |
                               encodedCdb[3] << 16 |
                               encodedCdb[4] << 8 |
@@ -359,48 +357,48 @@ var parseRead16 = function(encodedCdb) {
                               encodedCdb[7] << 16 |
                               encodedCdb[8] << 8 |
                               encodedCdb[9];
-  fields.push({ name: "LOGICAL BLOCK ADDRESS", value: [ logicalBlockAddressHi, logicalBlockAddressLo ] });
+    { name: "LOGICAL BLOCK ADDRESS", value: [ logicalBlockAddressHi, logicalBlockAddressLo ] });
   var transferLength = encodedCdb[10] << 24 |
                        encodedCdb[11] << 16 |
                        encodedCdb[12] << 8 |
                        encodedCdb[13];
-  fields.push({ name: "TRANSFER LENGTH", value: transferLength });
-  fields.push({ name: "Restricted for MMC-6", value: ((encodedCdb[14] >> 7) & 0x01) });
-  fields.push({ name: "Reserved", value: ((encodedCdb[14] >> 5) & 0x03), reserved: true });
-  fields.push({ name: "GROUP NUMBER", value: (encodedCdb[14] & 0x1f) });
-  fields.push({ name: "CONTROL", value: encodedCdb[15] });
+    { name: "TRANSFER LENGTH", value: transferLength });
+    { name: "Restricted for MMC-6", value: ((encodedCdb[14] >> 7) & 0x01) });
+    { name: "Reserved", value: ((encodedCdb[14] >> 5) & 0x03), reserved: true });
+    { name: "GROUP NUMBER", value: (encodedCdb[14] & 0x1f) });
+    { name: "CONTROL", value: encodedCdb[15] });
   return fields;
 };
 
-var parseRead32 = function(encodedCdb) {
+var parseRead32 = [
   var fields = [];
   // Byte 0
-  fields.push({ name: "OPERATION CODE", value: encodedCdb[0] });
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
   // Byte 1
-  fields.push({ name: "CONTROL", value: encodedCdb[1] });
+    { name: "CONTROL", value: encodedCdb[1] });
   // Byte 2 - 5
   var reserved1 = encodedCdb[2] << 24 |
                   encodedCdb[3] << 16 |
                   encodedCdb[4] << 8 |
                   encodedCdb[5];
-  fields.push({ name: "Reserved", value: reserved1, reserved: true });
+    { name: "Reserved", value: reserved1, reserved: true });
   // Byte 6
-  fields.push({ name: "Reserved", value: ((encodedCdb[6] >> 5) & 0x07), reserved: true });
-  fields.push({ name: "GROUP NUMBER", value: (encodedCdb[6] & 0x1f) });
+    { name: "Reserved", value: ((encodedCdb[6] >> 5) & 0x07), reserved: true });
+    { name: "GROUP NUMBER", value: (encodedCdb[6] & 0x1f) });
   // Byte 7
-  fields.push({ name: "ADDITIONAL CDB LENGTH", value: encodedCdb[7] });
+    { name: "ADDITIONAL CDB LENGTH", value: encodedCdb[7] });
   // Byte 8 - 9
   var serviceAction = encodedCdb[8] << 8 | encodedCdb[9];
-  fields.push({ name: "SERVICE ACTION", value: serviceAction });
+    { name: "SERVICE ACTION", value: serviceAction });
   // Byte 10
-  fields.push({ name: "RDPROTECT", value: ((encodedCdb[10] >> 5) & 0x07) });
-  fields.push({ name: "DPO", value: ((encodedCdb[10] >> 4) & 0x01) });
-  fields.push({ name: "FUA", value: ((encodedCdb[10] >> 3) & 0x01) });
-  fields.push({ name: "RARC", value: ((encodedCdb[10] >> 2) & 0x01) });
-  fields.push({ name: "FUA_NV", value: ((encodedCdb[10] >> 1) & 0x01) });
-  fields.push({ name: "Reserved", value: (encodedCdb[10] & 0x01), reserved: true });
+    { name: "RDPROTECT", value: ((encodedCdb[10] >> 5) & 0x07) });
+    { name: "DPO", value: ((encodedCdb[10] >> 4) & 0x01) });
+    { name: "FUA", value: ((encodedCdb[10] >> 3) & 0x01) });
+    { name: "RARC", value: ((encodedCdb[10] >> 2) & 0x01) });
+    { name: "FUA_NV", value: ((encodedCdb[10] >> 1) & 0x01) });
+    { name: "Reserved", value: (encodedCdb[10] & 0x01), reserved: true });
   // Byte 11
-  fields.push({ name: "Reserved", value: (encodedCdb[11]), reserved: true });
+    { name: "Reserved", value: (encodedCdb[11]), reserved: true });
   // Byte 12 - 19
   var logicalBlockAddressHi = encodedCdb[12] << 24 |
                               encodedCdb[13] << 16 |
@@ -410,25 +408,25 @@ var parseRead32 = function(encodedCdb) {
                               encodedCdb[17] << 16 |
                               encodedCdb[18] << 8 |
                               encodedCdb[19];
-  fields.push({ name: "LOGICAL BLOCK ADDRESS", value: [ logicalBlockAddressHi, logicalBlockAddressLo ] });
+    { name: "LOGICAL BLOCK ADDRESS", value: [ logicalBlockAddressHi, logicalBlockAddressLo ] });
   // Byte 20 - 23
   var expectedInitialLogicalBlockReferenceTag = encodedCdb[20] << 24 |
                                                 encodedCdb[21] << 16 |
                                                 encodedCdb[22] << 8 |
                                                 encodedCdb[23];
-  fields.push({ name: "EXPECTED INITIAL LOGICAL BLOCK REFERENCE TAG", value: expectedInitialLogicalBlockReferenceTag });
+    { name: "EXPECTED INITIAL LOGICAL BLOCK REFERENCE TAG", value: expectedInitialLogicalBlockReferenceTag });
   // Byte 24 - 25
   var expectedLogicalBlockApplicationTag = encodedCdb[24] << 8 | encodedCdb[25];
-  fields.push({ name: "EXPECTED LOGICAL BLOCK APPLICATION TAG", value: expectedLogicalBlockApplicationTag });
+    { name: "EXPECTED LOGICAL BLOCK APPLICATION TAG", value: expectedLogicalBlockApplicationTag });
   // Byte 26 - 27
   var logicalBlockApplicationTagMask = encodedCdb[27] << 8 | encodedCdb[28];
-  fields.push({ name: "LOGICAL BLOCK APPLICATION TAG MASK", value: logicalBlockApplicationTagMask });
+    { name: "LOGICAL BLOCK APPLICATION TAG MASK", value: logicalBlockApplicationTagMask });
   //Byte 28 - 31
   var transferLength = encodedCdb[28] << 24 |
                        encodedCdb[29] << 16 |
                        encodedCdb[30] << 8 |
                        encodedCdb[31];
-  fields.push({ name: "TRANSFER LENGTH", value: transferLength });
+    { name: "TRANSFER LENGTH", value: transferLength });
   return fields;
 };
 
@@ -437,21 +435,21 @@ var parseReadCapacity10 = function(encodedCdb)
 {
   var fields = [];
   // Byte 0
-  fields.push({ name: "OPERATION CODE", value: encodedCdb[0] });
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
   // Byte 1
-  fields.push({ name: "Reserved", value: (encodedCdb[1] >> 1) & 0x7f, reserved: true });
-  fields.push({ name: "Obsolete", value: (encodedCdb[1] & 0x01), obsolete: true });
+    { name: "Reserved", value: (encodedCdb[1] >> 1) & 0x7f, reserved: true });
+    { name: "Obsolete", value: (encodedCdb[1] & 0x01), obsolete: true });
   // Byte 2 - 5
   var obsolete1 = encodedCdb[2] << 24 | encodedCdb[3] << 16 | encodedCdb[4] << 8 | encodedCdb[5];
-  fields.push({ name: "Obsolete", value: obsolete1, obsolete: true });
+    { name: "Obsolete", value: obsolete1, obsolete: true });
   // Byte 6 - 7
   var reserved1 = encodedCdb[6] << 8 | encodedCdb[7];
-  fields.push({ name: "Reserved", value: reserved1, reserved: true });
+    { name: "Reserved", value: reserved1, reserved: true });
   // Byte 8
-  fields.push({ name: "Reserved", value: (encodedCdb[8] >> 1) & 0x7f, reserved: true });
-  fields.push({ name: "Obsolete", value: (encodedCdb[8] & 0x01), obsolete: true });
+    { name: "Reserved", value: (encodedCdb[8] >> 1) & 0x7f, reserved: true });
+    { name: "Obsolete", value: (encodedCdb[8] & 0x01), obsolete: true });
   // Byte 9
-  fields.push({ name: "CONTROL", value: encodedCdb[9] });
+    { name: "CONTROL", value: encodedCdb[9] });
   return fields;
 };
 
@@ -460,157 +458,200 @@ var parseReadCapacity16 = function(encodedCdb)
 {
   var fields = [];
   // Byte 0
-  fields.push({ name: "OPERATION CODE", value: encodedCdb[0] });
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
   // Byte 1
-  fields.push({ name: "Reserved", value: (encodedCdb[1] >> 5) & 0x07, reserved: true });
-  fields.push({ name: "SERVICE ACTION", value: (encodedCdb[1] & 0x1f) });
+    { name: "Reserved", value: (encodedCdb[1] >> 5) & 0x07, reserved: true });
+    { name: "SERVICE ACTION", value: (encodedCdb[1] & 0x1f) });
   // Byte 2 - 9
   var obsolete1_hi = encodedCdb[2] << 24 | encodedCdb[3] << 16 | encodedCdb[4] << 8 | encodedCdb[5];
   var obsolete1_lo = encodedCdb[6] << 24 | encodedCdb[7] << 16 | encodedCdb[8] << 8 | encodedCdb[9];
-  fields.push({ name: "Obsolete", value: [ obsolete1_hi, obsolete1_lo ], obsolete: true });
+    { name: "Obsolete", value: [ obsolete1_hi, obsolete1_lo ], obsolete: true });
   // Byte 10 - 13
   var allocationLength = encodedCdb[10] << 24 | encodedCdb[11] << 16 | encodedCdb[12] << 8 | encodedCdb[13];
-  fields.push({ name: "ALLOCATION LENGTH", value: allocationLength });
+    { name: "ALLOCATION LENGTH", value: allocationLength });
   // Byte 14
-  fields.push({ name: "Reserved", value: (encodedCdb[14] >> 1) & 0x7f, reserved: true });
-  fields.push({ name: "Obsolete", value: (encodedCdb[14] & 0x01), obsolete: true });
+    { name: "Reserved", value: (encodedCdb[14] >> 1) & 0x7f, reserved: true });
+    { name: "Obsolete", value: (encodedCdb[14] & 0x01), obsolete: true });
   // Byte 15
-  fields.push({ name: "CONTROL", value: encodedCdb[15] });
+    { name: "CONTROL", value: encodedCdb[15] });
   return fields;
 };
 
 // SBC-3 5.17 - READ DEFECT DATA (10) command
-var parseReadDefectData10 = function(encodedCdb)
+var readDefectData10 = [
 {
-  var fields = [];
-  // Byte 0
-  fields.push({ name: "OPERATION CODE", value: encodedCdb[0] });
-  // Byte 1
-  fields.push({ name: "Reserved", value: encodedCdb[1], reserved: true });
-  // Byte 2
-  fields.push({ name: "Reserved", value: (encodedCdb[2] >> 5) & 0x07, reserved: true });
-  fields.push({ name: "REQ_PLIST", value: (encodedCdb[2] >> 4) & 0x01 });
-  fields.push({ name: "REQ_GLIST", value: (enodedCdb[2] >> 3) & 0x01 });
-  fields.push({ name: "DEFECT LIST_FORMAT", value: (encodedCdb[2] & 0x07) });
-  // Byte 3 - 6
-  var reserved1 = encodedCdb[3] << 24 | encodedCdb[4] << 16 | encodedCdb[5] << 8 | encodedCdb[5];
-  fields.push({ name: "Reserved", value: reserved1, reserved: true });
-  // Byte 7 - 8
-  fields.push({ name: "ALLOCATION LENGTH", value: encodedCdb[7] << 8 | encodedCdb[8] });
-  // Byte 9
-  fields.push({ name: "CONTROL", value: encodedCdb[9] });
-  return fields;
-};
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "Reserved", length: 8, byte: 1, bit: 0, reserved: true },
+    { name: "DEFECT LIST_FORMAT", length: 3, byte: 2, bit: 0 },
+    { name: "REQ_GLIST", length: 1, byte: 2, bit: 3 },
+    { name: "REQ_PLIST", length: 1, byte: 2, bit: 4 },
+    { name: "Reserved", length: 3, byte: 2, bit: 5 },
+    { name: "Reserved", length: 32, byte: 3, bit: 0, reserved: true },
+    { name: "ALLOCATION LENGTH", length: 16, byte: 7, bit: 0 },
+    { name: "CONTROL", length: 8, byte: 9, bit: 0 },
+];
 
 // SBC-3 5.18 - READ DEFECT DATA (12) command
-var parseReadDefectData12 = function(encodedCdb)
+var readDefectData12 = [
 {
-  var fields = [];
-  // Byte 0
-  fields.push({ name: "OPERATION CODE", value: encodedCdb[0] });
-  // Byte 1
-  fields.push({ name: "Reserved", value: (encodedCdb[2] >> 5) & 0x07, reserved: true });
-  fields.push({ name: "REQ_PLIST", value: (encodedCdb[2] >> 4) & 0x01 });
-  fields.push({ name: "REQ_GLIST", value: (enodedCdb[2] >> 3) & 0x01 });
-  fields.push({ name: "DEFECT LIST FORMAT", value: (encodedCdb[2] & 0x07) });
-  // Byte 2 - 5
-  var addressDescriptorIndex = encodedCdb[2] << 24 | encodedCdb[3] << 16 | encodedCdb[4] << 8 | encodedCdb[5];
-  fields.push({ name: "ADDRESS DESCRIPTOR INDEX", value: addressDescriptorIndex });
-  // Byte 6-9
-  var allocationLength = encodedCdb[6] << 24 | encodedCdb[7] << 16 | encodedCdb[8] << 8 | encodedCdb[9];
-  fields.push({ name: "ALLOCATION LENGTH", value: allocationLength });
-  // Byte 10
-  fields.push({ name: "Reserved", value: encodedCdb[10], reserved: true });
-  // Byte 11
-  fields.push({ name: "CONTROL", value: encodedCdb[11] });
-  return fields;
-};
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "DEFECT LIST FORMAT", length: 3, byte: 1, bit: 0 },
+    { name: "REQ_GLIST", length: 1, byte: 1, bit: 3 },
+    { name: "REQ_PLIST", length: 1, byte: 1, bit: 4 },
+    { name: "Reserved", length: 3, byte: 1, bit: 5, reserved: true },
+    { name: "ADDRESS DESCRIPTOR INDEX", length: 32, byte: 2, bit: 0 },
+    { name: "ALLOCATION LENGTH", length: 32, byte: 6, bit: 0 },
+    { name: "Reserved", length: 8, byte: 10, bit: 0, reserved: true },
+    { name: "CONTROL", length: 8, byte: 11, bit: 0 },
+];
 
 // SBC-3 5.19 - READ LONG (10) command
-var parseReadLong10 = function(encodedCdb) {
-  var fields = [];
-  // Byte 0
-  fields.push({ name: "OPERATION CODE", value: encodedCdb[0] });
-  // Byte 1
-  fields.push({ name: "Reserved", value: (encodedCdb[1] >> 3) & 0x1f, reserved: true });
-  fields.push({ name: "PBLOCK", value: (encodedCdb[1] >> 2) & 0x01 });
-  fields.push({ name: "CORRCT", value: (encodedCdb[1] >> 1) & 0x01 });
-  fields.push({ name: "Obsolete", value: encodedCdb[1] & 0x01, obsolete: true });
-  // Byte 2 - 5
-  var logicalBlockAddress = encodedCdb[2] << 24 | encodedCdb[3] << 16 | encodedCdb[4] << 8 | encodedCdb[5];
-  fields.push({ name: "LOGICAL BLOCK ADDRESS", value: logicalBlockAddress });
-  // Byte 6
-  fields.push({ name: "Reserved", value: encodedCdb[6], reserved: true });
-  // Byte 7 - 8
-  fields.push({ name: "BYTE TRANSFER LENGTH", value: encodedCdb[7] << 8 | encodedCdb[8] });
-  // Byte 9
-  fields.push({ name: "CONTROL", value: encodedCdb[9] });
-  return fields;
-};
+var readLong10 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "Obsolete", length: 1, byte: 1; bit: 0, obsolete: true },
+    { name: "CORRCT", length: 1, byte: 1, bit: 1 },
+    { name: "PBLOCK", length: 1, byte: 1, bit: 2 },
+    { name: "Reserved", length: 5, byte: 1, bit: 3, reserved: true },
+    { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
+    { name: "Reserved", length: 8, byte: 6, bit: 0, reserved: true },
+    { name: "BYTE TRANSFER LENGTH", length: 16, byte: 7, bit: 0 },
+    { name: "CONTROL", length: 8, bytes: 9, bit: 0 },
+];
 
 // SBC-3 5.20 - READ LONG (16) command
-var parseReadLong16 = function(encodedCdb) {
-  var fields = [];
-  // Byte 0
-  fields.push({ name: "OPERATION CODE", value: encodedCdb[0] });
-  // Byte 1
-  fields.push({ name: "Reserved", value: (encodedCdb[1] >> 5) & 0x07, reserved: true });
-  fields.push({ name: "SERVICE ACTION", value: (encodedCdb[1] & 0x1f) });
-  // Byte 2 - 9
-  var logicalBlockAddressHi = encodedCdb[2] << 24 | encodedCdb[3] << 16 | encodedCdb[4] << 8 | encodedCdb[5];
-  var logicalBlockAddressLo = encodedCdb[6] << 24 | encodedCdb[7] << 16 | encodedCdb[8] << 8 | encodedCdb[9];
-  fields.push({ name: "LOGICAL BLOCK ADDRESS", value: [ logicalBlockAddressHi, logicalBlockAddressLo ] });
-  // Byte 10 - 11
-  fields.push({ name: "Reserved", value: encodedCdb[10] << 8 | encodedCdb[11], reserved: true });
-  // Byte 12 - 13
-  fields.push({ name: "BYTE TRANSFER LENGTH", value: encodedCdb[13] << 8 | encodedCdb[13] });
-  // Byte 14
-  fields.push({ name: "Reserved", value: (encodedCdb[14] >> 1) & 0x3f, reserved: true });
-  fields.push({ name: "PBLOCK", value: (encodedCdb[14] >> 1) & 0x01 });
-  fields.push({ name: "CORRCT", value: encodedCdb[14] & 0x01 });
-  // Byte 15
-  fields.push({ name: "CONTROL", value: encodedCdb[15] });
-  return fields;
-};
+var readLong16 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
+    { name: "Reserved", length: 3, byte: 1, bit: 5, reserved: true },
+    { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
+    { name: "Reserved", length: 16, byte: 10, bit: 0, reserved: true },
+    { name: "BYTE TRANSFER LENGTH", byte: 12, bit: 0 },
+    { name: "CORRCT", length: 1, byte: 14, bit: 0 },
+    { name: "PBLOCK", length: 1, byte: 14, bit: 1 },
+    { name: "Reserved", length: 6, byte: 14, bit: 2 },
+    { name: "CONTROL", length: 8, byte: 15, bit: 0 },
+];
 
 // SBC-3 5.21 - REASSIGN BLOCKS command
-var parseReassignBlocks = function(encodedCdb) {
-  var fields = [];
-  // Byte 0
-  fields.push({ name: "OPERATION CODE", value: encodedCdb[0] });
-  // Byte 1
-  fields.push({ name: "Reserved", value: (encodedCdb[1] >> 2) & 0x3f, reserved: true });
-  fields.push({ name: "LONGLBA", value: (encodedCdb[1] >> 1) & 0x01 });
-  fields.push({ name: "LONGLIST", value: encodedCdb[1] & 0x01 });
-  // Byte 2 - 4
-  fields.push({ name: "Reserved", value: (encodedCdb[2] << 16 | encodedCdb[3] << 8 | encodedCdb[4]), reserved: true });
-  // Byte 5
-  fields.push({ name: "CONTROL", value: encodedCdb[5] });
-  return fields;
-};
+var reassignBlocks = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "LONGLIST", length: 1, byte: 1, bit: 0 },
+    { name: "LONGLBA", length: 1, byte: 1, bit: 1 },
+    { name: "Reserved", length: 6, byte: 1, bit: 2, reserved: true },
+    { name: "Reserved", length: 32, byte: 2, bit: 0, reserved: true },
+    { name: "CONTROL", length: 8, byte: 5, bit: 0 },
+];
 
 // SPC-4 6.28 - RECEIVE ROD TOKEN INFORMATION command
-var parseReceiveRodTokenInformation = function(encodedCdb) {
-  var fields = [];
-  // Byte 0
-  fields.push({ name: "OPERATION CODE", value: encodedCdb[0] });
-  // Byte 1
-  fields.push({ name: "Reserved", value: (encodedCdb[1] >> 5) & 0x07, reserved: true });
-  fields.push({ name: "SERVICE ACTION", value: (encodedCdb[1] & 0x1f) });
-  // Byte 2 - 5
+var receiveRodTokenInformation = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
+    { name: "Reserved", length: 3, byte: 1, bit: 5, reserved: true },
+    { name: "LIST IDENTIFIER", length: 32, byte: 2, bit: 0 },
+    { name: "Reserved", length: 32, byte: 6, bit: 0, reserved: true },
+    { name: "ALLOCATION LENGTH", length: 32, byte: 10, bit: 0 },
+    { name: "Reserved", length: 8, byte: 14, bit: 0, reserved: true },
+    { name: "CONTROL", length: 8, byte: 15, bit: 0 },
+];
 
-  return fields;
+
+var testUnitReady = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "Reserved", length: 32, byte: 1, bit: 0, reserved: true },
+    { name: "CONTROL", length: 8, byte: 5, bit: 0 },
+];
+
+function parseMessage(input, layout) {
+    var fields = [];
+
+    try {
+        layout.forEach(function(field) {
+            // Need to work out the index of the last byte of the current field
+            // and see if the input is long enough to decode it fully.  If it is
+            // not then we exit.
+            var last_bit_index = (field.byte * 8) + field.bit + (field.length - 1);
+            var last_byte_index = parseInt(last_bit_index / 8);
+
+            if (last_byte_index < input.length) {
+                var value = 0;
+                var value_bitlength = 0; // Number of valid bits in value
+
+                // At this point we are guaranteed to be able to extract
+                // the field from the input array.
+
+                var bits_left = field.length;
+
+                var byte_index = field.byte;
+                var bit_index = field.bit;
+
+                while (bits_left > 0) {
+                    var v = 0;
+
+                    // The number of bits we will extract this time around
+                    var v_bitlength = 0;
+
+                    var bits_available_in_current_byte = (8 - bit_index);
+
+                    if (bits_left <= bits_available_in_current_byte) {
+                        v_bitlength = bits_left;
+                    } else {
+                        v_bitlength = bits_available_in_current_byte;
+                    }
+
+                    var bitmask = 0;
+
+                    if (v_bitlength == 1) { bitmask = 0x01; }
+                    if (v_bitlength == 2) { bitmask = 0x03; }
+                    if (v_bitlength == 3) { bitmask = 0x07; }
+                    if (v_bitlength == 4) { bitmask = 0x0f; }
+                    if (v_bitlength == 5) { bitmask = 0x1f; }
+                    if (v_bitlength == 6) { bitmask = 0x3f; }
+                    if (v_bitlength == 7) { bitmask = 0x7f; }
+                    if (v_bitlength == 8) { bitmask = 0xff; }
+
+                    // Now we can right-shift the byte at byte_index
+                    // by bit_index, then mask the resulting value with
+                    // bitmask to give the value that we are extracting
+                    // from byte_index.
+                    v = (input[byte_index] >> bit_index) & bitmask;
+
+                    // Assume that we decode in MSB -> LSB order, so
+                    // before ORing in the new value, left-shift the
+                    // existing value to make space for it.
+                    value = (value << v_bitlength) | v;
+
+                    value_bitlength += v_bitlength;
+                    bits_left -= v_bitlength;
+
+                    bit_index += v_bitlength;
+                    if (bit_index > 7) {
+                        bit_index = 0;
+                        byte_index++;
+                    }
+                }
+                var f = { name: field.name, value: value };
+                if (field.reserved) {
+                    f.reserved = field.reserved;
+                }
+                if (field.obsolete) {
+                    f.obsolete = field.obsolete;
+                }
+                f);
+            } else {
+                throw "Message Truncated";
+            }
+        });
+        return { fields: fields, truncated: false };
+    } catch(e) {
+        return { fields: fields, truncated: true };
+    }
 }
 
-var parseTestUnitReady = function(encodedCdb) {
-  var fields = [];
-  // Byte 0
-  fields.push({ name: "OPERATION CODE", value: encodedCdb[0] });
-  // Byte 1 - 4
-  fields.push({ name: "Reserved", value: (encodedCdb[1] << 24) | (encodedCdb[2] << 16) | (encodedCdb[3] << 8) | encodedCdb[4], reserved: true });
-  // Byte 5
-  fields.push({ name: "CONTROL", value: encodedCdb[5] });
-  return fields;
+var parseTestUnitReady = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "Reserved", value: (encodedCdb[1] << 24) | (encodedCdb[2] << 16) | (encodedCdb[3] << 8) | encodedCdb[4], reserved: true });
+    { name: "CONTROL", value: encodedCdb[5] });
+    return fields;
 };
 
 var scsi_commands = [
@@ -698,7 +739,9 @@ var service_action_info = [
   { opcode: 0x84, byte_offset: 1, byte_length: 1, bitmask: 0x1f },
 ];
 
-//var exports = module.exports = {};
+function parseTestUnitReady(input) {
+    
+}
 
 var CDB = function() {
 };
@@ -711,13 +754,11 @@ CDB.prototype.decode = function(input) {
     if (input.length == 0) {
         return { truncated: true };
     } else {
+
         var input_array = input.split(" ");
-        console.log("Input Array: " + input_array);
         input_array = input_array.map(function(value) {
                 return parseInt(value, 16);
             });
-
-        console.log("Input Array: " + input_array);
 
         var opcode = input_array[0];
         var service_action;
@@ -746,14 +787,13 @@ CDB.prototype.decode = function(input) {
             }
         }
 
-        console.log("Name: " + name);
-        console.log("Length: " + length);
+        var parser_output = parseMessage(input_array, testUnitReady);
 
 
         var output = {
             name: name,
-            fields: scsi_commands[i].parser(input_array),
-            truncated: false,
+            fields: parser_output.fields,
+            truncated: parser_output.truncated,
         };
 
         return output;
@@ -785,7 +825,7 @@ function get_field(byte_array, start_offset, byte_length, bitmask) {
 }
 
 //
-CDB.prototype.parse = function(encodedCdb) {
+CDB.prototype.parse = function(encodedCdb)
     console.log("Parsing encoded CDB: " + encodedCdb);
   if (Array.isArray(encodedCdb)) {
     if (encodedCdb.length > 0) {
