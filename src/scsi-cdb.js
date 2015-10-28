@@ -6,385 +6,195 @@
 
 "use strict";
 
+// SBC-3 5.2 - COMPARE AND WRITE command
 var compareAndWrite = [
-  // Byte 0
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-  // Byte 1
-    { name: "Reserved", value: (encodedCdb[1] & 0x01), reserved: true });
-    { name: "FUA_NV", value: ((encodedCdb[1] >> 1) & 0x01) });
-    { name: "Reserved", value: ((encodedCdb[1] >> 2) & 0x01), reserved: true });
-    { name: "FUA", value: ((encodedCdb[1] >> 3) & 0x01) });
-    { name: "DPO", value: ((encodedCdb[1] >> 4) & 0x01) });
-    { name: "WRPROTECT", value: ((encodedCdb[1] >> 5) & 0x07) });
-  // Byte 2 - 9
-  var logicalBlockAddressHi = encodedCdb[2] << 24 |
-                              encodedCdb[3] << 16 |
-                              encodedCdb[4] << 8 |
-                              encodedCdb[5];
-  var logicalBlockAddressHi = encodedCdb[2] << 24 |
-                              encodedCdb[3] << 16 |
-                              encodedCdb[4] << 8 |
-                              encodedCdb[5];
-    { name: "LOGICAL BLOCK ADDRESS", value: [ logicalBlockAddressHi, logicalBlockAddressLo ] });
-  // Byte 10 - 12
-  var reserved1 = encodedCdb[10] << 16 | encodedCdb[11] << 8 | encodedCdb[12];
-    { name: "Reserved", value: reserved1, reserved: true });
-  // Byte 13
-    { name: "NUMBER OF LOGICAL BLOCKS", value: encodedCdb[13] });
-  // Byte 14
-    { name: "Reserved", value: ((encodedCdb[14] >> 5) & 0x07), reserved: true });
-    { name: "GROUP NUMBER", value: (encodedCDb[14] & 0x1f) });
-  // Byte 15
-    { name: "CONTROL", value: encodedCdb[15] });
+    { name: "Reserved", length: 1, byte: 1, bit: 0, reserved: true },
+    { name: "FUA_NV", length: 1, byte: 1, bit: 1 },
+    { name: "Reserved", length: 1, byte: 1, bit: 2, reserved: true },
+    { name: "FUA", length: 1, byte: 1, bit: 3 },
+    { name: "DPO", length: 1, byte: 1, bit: 4 },
+    { name: "WRPROTECT", value: length: 3, byte: 1, bit: 5 },
+    { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
+    { name: "Reserved", length: 24, byte: 10, bit: 0 },
+    { name: "NUMBER OF LOGICAL BLOCKS", length: 8, byte: 13, bit: 0 },
+    { name: "GROUP NUMBER", length: 5, byte: 14, bit: 0 },
+    { name: "Reserved", length: 3, byte: 14, bit: 5 },
+    { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
-var parseFormatUnit = [
-  var fields = [];
-  // Byte 0
+// SBC-3 5.3 - FORMAT UNIT command
+var formatUnit = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-  // Byte 1
-    { name: "FMTPINFO", value: ((encodedCdb[1] >> 6) & 0x03) });
-    { name: "LONGLIST", value: ((encodedCdb[1] >> 5) & 0x01) });
-    { name: "FMTDATA", value: ((encodedCdb[1] >> 4) & 0x01) });
-    { name: "CMPLIST", value: ((encodedCdb[1] >> 3) & 0x01) });
-    { name: "DEFECT LIST FORMAT", value: (encodedCdb[1] & 0x07) });
-  // Byte 2
-    { name: "Vendor specific", value: encodedCdb[2] });
-  // Byte 3 - 4
-  var obsolete = encodedCdb[3] << 8 | encodedCdb[4];
-    { name: "Obsolete", value: obsolete, obsolete: true });
-  // Byte 5
-    { name: "CONTROL", value: encodedCdb[5] });
-  return fields;
-};
 
-var parseGetLbaStatus = [
-  var fields = [];
-  // Byte 0
+    { name: "DEFECT LIST FORMAT", length: 3, byte: 1, bit: 0 },
+    { name: "CMPLIST", length: 1, byte: 1, bit: 3 },
+    { name: "FMTDATA", length: 1, byte: 1, bit: 4 },
+    { name: "LONGLIST", length: 1, byte: 1, bit: 5 },
+    { name: "FMTPINFO", length: 2, byte: 1, bit: 6 },
+
+    { name: "Vendor specific", length: 8, byte: 2, bit: 0 },
+    { name: "Obsolete", length: 16, byte: 3, bit: 0 },
+    { name: "CONTROL", length: 8, byte: 5, bit: 0 },
+];
+
+// SBC-3 5.4 - GET LBA STATUS command
+var getLbaStatus = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-  // Byte 1
-    { name: "Reserved", value: ((encodedCdb[1] >> 5) & 0x07), reserved: true });
-    { name: "SERVICE ACTION", value: (encodedCdb[1] & 0x1f) });
-  // Byte 2 - 9
-  var logicalBlockAddressHi = encodedCdb[2] << 24 |
-                              encodedCdb[3] << 16 |
-                              encodedCdb[4] << 8 |
-                              encodedCdb[5];
-  var logicalBlockAddressLo = encodedCdb[6] << 24 |
-                              encodedCdb[7] << 16 |
-                              encodedCdb[8] << 8 |
-                              encodedCdb[9];
-    { name: "STARTING LOGICAL BLOCK ADDRESS", value: [ logicalBlockAddressHi, logicalBlockAddressLo ] });
-  // Byte 10 - 13
-  var allocationLength = encodedCdb[10] << 24 |
-                         encodedCdb[11] << 16 |
-                         encodedCdb[12] << 8 |
-                         encodedCdb[13];
-    { name: "ALLOCATION LENGTH", value: allocationLength });
-  // Byte 14
-    { name: "Reserved", value: encodedCdb[14], reserved: true });
-  // Byte 15
-    { name: "CONTROL", value: encodedCdb[15] });
-  return fields;
-}
+    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
+    { name: "Reserved", length: 3, byte: 1, bit: 5 },
+    { name: "STARTING LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
+    { name: "ALLOCATION LENGTH", length: 32, byte: 10, bit: 0 },
+    { name: "Reserved", length: 8, byte: 14, bit: 0, reserved: true });
+    { name: "CONTROL", length: 8, byte: 15, bit: 0 });
+];
 
-var parseOrwrite16 = [
-  var fields = [];
-  // Byte 0
+// SBC-3 5.5 - ORWRITE (16) command
+var orwrite16 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-  // Byte 1
-    { name: "ORPROTECT", value: ((encodedCdb[1] >> 5) & 0x07) });
-    { name: "DPO", value: ((encodedCdb[1] >> 4) & 0x01) });
-    { name: "FUA", value: ((encodedCdb[1] >> 3) & 0x01) });
-    { name: "Reserved", value: ((encodedCdb[1] >> 2) & 0x01), reserved: true });
-    { name: "FUA_NV", value: ((encodedCdb[1] >> 1) & 0x01) });
-    { name: "Reserved", value: (encodedCdb[1] & 0x01), reserved: true });
-  // Byte 2 - 9
-  var logicalBlockAddressHi = encodedCdb[2] << 24 |
-                              encodedCdb[3] << 16 |
-                              encodedCdb[4] << 8 |
-                              encodedCdb[5];
-  var logicalBlockAddressLo = encodedCdb[6] << 24 |
-                              encodedCdb[7] << 16 |
-                              encodedCdb[8] << 8 |
-                              encodedCdb[9];
-    { name: "STARTING LOGICAL BLOCK ADDRESS", value: [ logicalBlockAddressHi, logicalBlockAddressLo ] });
-  // Byte 10 - 13
-  var transferLength = encodedCdb[2] << 24 |
-                       encodedCdb[3] << 16 |
-                       encodedCdb[4] << 8 |
-                       encodedCdb[5];
-    { name: "TRANSFER LENGTH", value: transferLength });
-  // Byte 14
-    { name: "Reserved", value: ((encodedCdb[14] >> 5) & 0x07), reserved: true });
-    { name: "GROUP NUMBER", value: (encodedCDb[14] & 0x1f) });
-  // Byte 15
-    { name: "CONTROL", value: encodedCdb[15] });
-  return fields;
-}
+    { name: "Reserved", length: 3, byte: 1, bit: 0, reserved: true },
+    { name: "FUA", length: 1, byte: 1, bit: 3 },
+    { name: "DPO", length: 1, byte: 1, bit: 4 },
+    { name: "ORPROTECT", length: 3, byte: 1, bit: 5 },
+    { name: "STARTING LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
+    { name: "TRANSFER LENGTH", length: 32, byte: 10, bit: 0 },
+    { name: "GROUP NUMBER", length: 5, byte: 14, bit: 0 },
+    { name: "Reserved", length: 3, byte: 14, bit: 5, reserved: true },
+    { name: "CONTROL", length: 8, byte: 15, bit: 0 });
+];
 
-var parseOrwrite32 = [
-  // Byte 0
+// SBC-3 5.6 - ORWRITE (32) command
+var orwrite32 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-  // Byte 1
-    { name: "CONTROL", value: encodedCdb[1] });
-  // Byte 2
-    { name: "Reserved", value: ((encodedCdb[2] >> 3) & 0x1f), reserved: true });
-    { name: "BMOP", value: (encodedCdb[2] & 0x07) });
-  //Byte 3
-    { name: "Reserved", value: ((encodedCdb[3] >> 4) & 0x0f), reserved: true });
-    { name: "PREVIOUS GENERATION PROCESSING", value: (encodedCdb[3] & 0x0f) });
-  // Byte 4 - 5
-    { name: "Reserved", value: (encodedCdb[4] << 8) | encodedCdb[5], reserved: true });
-  // Byte 6
-    { name: "Reserved", value: ((encodedCdb[6] >> 5) & 0x07), reserved: true });
-    { name: "GROUP NUMBER", value: (encodedCDb[6] & 0x1f) });
-  // Byte 7
-    { name: "ADDITIONAL CDB LENGTH", value: encodedCdb[7] });
-  // Byte 8 - 9
-  var serviceAction = encodedCdb[8] << 8 | encodedCdb[9];
-    { name: "SERVICE ACTION", value: serviceAction });
-  // Byte 10
-    { name: "ORPROTECT", value: ((encodedCdb[10] >> 5) & 0x07) });
-    { name: "DPO", value: ((encodedCdb[10] >> 4) & 0x01) });
-    { name: "FUA", value: ((encodedCdb[10] >> 3) & 0x01) });
-    { name: "Reserved", value: ((encodedCdb[10] >> 2) & 0x01), reserved: true });
-    { name: "FUA_NV", value: ((encodedCdb[10] >> 1) & 0x01) });
-    { name: "Reserved", value: (encodedCdb[10] & 0x01), reserved: true });
-  // Byte 11
-    { name: "Reserved", value: encodedCdb[11] });
-  // Byte 12 - 19
-  var logicalBlockAddressHi = encodedCdb[12] << 24 |
-                              encodedCdb[13] << 16 |
-                              encodedCdb[14] << 8 |
-                              encodedCdb[15];
-  var logicalBlockAddressLo = encodedCdb[16] << 24 |
-                              encodedCdb[17] << 16 |
-                              encodedCdb[18] << 8 |
-                              encodedCdb[19];
-    { name: "LOGICAL BLOCK ADDRESS", value: [ logicalBlockAddressHi, logicalBlockAddressLo ] });
-  // Byte 20 - 23
-  var expectedOrwGeneration = encodedCdb[20] << 24 |
-                              encodedCdb[21] << 16 |
-                              encodedCdb[22] << 8 |
-                              encodedCdb[23];
-    { name: "EXPECTED ORWGENERATION", value: expectedOrwGeneration });
-  // Byte 24 - 27
-  var newOrwGeneration = encodedCdb[24] << 24 |
-                         encodedCdb[25] << 16 |
-                         encodedCdb[26] << 8 |
-                         encodedCdb[27];
-    { name: "NEW ORWGENERATION", value: newOrwGeneration });
-  //Byte 28 - 31
-  var transferLength = encodedCdb[28] << 24 |
-                       encodedCdb[29] << 16 |
-                       encodedCdb[30] << 8 |
-                       encodedCdb[31];
-    { name: "TRANSFER LENGTH", value: transferLength });
-  return fields;
-}
+    { name: "CONTROL", length: 8, byte: 1, bit: 0 },
+    { name: "BMOP", length: 3, byte: 2, bit: 0 },
+    { name: "Reserved", length: 5, byte: 2, bit: 3, reserved: true },
+    { name: "PREVIOUS GENERATION PROCESSING", length: 4, byte: 3, bit: 0 },
+    { name: "Reserved", length: 4, byte: 3, bit: 4, reserved: true },
+    { name: "Reserved", length: 16, byte: 4, bit: 0, reserved: true },
+    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
+    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
+    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
+    { name: "Reserved", length: 3, byte: 10, bit: 0, reserved: true },
+    { name: "FUA", length: 1, byte: 10, bit: 3 },
+    { name: "DPO", length: 1, byte: 10, bit: 4 },
+    { name: "ORPROTECT", length: 3, byte: 10, bit: 5 },
+    { name: "Reserved", length: 8, byte: 11, bit: 0, reserved: true },
+    { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 12, bit: 0 },
+    { name: "EXPECTED ORWGENERATION", length: 32, byte: 20, bit: 0 },
+    { name: "NEW ORWGENERATION", length: 32, byte: 24, bit: 0 },
+    { name: "TRANSFER LENGTH", length: 32, byte: 28, bit: 0 },
+];
 
-var parsePopulateToken = [
-  var fields = [];
-  // Byte 0
+// SBC-3 5.7 - POPULATE TOKEN command
+var populateToken = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-  // Byte 1
-    { name: "Reserved", value: ((encodedCdb[1] >> 5) & 0x07), reserved: true });
-    { name: "SERVICE ACTION", value: (encodedCdb[1] & 0x1f) });
-  // Byte 2 - 5
-  var reserved1 = encodedCdb[2] << 24 |
-                  encodedCdb[3] << 16 |
-                  encodedCdb[4] << 8 |
-                  encodedCdb[5];
-    { name: "Reserved", value: reserved1, reserved: true });
-  // Byte 6 - 9
-  var listIdentifier = encodedCdb[6] << 24 |
-                       encodedCdb[7] << 16 |
-                       encodedCdb[8] << 8 |
-                       encodedCdb[9];
-    { name: "LIST IDENTIFIER", value: listIdentified });
-  // Byte 10 - 13
-  var parameterListLength = encodedCdb[10] << 24 |
-                            encodedCdb[11] << 16 |
-                            encodedCdb[12] << 8 |
-                            encodedCdb[13];
-    { name: "PARAMETER LIST LENGTH", value: parameterListLength });
-  // Byte 14
-    { name: "Reserved", value: ((encodedCdb[14] >> 5) & 0x07), reserved: true });
-    { name: "GROUP NUMBER", value: (encodedCdb[14] & 0x1f) });
-  // Byte 15
-    { name: "CONTROL", value: encodedCdb[15] });
-  return fields;
-}
+    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
+    { name: "Reserved", length: 3, byte: 1, bit: 5, reserved: true },
+    { name: "Reserved", length: 32, byte: 2, bit: 0, reserved: true },
+    { name: "LIST IDENTIFIER", length: 32, byte: 6, bit: 0 },
+    { name: "PARAMETER LIST LENGTH", length: 32, byte: 10, bit: 0 },
+    { name: "GROUP NUMBER", length: 5, byte: 14, bit: 0 },
+    { name: "Reserved", length: 3, byte: 14, bit: 5, reserved: true },
+    { name: "CONTROL", length: 8, byte: 15, bit: 0 });
+];
 
-var parsePreFetch10 = [
-  var fields = [];
-  // Byte 0
+// SBC-3 5.8 - PRE-FETCH (10) command
+var preFetch10 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-  // Byte 1
-    { name: "Reserved", value: ((encodedCdb[1] >> 2) & 0x3f), reserved: true });
-    { name: "IMMED", value: ((encodedCdb[1] >> 1) & 0x01) });
-    { name: "Obsolete", value: (encodedCdb[1] & 0x01), obsolete: true });
-  // Byte 2 - 5
-  var logicalBlockAddress = encodedCdb[2] << 24 |
-                            encodedCdb[3] << 16 |
-                            encodedCdb[4] << 8 |
-                            encodedCdb[5];
-    { name: "LOGICAL BLOCK ADDRESS", value: logicalBlockAddress });
-  // Byte 6
-    { name: "Reserved", value: ((encodedCdb[6] >> 5) & 0x07), reserved: true });
-    { name: "GROUP NUMBER", value: (encodedCdb[6] & 0x1f) });
-  // Byte 7 - 8
-    { name: "PREFETCH LENGTH", value: (encodedCdb[7] << 8) | encodedCdb[8] });
-  // Byte 9
-    { name: "CONTROL", value: encodedCdb[9] });
-  return fields;
-}
+    { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
+    { name: "IMMED", length: 1, byte: 1, bit: 1 },
+    { name: "Reserved", length: 6, byte: 1, bit: 2 },
+    { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
+    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
+    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "PREFETCH LENGTH", length: 16, byte: 7, bit: 0 },
+    { name: "CONTROL", length: 8, byte: 9, bit: 0 },
+];
 
-var parsePreFetch16 = [
-  var fields = [];
-  // Byte 0
+// SBC-3 5.9 - PRE-FETCH (16) command
+var preFetch16 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-  // Byte 1
-    { name: "Reserved", value: ((encodedCdb[1] >> 2) & 0x3f), reserved: true });
-    { name: "IMMED", value: ((encodedCdb[1] >> 1) & 0x01) });
-    { name: "Obsolete", value: (encodedCdb[1] & 0x01), obsolete: true });
-  // Byte 2 - 9
-  var logicalBlockAddressHi = encodedCdb[2] << 24 |
-                              encodedCdb[3] << 16 |
-                              encodedCdb[4] << 8 |
-                              encodedCdb[5];
-  var logicalBlockAddressLo = encodedCdb[6] << 24 |
-                              encodedCdb[7] << 16 |
-                              encodedCdb[8] << 8 |
-                              encodedCdb[9];
-    { name: "LOGICAL BLOCK ADDRESS", value: [ logicalBlockAddressHi, logicalBlockAddressLo ] });
-  // Byte 10 - 13
-  var prefetchLength = encodedCdb[10] << 24 |
-                      encodedCdb[11] << 16 |
-                      encodedCdb[12] << 8 |
-                      encodedCdb[13];
-    { name: "PREFETCH LENGTH", value: prefetchLength });
-  // Byte 14
-    { name: "Reserved", value: (encodedCdb[14] >> 5) & 0x07, reserved: true });
-    { name: "GROUP NUMBER", value: (encodedCdb[14] & 0x1f) });
-  // Byte 15
-    { name: "CONTROL", value: encodedCdb[15] });
-  return fields;
-}
+    { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
+    { name: "IMMED", length: 1, byte: 1, bit: 1 },
+    { name: "Reserved", length: 6, byte: 1, bit: 2 },
+    { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
+    { name: "PREFETCH LENGTH", length: 32, byte: 10, bit: 0 },
+    { name: "GROUP NUMBER", length: 5, byte: 14, bit: 0 },
+    { name: "Reserved", length: 3, byte: 14, bit: 0, reserved: true },
+    { name: "CONTROL", length: 8, byte: 15, bit: 0 },
+];
 
+// SBC-3 5.10 - PREVENT ALLOW MEDIUM REMOVAL command
 var parsePreventAllowMediumRemoval = [
-  var fields = [];
-  // Byte 0
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-  // Byte 1
-    { name: "Reserved", value: encodedCdb[1], reserved: true });
-  // Byte 2
-    { name: "Reserved", value: encodedCdb[2], reserved: true });
-  // Byte 3
-    { name: "Reserved", value: encodedCdb[3], reserved: true });
-  // Byte 4
-    { name: "Reserved", value: (encodedCdb[4] >> 2) & 0x3f, reserved: true });
-    { name: "PREVENT", value: (encodedCdb[4] & 0x03) });
-  //Byte 5
-    { name: "CONTROL", value: encodedCdb[5] });
-  return fields;
-}
+    { name: "Reserved", length: 8, byte: 1, bit: 0, reserved: true },
+    { name: "Reserved", length: 8, byte: 2, bit: 0, reserved: true },
+    { name: "Reserved", length: 8, byte: 3, bit: 0, reserved: true },
+    { name: "PREVENT", length: 2, byte: 4, bit: 0 },
+    { name: "Reserved", length: 8, byte: 4, bit: 2, reserved: true },
+    { name: "CONTROL",length: 8, byte: 5, bit: 0 },
+];
 
-var parseRead10 = [
-  var fields = [];
+// SBC-3 5.11 READ (10) command
+var read10 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-    { name: "RDPROTECT", value: ((encodedCdb[1] >> 5) & 0x07) });
-    { name: "DPO", value: ((encodedCdb[1] >> 4) & 0x01) });
-    { name: "FUA", value: ((encodedCdb[1] >> 3) & 0x01) });
-    { name: "RARC", value: ((encodedCdb[1] >> 2) & 0x01) });
-    { name: "FUA_NV", value: ((encodedCdb[1] >> 1) & 0x01) });
-    { name: "Obsolete", value: (encodedCdb[1] & 0x01), obsolete: true });
-  var logicalBlockAddress = encodedCdb[2] << 24 |
-                            encodedCdb[3] << 16 |
-                            encodedCdb[4] << 8 |
-                            encodedCdb[5];
-    { name: "LOGICAL BLOCK ADDRESS", value: logicalBlockAddress });
-    { name: "Reserved", value: ((encodedCdb[6] >> 5) & 0x07), reserved: true });
-    { name: "GROUP NUMBER", value: (encodedCdb[6] & 0x1f) });
-  var transferLength = encodedCdb[7] << 8 |
-                       encodedCdb[8];
-    { name: "TRANSFER LENGTH", value: transferLength });
-    { name: "CONTROL", value: ((encodedCdb[8])) });
-  return fields;
-};
+    { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
+    { name: "Obsolete", length: 1, byte: 1, bit: 1, obsolete: true },
+    { name: "RARC", length: 1, byte: 1, bit: 2 },
+    { name: "FUA", length: 1, byte: 1, bit: 3 },
+    { name: "DPO", length: 1, byte: 1, bit: 4 },
+    { name: "RDPROTECT", length: 3, byte: 1, bit: 5 },
+    { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
+    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
+    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "TRANSFER LENGTH", length: 16, byte: 7, bit: 0 },
+    { name: "CONTROL", length: 8, byte: 9, bit: 0 },
+];
 
-var parseRead12 = [
-  var fields = [];
-    { name: "Operation Code", length: 8, byte: 0, bit: 0 },
-    { name: "RDPROTECT", value: ((encodedCdb[1] >> 5) & 0x07) });
-    { name: "DPO", value: ((encodedCdb[1] >> 4) & 0x01) });
-    { name: "FUA", value: ((encodedCdb[1] >> 3) & 0x01) });
-    { name: "RARC", value: ((encodedCdb[1] >> 2) & 0x01) });
-    { name: "FUA_NV", value: ((encodedCdb[1] >> 1) & 0x01) });
-    { name: "Obsolete", value: (encodedCdb[1] & 0x01), obsolete: true });
-  var logicalBlockAddress = encodedCdb[2] << 24 |
-                            encodedCdb[3] << 16 |
-                            encodedCdb[4] << 8 |
-                            encodedCdb[5];
-    { name: "LOGICAL BLOCK ADDRESS", value: logicalBlockAddress });
-  var transferLength = encodedCdb[6] << 24 |
-                       encodedCdb[7] << 16 |
-                       encodedCdb[8] << 8 |
-                       encodedCdb[9];
-    { name: "TRANSFER LENGTH", value: transferLength });
-    { name: "Restricted for MMC-6", value: ((encodedCdb[10] >> 7) & 0x01) });
-    { name: "Reserved", value: ((encodedCdb[10] >> 5) & 0x03), reserved: true });
-    { name: "GROUP NUMBER", value: (encodedCdb[10] & 0x1f) });
-    { name: "CONTROL", value: encodedCdb[11] });
-  return fields;
-};
-
-var parseRead16 = [
-  var fields = [];
-    { name: "Operation Code", length: 8, byte: 0, bit: 0 },
-    { name: "RDPROTECT", value: ((encodedCdb[1] >> 5) & 0x07) });
-    { name: "DPO", value: ((encodedCdb[1] >> 4) & 0x01) });
-    { name: "FUA", value: ((encodedCdb[1] >> 3) & 0x01) });
-    { name: "RARC", value: ((encodedCdb[1] >> 2) & 0x01) });
-    { name: "FUA_NV", value: ((encodedCdb[1] >> 1) & 0x01) });
-    { name: "Obsolete", value: (encodedCdb[1] & 0x01), obsolete: true });
-  var logicalBlockAddressHi = encodedCdb[2] << 24 |
-                              encodedCdb[3] << 16 |
-                              encodedCdb[4] << 8 |
-                              encodedCdb[5];
-  var logicalBlockAddressLo = encodedCdb[6] << 24 |
-                              encodedCdb[7] << 16 |
-                              encodedCdb[8] << 8 |
-                              encodedCdb[9];
-    { name: "LOGICAL BLOCK ADDRESS", value: [ logicalBlockAddressHi, logicalBlockAddressLo ] });
-  var transferLength = encodedCdb[10] << 24 |
-                       encodedCdb[11] << 16 |
-                       encodedCdb[12] << 8 |
-                       encodedCdb[13];
-    { name: "TRANSFER LENGTH", value: transferLength });
-    { name: "Restricted for MMC-6", value: ((encodedCdb[14] >> 7) & 0x01) });
-    { name: "Reserved", value: ((encodedCdb[14] >> 5) & 0x03), reserved: true });
-    { name: "GROUP NUMBER", value: (encodedCdb[14] & 0x1f) });
-    { name: "CONTROL", value: encodedCdb[15] });
-  return fields;
-};
-
-var parseRead32 = [
-  var fields = [];
-  // Byte 0
+// SBC-3 5.12 READ (12) command
+var read12 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-  // Byte 1
-    { name: "CONTROL", value: encodedCdb[1] });
-  // Byte 2 - 5
-  var reserved1 = encodedCdb[2] << 24 |
-                  encodedCdb[3] << 16 |
-                  encodedCdb[4] << 8 |
-                  encodedCdb[5];
-    { name: "Reserved", value: reserved1, reserved: true });
+    { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
+    { name: "Obsolete", length: 1, byte: 1, bit: 1, obsolete: true },
+    { name: "RARC", length: 1, byte: 1, bit: 2 },
+    { name: "FUA", length: 1, byte: 1, bit: 3 },
+    { name: "DPO", length: 1, byte: 1, bit: 4 },
+    { name: "RDPROTECT", length: 3, byte: 1, bit: 5 },
+    { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
+    { name: "TRANSFER LENGTH", length: 32, byte: 6, bit: 0 },
+    { name: "GROUP NUMBER", length: 5, byte: 10, bit: 0 },
+    { name: "Reserved", length: 2, byte: 10, bit: 5, reserved: true },
+    { name: "Restricted for MMC-6", length: 1, byte: 10, bit: 7 },
+    { name: "CONTROL", length: 8, byte: 11, bit: 0 },
+];
+
+// SBC-3 5.13 READ (16) command
+var read16 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "Reserved", length: 1, byte: 1, bit: 0, reserved: true },
+    { name: "Obsolete", length: 1, byte: 1, bit: 1, obsolete: true },
+    { name: "RARC", length: 1, byte: 1, bit: 2 },
+    { name: "FUA", length: 1, byte: 1, bit: 3 },
+    { name: "DPO", length: 1, byte: 1, bit: 4 },
+    { name: "RDPROTECT", length: 3, byte: 1, bit: 5 },
+    { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
+    { name: "TRANSFER LENGTH", length: 32, byte: 10, bit: 0 },
+    { name: "GROUP NUMBER", length: 5, byte: 14, bit: 0 },
+    { name: "Reserved", length: 2, byte: 14, bit: 5, reserved: true },
+    { name: "Restricted for MMC-6", length: 1, byte: 14, bit: 7 },
+    { name: "CONTROL", length: 8, byte: 15, bit: 0 },
+]];
+
+// SBC-3 5.14 READ (32) command
+var read32 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "CONTROL", length: 8, byte: 1, bit: 0 },
+    { name: "Reserved", length: 32, byte: 2, bit: 0, reserved: true },
   // Byte 6
-    { name: "Reserved", value: ((encodedCdb[6] >> 5) & 0x07), reserved: true });
-    { name: "GROUP NUMBER", value: (encodedCdb[6] & 0x1f) });
+    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
+    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
   // Byte 7
     { name: "ADDITIONAL CDB LENGTH", value: encodedCdb[7] });
   // Byte 8 - 9
