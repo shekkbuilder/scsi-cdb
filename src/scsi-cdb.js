@@ -6,7 +6,19 @@
 
 "use strict";
 
-// SBC-3 5.2 - COMPARE AND WRITE command
+// SBC-4 5.2 - BACKGROUND CONTROL command
+var backgroundControl = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
+    { name: "Reserved", length: 3, byte: 1, bit: 5, reserved: true },
+    { name: "Reserved", length: 6, byte: 2, bit: 0, reserved: true },
+    { name: "BO_CTL", length: 2, byte: 2, bit: 6 },
+    { name: "BO_TIME", length: 8, byte: 3, bit: 0 },
+    { name: "Reserved", length: 88, byte: 4, bit: 0 },
+    { name: "CONTROL", length: 8, byte: 15, bit: 0 },
+];
+
+// SBC-4 5.3 - COMPARE AND WRITE command
 var compareAndWrite = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Reserved", length: 1, byte: 1, bit: 0, reserved: true },
@@ -14,7 +26,7 @@ var compareAndWrite = [
     { name: "Reserved", length: 1, byte: 1, bit: 2, reserved: true },
     { name: "FUA", length: 1, byte: 1, bit: 3 },
     { name: "DPO", length: 1, byte: 1, bit: 4 },
-    { name: "WRPROTECT", value: length: 3, byte: 1, bit: 5 },
+    { name: "WRPROTECT", length: 3, byte: 1, bit: 5 },
     { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
     { name: "Reserved", length: 24, byte: 10, bit: 0 },
     { name: "NUMBER OF LOGICAL BLOCKS", length: 8, byte: 13, bit: 0 },
@@ -23,7 +35,7 @@ var compareAndWrite = [
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
-// SBC-3 5.3 - FORMAT UNIT command
+// SBC-4 5.4 - FORMAT UNIT command
 var formatUnit = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
 
@@ -38,7 +50,7 @@ var formatUnit = [
     { name: "CONTROL", length: 8, byte: 5, bit: 0 },
 ];
 
-// SBC-3 5.4 - GET LBA STATUS command
+// SBC-4 5.5 - GET LBA STATUS command
 var getLbaStatus = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
@@ -46,10 +58,23 @@ var getLbaStatus = [
     { name: "STARTING LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
     { name: "ALLOCATION LENGTH", length: 32, byte: 10, bit: 0 },
     { name: "Reserved", length: 8, byte: 14, bit: 0, reserved: true });
+    { name: "CONTROL", length: 8, byte: 15, bit: 0 };
+];
+
+// SBC-4 5.6 - GET STREAM STATUS command
+var getStreamStatus = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
+    { name: "Reserved", length: 3, byte: 1, bit: 5, reserved: true },
+    { name: "Reserved", length: 16, byte: 2, bit: 0, reserved: true },
+    { name: "STARTING STREAM IDENTIFIED", length: 16, byte: 4, bit: 0 },
+    { name: "Reserved", length: 32, byte: 6, bit: 0, reserved: true },
+    { name: "ALLOCATION LENGTH", length: 32, byte: 10, bit: 0 },
+    { name: "Reserved", length: 8, byte: 14, bit: 0, reserved: true },
     { name: "CONTROL", length: 8, byte: 15, bit: 0 });
 ];
 
-// SBC-3 5.5 - ORWRITE (16) command
+// SBC-4 5.7 - ORWRITE (16) command
 var orwrite16 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Reserved", length: 3, byte: 1, bit: 0, reserved: true },
@@ -63,7 +88,7 @@ var orwrite16 = [
     { name: "CONTROL", length: 8, byte: 15, bit: 0 });
 ];
 
-// SBC-3 5.6 - ORWRITE (32) command
+// SBC-4 5.8 - ORWRITE (32) command
 var orwrite32 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "CONTROL", length: 8, byte: 1, bit: 0 },
@@ -87,7 +112,7 @@ var orwrite32 = [
     { name: "TRANSFER LENGTH", length: 32, byte: 28, bit: 0 },
 ];
 
-// SBC-3 5.7 - POPULATE TOKEN command
+// SBC-4 5.9 - POPULATE TOKEN command
 var populateToken = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
@@ -100,7 +125,7 @@ var populateToken = [
     { name: "CONTROL", length: 8, byte: 15, bit: 0 });
 ];
 
-// SBC-3 5.8 - PRE-FETCH (10) command
+// SBC-4 5.10 - PRE-FETCH (10) command
 var preFetch10 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
@@ -113,7 +138,7 @@ var preFetch10 = [
     { name: "CONTROL", length: 8, byte: 9, bit: 0 },
 ];
 
-// SBC-3 5.9 - PRE-FETCH (16) command
+// SBC-4 5.9 - PRE-FETCH (16) command
 var preFetch16 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
@@ -126,7 +151,7 @@ var preFetch16 = [
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
-// SBC-3 5.10 - PREVENT ALLOW MEDIUM REMOVAL command
+// SBC-4 5.10 - PREVENT ALLOW MEDIUM REMOVAL command
 var parsePreventAllowMediumRemoval = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Reserved", length: 8, byte: 1, bit: 0, reserved: true },
@@ -137,7 +162,7 @@ var parsePreventAllowMediumRemoval = [
     { name: "CONTROL",length: 8, byte: 5, bit: 0 },
 ];
 
-// SBC-3 5.11 READ (10) command
+// SBC-4 5.11 - READ (10) command
 var read10 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
@@ -153,7 +178,7 @@ var read10 = [
     { name: "CONTROL", length: 8, byte: 9, bit: 0 },
 ];
 
-// SBC-3 5.12 READ (12) command
+// SBC-4 5.12 - READ (12) command
 var read12 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
@@ -170,7 +195,7 @@ var read12 = [
     { name: "CONTROL", length: 8, byte: 11, bit: 0 },
 ];
 
-// SBC-3 5.13 READ (16) command
+// SBC-4 5.13 - READ (16) command
 var read16 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Reserved", length: 1, byte: 1, bit: 0, reserved: true },
@@ -187,109 +212,55 @@ var read16 = [
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ]];
 
-// SBC-3 5.14 READ (32) command
+// SBC-4 5.14 - READ (32) command
 var read32 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "CONTROL", length: 8, byte: 1, bit: 0 },
     { name: "Reserved", length: 32, byte: 2, bit: 0, reserved: true },
-  // Byte 6
     { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
     { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
-  // Byte 7
-    { name: "ADDITIONAL CDB LENGTH", value: encodedCdb[7] });
-  // Byte 8 - 9
-  var serviceAction = encodedCdb[8] << 8 | encodedCdb[9];
-    { name: "SERVICE ACTION", value: serviceAction });
-  // Byte 10
-    { name: "RDPROTECT", value: ((encodedCdb[10] >> 5) & 0x07) });
-    { name: "DPO", value: ((encodedCdb[10] >> 4) & 0x01) });
-    { name: "FUA", value: ((encodedCdb[10] >> 3) & 0x01) });
-    { name: "RARC", value: ((encodedCdb[10] >> 2) & 0x01) });
-    { name: "FUA_NV", value: ((encodedCdb[10] >> 1) & 0x01) });
-    { name: "Reserved", value: (encodedCdb[10] & 0x01), reserved: true });
-  // Byte 11
-    { name: "Reserved", value: (encodedCdb[11]), reserved: true });
-  // Byte 12 - 19
-  var logicalBlockAddressHi = encodedCdb[12] << 24 |
-                              encodedCdb[13] << 16 |
-                              encodedCdb[14] << 8 |
-                              encodedCdb[15];
-  var logicalBlockAddressLo = encodedCdb[16] << 24 |
-                              encodedCdb[17] << 16 |
-                              encodedCdb[18] << 8 |
-                              encodedCdb[19];
-    { name: "LOGICAL BLOCK ADDRESS", value: [ logicalBlockAddressHi, logicalBlockAddressLo ] });
-  // Byte 20 - 23
-  var expectedInitialLogicalBlockReferenceTag = encodedCdb[20] << 24 |
-                                                encodedCdb[21] << 16 |
-                                                encodedCdb[22] << 8 |
-                                                encodedCdb[23];
-    { name: "EXPECTED INITIAL LOGICAL BLOCK REFERENCE TAG", value: expectedInitialLogicalBlockReferenceTag });
-  // Byte 24 - 25
-  var expectedLogicalBlockApplicationTag = encodedCdb[24] << 8 | encodedCdb[25];
-    { name: "EXPECTED LOGICAL BLOCK APPLICATION TAG", value: expectedLogicalBlockApplicationTag });
-  // Byte 26 - 27
-  var logicalBlockApplicationTagMask = encodedCdb[27] << 8 | encodedCdb[28];
-    { name: "LOGICAL BLOCK APPLICATION TAG MASK", value: logicalBlockApplicationTagMask });
-  //Byte 28 - 31
-  var transferLength = encodedCdb[28] << 24 |
-                       encodedCdb[29] << 16 |
-                       encodedCdb[30] << 8 |
-                       encodedCdb[31];
-    { name: "TRANSFER LENGTH", value: transferLength });
-  return fields;
-};
+    { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
+    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
+    { name: "Reserved", length: 1, byte: 10, bit: 0, reserved: true },
+    { name: "Obsolete", length: 1, byte: 10, bit: 1, obsolete: true },
+    { name: "RARC", length: 1, byte: 10, bit: 2 },
+    { name: "FUA", length: 1, byte: 10, bit: 3 },
+    { name: "DPO", length: 1, byte: 10, bit: 4 },
+    { name: "RDPROTECT", length: 3, byte: 10, bit: 5 },
+    { name: "Reserved", length: 8, byte: 11, bit: 0, reserved: true },
+    { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 12, bit: 0 },
+    { name: "EXPECTED INITIAL LOGICAL BLOCK REFERENCE TAG", length: 32, byte: 20, bit: 0 },
+    { name: "EXPECTED LOGICAL BLOCK APPLICATION TAG", length: 16, byte: 24, bit: 0 },
+    { name: "LOGICAL BLOCK APPLICATION TAG MASK", length: 16, byte: 26, bit: 0 },
+    { name: "TRANSFER LENGTH", length: 32, byte: 28, bit: 0 },
+];
 
-// SBC-3 5.15 - READ CAPACITY (10) command
-var parseReadCapacity10 = function(encodedCdb)
-{
-  var fields = [];
-  // Byte 0
+// SBC-4 5.15 - READ CAPACITY (10) command
+var readCapacity10 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-  // Byte 1
-    { name: "Reserved", value: (encodedCdb[1] >> 1) & 0x7f, reserved: true });
-    { name: "Obsolete", value: (encodedCdb[1] & 0x01), obsolete: true });
-  // Byte 2 - 5
-  var obsolete1 = encodedCdb[2] << 24 | encodedCdb[3] << 16 | encodedCdb[4] << 8 | encodedCdb[5];
-    { name: "Obsolete", value: obsolete1, obsolete: true });
-  // Byte 6 - 7
-  var reserved1 = encodedCdb[6] << 8 | encodedCdb[7];
-    { name: "Reserved", value: reserved1, reserved: true });
-  // Byte 8
-    { name: "Reserved", value: (encodedCdb[8] >> 1) & 0x7f, reserved: true });
-    { name: "Obsolete", value: (encodedCdb[8] & 0x01), obsolete: true });
-  // Byte 9
-    { name: "CONTROL", value: encodedCdb[9] });
-  return fields;
-};
+    { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
+    { name: "Reserved", length: 7, byte: 1, bit: 1, reserved: true });
+    { name: "Obsolete", length: 32, byte: 2, bit: 0, obsolete: true },
+    { name: "Reserved", length: 16, byte: 6, bit: 0, reserved: true },
+    { name: "Obsolete", length: 1, byte: 8, bit: 0, obsolete: true },
+    { name: "Reserved", length: 7, byte: 8, bit: 1, reserved: true },
+    { name: "CONTROL", length: 8, byte: 9, bit: 0 },
+];
 
-// SBC-3 5.16 - READ CAPACITY (16) command
-var parseReadCapacity16 = function(encodedCdb)
-{
-  var fields = [];
-  // Byte 0
+// SBC-4 5.16 - READ CAPACITY (16) command
+var readCapacity16 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-  // Byte 1
-    { name: "Reserved", value: (encodedCdb[1] >> 5) & 0x07, reserved: true });
-    { name: "SERVICE ACTION", value: (encodedCdb[1] & 0x1f) });
-  // Byte 2 - 9
-  var obsolete1_hi = encodedCdb[2] << 24 | encodedCdb[3] << 16 | encodedCdb[4] << 8 | encodedCdb[5];
-  var obsolete1_lo = encodedCdb[6] << 24 | encodedCdb[7] << 16 | encodedCdb[8] << 8 | encodedCdb[9];
-    { name: "Obsolete", value: [ obsolete1_hi, obsolete1_lo ], obsolete: true });
-  // Byte 10 - 13
-  var allocationLength = encodedCdb[10] << 24 | encodedCdb[11] << 16 | encodedCdb[12] << 8 | encodedCdb[13];
-    { name: "ALLOCATION LENGTH", value: allocationLength });
-  // Byte 14
-    { name: "Reserved", value: (encodedCdb[14] >> 1) & 0x7f, reserved: true });
-    { name: "Obsolete", value: (encodedCdb[14] & 0x01), obsolete: true });
-  // Byte 15
-    { name: "CONTROL", value: encodedCdb[15] });
-  return fields;
-};
+    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
+    { name: "Reserved", length: 1, byte: 1, bit: 5, reserved: true },
+    { name: "Obsolete", length: 64, byte: 2, bit: 0, obsolete: true },
+    { name: "ALLOCATION LENGTH", length: 32, byte: 10, bit: 0 },
+    { name: "Obsolete", length: 1, byte: 14, bit: 0, obsolete: true },
+    { name: "Reserved", length: 7, byte: 14, bit: 1, reserved: true },
+    { name: "CONTROL", length: 8, byte: 15, bit: 0 },
+];
 
-// SBC-3 5.17 - READ DEFECT DATA (10) command
+// SBC-4 5.17 - READ DEFECT DATA (10) command
 var readDefectData10 = [
-{
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Reserved", length: 8, byte: 1, bit: 0, reserved: true },
     { name: "DEFECT LIST_FORMAT", length: 3, byte: 2, bit: 0 },
@@ -301,9 +272,8 @@ var readDefectData10 = [
     { name: "CONTROL", length: 8, byte: 9, bit: 0 },
 ];
 
-// SBC-3 5.18 - READ DEFECT DATA (12) command
+// SBC-4 5.18 - READ DEFECT DATA (12) command
 var readDefectData12 = [
-{
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "DEFECT LIST FORMAT", length: 3, byte: 1, bit: 0 },
     { name: "REQ_GLIST", length: 1, byte: 1, bit: 3 },
@@ -315,7 +285,7 @@ var readDefectData12 = [
     { name: "CONTROL", length: 8, byte: 11, bit: 0 },
 ];
 
-// SBC-3 5.19 - READ LONG (10) command
+// SBC-4 5.19 - READ LONG (10) command
 var readLong10 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Obsolete", length: 1, byte: 1; bit: 0, obsolete: true },
@@ -328,7 +298,7 @@ var readLong10 = [
     { name: "CONTROL", length: 8, bytes: 9, bit: 0 },
 ];
 
-// SBC-3 5.20 - READ LONG (16) command
+// SBC-4 5.20 - READ LONG (16) command
 var readLong16 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
@@ -342,7 +312,7 @@ var readLong16 = [
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
-// SBC-3 5.21 - REASSIGN BLOCKS command
+// SBC-4 5.21 - REASSIGN BLOCKS command
 var reassignBlocks = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "LONGLIST", length: 1, byte: 1, bit: 0 },
@@ -363,6 +333,461 @@ var receiveRodTokenInformation = [
     { name: "Reserved", length: 8, byte: 14, bit: 0, reserved: true },
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
+
+// SBC-4 5.23 - REPORT REFERRALS command
+var reportReferrals = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
+    { name: "Reserved", length: 3, byte: 1, bit: 5, reserved: true },
+    { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
+    { name: "ALLOCATION LENGTH", length: 32, byte: 10, bit: 0 },
+    { name: "ONE_SEG", length: 1, byte: 14, bit: 0 },
+    { name: "Reserved", length: 7, byte: 14, bit: 1 },
+    { name: "CONTROL", length: 8, byte: 15, bit: 0 },
+];
+
+// SBC-4 5.24 - SANITIZE command
+var sanitize = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
+    { name: "AUSE", length: 1, byte: 1, bit: 5 },
+    { name: "Reserved", length: 1, byte: 1, bit: 6 },
+    { name: "IMMED", length: 1, byte: 1, bit: 7 },
+    { name: "Reserved", length: 40, byte: 2, bit: 0, reserved: true },
+    { name: "PARAMETER LIST LENGTH", length: 16, byte: 7, bit: 0 },
+    { name: "CONTROL", length: 8, byte: 9, bit: 0 },
+];
+
+// SBC-4 5.25 - START STOP UNIT command
+var startStopUnit = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "IMMED", length: 1, byte: 1, bit: 0 },
+    { name: "Reserved", length: 7, byte: 1, bit: 1 },
+    { name: "Reserved", length: 8, byte: 2, bit: 0 },
+    { name: "POWER CONDITION MODIFIER", length: 4, byte: 3, bit: 0 },
+    { name: "Reserved", length: 4, byte: 4, bit: 4 },
+    { name: "CONTROL", length: 8, byte: 5, bit: 0 },
+];
+
+// SBC-4 5.26 - SYNCHRONIZE CACHE (10) command
+var synchronizeCache10 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
+    { name: "IMMED", length: 1, byte: 1, bit: 1 },
+    { name: "Obsolete", length: 1, byte: 1, bit: 2, obsolete: true },
+    { name: "Reserved", length: 5, byte: 1, bit: 3, reserved: true },
+    { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
+    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
+    { name: "Reserved", length: 3, byte: 6, bit: 5 },
+    { name: "NUMBER OF LOGICAL BLOCKS", length: 16, byte: 7, bit: 0 },
+    { name: "CONTROL", length: 8, byte: 9, bit: 0 },
+];
+
+// SBC-4 5.27 - SYNCHRONIZE CACHE (16) command
+var synchronizeCache16 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "Reserved", length: 1, byte: 1, bit: 0, reserved: true },
+    { name: "IMMED", length: 1, byte: 1, bit: 1 },
+    { name: "Obsolete", length: 1, byte: 1, bit: 2, obsolete: true },
+    { name: "Reserved", length: 5, byte: 1, bit: 3, reserved: true },
+    { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
+    { name: "NUMBER OF LOGICAL BLOCKS", length: 32, byte: 10, bit: 0 },
+    { name: "GROUP NUMBER", length: 5, byte: 14, bit: 0 },
+    { name: "Reserved", length: 3, byte: 14, bit: 5 },
+    { name: "CONTROL", length: 8, byte: 15, bit: 0 },
+];
+
+// SBC-4 5.28 - UNMAP command
+var unmap = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "ANCHOR", length: 1, byte: 1, bit: 0 },
+    { name: "Reserved", length: 7, byte: 1, bit: 1, reserved: true },
+    { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
+    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
+    { name: "Reserved", length: 3, byte: 6, bit: 5 },
+    { name: "PARAMETER LIST LENGTH", length: 16, byte: 7, bit: 0 },
+    { name: "CONTROL", length: 8, byte: 9, bit: 0 },
+];
+
+// SBC-4 5.29 - VERIFY (10) command
+var verify10 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
+    { name: "BYTCHK", length: 2, byte: 1, bit: 1 },
+    { name: "Reserved", length: 1, byte: 1, bit: 3 },
+    { name: "DPO", length: 1, byte: 1, bit: 4 },
+    { name: "VRPROTECT", length: 3, byte: 1, bit: 5 },
+    { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
+    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
+    { name: "Reserved", length: 2, byte: 6, bit: 5, reserved: true },
+    { name: "Restricted for MMC-6", length: 1, byte: 6, bit: 7, reserved: true },
+    { name: "VERIFICATION LENGTH", length: 16, byte: 7, bit: 0 },
+    { name: "CONTROL", length: 8, byte: 9, bit: 0 },
+];
+
+// SBC-4 5.30 - VERIFY (12) command
+var verify12 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
+    { name: "BYTCHK", length: 2, byte: 1, bit: 1 },
+    { name: "Reserved", length: 1, byte: 1, bit: 3 },
+    { name: "DPO", length: 1, byte: 1, bit: 4 },
+    { name: "VRPROTECT", length: 3, byte: 1, bit: 5 },
+    { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
+    { name: "VERIFICATION LENGTH", length: 32, byte: 6, bit: 0 },
+    { name: "GROUP NUMBER", length: 5, byte: 10, bit: 0 },
+    { name: "Reserved", length: 2, byte: 10, bit: 5, reserved: true },
+    { name: "Restricted for MMC-6", length: 1, byte: 10, bit: 7 },
+    { name: "CONTROL", length: 8, byte: 11, bit: 0 },
+];
+
+// SBC-4 5.31 - VERIFY (16) command
+var verify16 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "Reserved", length: 1, byte: 1, bit: 0, reserved: true },
+    { name: "BYTCHK", length: 2, byte: 1, bit: 1 },
+    { name: "Reserved", length: 1, byte: 1, bit: 3 },
+    { name: "DPO", length: 1, byte: 1, bit: 4 },
+    { name: "VRPROTECT", length: 3, byte: 1, bit: 5 },
+    { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
+    { name: "VERIFICATION LENGTH", length: 32, byte: 10, bit: 0 },
+    { name: "GROUP NUMBER", length: 5, byte: 14, bit: 0 },
+    { name: "Reserved", length: 2, byte: 14, bit: 5, reserved: true },
+    { name: "Restricted for MMC-6", length: 1, byte: 14, bit: 7 },
+    { name: "CONTROL", length: 8, byte: 15, bit: 0 },
+];
+
+// SBC-4 5.32 - VERIFY (32) command
+var verify32 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "CONTROL", length: 8, byte: 1, bit: 0 },
+    { name: "Reserved", length: 32, byte: 2, bit: 0, reserved: true },
+    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
+    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
+    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
+    { name: "Reserved", length: 1, byte: 10, bit: 0, reserved: true },
+    { name: "BYTCHK", length: 2, byte: 10, bit: 1 },
+    { name: "Reserved", length: 1, byte: 10, bit: 2, reserved: true },
+    { name: "DPO", length: 1, byte: 10, bit: 4 },
+    { name: "VRPROTECT", length: 3, byte: 10, bit: 5 },
+    { name: "Reserved", length: 8, byte: 11, bit: 0, reserved: true },
+    { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 12, bit: 0 },
+    { name: "EXPECTED INITIAL LOGICAL BLOCK REFERENCE TAG", length: 32, byte: 20, bit: 0 },
+    { name: "EXPECTED LOGICAL BLOCK APPLICATION TAG", length: 16, byte: 24, bit: 0 },
+    { name: "LOGICAL BLOCK APPLICATION TAG MASK", length: 16, byte: 26, bit: 0 },
+    { name: "VERIFICATION LENGTH", length: 32, byte: 28, bit: 0 },
+];
+
+// SBC-4 5.33 - WRITE (10) command
+var write10 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
+    { name: "Obsolete", length: 1, byte: 1, bit: 1, obsolete: true },
+    { name: "Reserved", length: 1, byte: 1, bit: 2, reserved: true },
+    { name: "FUA", length: 1, byte: 1, bit: 3 },
+    { name: "DPO", length: 1, byte: 1, bit: 4 },
+    { name: "WRPROTECT", length: 3, byte: 1, bit: 5 },
+    { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
+    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
+    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "TRANSFER LENGTH", length: 16, byte: 7, bit: 0 },
+    { name: "CONTROL", length: 8, byte: 9, bit: 0 },
+];
+
+// SBC-4 5.34 - WRITE (12) command
+var write12 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
+    { name: "Obsolete", length: 1, byte: 1, bit: 1, obsolete: true },
+    { name: "Reserved", length: 1, byte: 1, bit: 2, reserved: true },
+    { name: "FUA", length: 1, byte: 1, bit: 3 },
+    { name: "DPO", length: 1, byte: 1, bit: 4 },
+    { name: "WRPROTECT", length: 3, byte: 1, bit: 5 },
+    { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
+    { name: "TRANSFER LENGTH", length: 32, byte: 6, bit: 0 },
+    { name: "GROUP NUMBER", length: 5, byte: 10, bit: 0 },
+    { name: "Reserved", length: 2, byte: 10, bit: 5, reserved: true },
+    { name: "Restricted for MMC-6", length: 1, byte: 10, bit: 7 },
+    { name: "CONTROL", length: 8, byte: 11, bit: 0 },
+];
+
+// SBC-4 5.35 - WRITE (16) command
+var write16 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "Reserved", length: 1, byte: 1, bit: 0, reserved: true },
+    { name: "Obsolete", length: 1, byte: 1, bit: 1, obsolete: true },
+    { name: "Reserved", length: 1, byte: 1, bit: 2, reserved: true },
+    { name: "FUA", length: 1, byte: 1, bit: 3 },
+    { name: "DPO", length: 1, byte: 1, bit: 4 },
+    { name: "WRPROTECT", length: 3, byte: 1, bit: 5 },
+    { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
+    { name: "TRANSFER LENGTH", length: 32, byte: 10, bit: 0 },
+    { name: "GROUP NUMBER", length: 5, byte: 14, bit: 0 },
+    { name: "Reserved", length: 2, byte: 14, bit: 5, reserved: true },
+    { name: "Restricted for MMC-6", length: 1, byte: 14, bit: 7 },
+    { name: "CONTROL", length: 8, byte: 15, bit: 0 },
+];
+
+// SBC-4 5.36 - WRITE (32) command
+var write32 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "CONTROL", length: 8, byte: 1, bit: 0 },
+    { name: "Reserved", length: 32, byte: 2, bit: 0, reserved: true },
+    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
+    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
+    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
+    { name: "Reserved", length: 1, byte: 10, bit: 0, reserved: true },
+    { name: "Obsolete", length: 1, byte: 10, bit: 1, obsolete: true },
+    { name: "Reserved", length: 1, byte: 10, bit: 2, reserved: true },
+    { name: "FUA", length: 1, byte: 10, bit: 3 },
+    { name: "DPO", length: 1, byte: 10, bit: 4 },
+    { name: "WRPROTECT", length: 3, byte: 10, bit: 5 },
+    { name: "Reserved", length: 8, byte: 11, bit: 0, reserved: true },
+    { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 12, bit: 0 },
+    { name: "EXPECTED INITIAL LOGICAL BLOCK REFERENCE TAG", length: 32, byte: 20, bit: 0 },
+    { name: "EXPECTED LOGICAL BLOCK APPLICATION TAG", length: 16, byte: 24, bit: 0 },
+    { name: "LOGICAL BLOCK APPLICATION TAG MASK", length: 16, byte: 26, bit: 0 },
+    { name: "TRANSFER LENGTH", length: 32, byte: 28, bit: 0 },
+];
+
+// SBC-4 5.37 - WRITE AND VERIFY (10) command
+var writeAndVerify10 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
+    { name: "BYTCHK", length: 2, byte: 1, bit: 1 },
+    { name: "Reserved", length: 1, byte: 1, bit: 3, reserved: true },
+    { name: "DPO", length: 1, byte: 1, bit: 4 },
+    { name: "WRPROTECT", length: 3, byte: 1, bit: 5 },
+    { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
+    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
+    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "TRANSFER LENGTH", length: 16, byte: 7, bit: 0 },
+    { name: "CONTROL", length: 8, byte: 9, bit: 0 },
+];
+
+// SBC-4 5.38 - WRITE AND VERIFY (12) command
+var writeAndVerify12 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
+    { name: "BYTCHK", length: 2, byte: 1, bit: 1 },
+    { name: "Reserved", length: 1, byte: 1, bit: 3, reserved: true },
+    { name: "DPO", length: 1, byte: 1, bit: 4 },
+    { name: "WRPROTECT", length: 3, byte: 1, bit: 5 },
+    { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
+    { name: "TRANSFER LENGTH", length: 32, byte: 6, bit: 0 },
+    { name: "GROUP NUMBER", length: 5, byte: 10, bit: 0 },
+    { name: "Reserved", length: 2, byte: 10, bit: 5, reserved: true },
+    { name: "Restricted for MMC-6", length: 1, byte: 10, bit: 7 },
+    { name: "CONTROL", length: 8, byte: 11, bit: 0 },
+];
+
+// SBC-4 5.39 - WRITE AND VERIFY (16) command
+var writeAndVerify16 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "Reserved", length: 1, byte: 1, bit: 0, reserved: true },
+    { name: "BYTCHK", length: 2, byte: 1, bit: 1 },
+    { name: "Reserved", length: 1, byte: 1, bit: 3, reserved: true },
+    { name: "DPO", length: 1, byte: 1, bit: 4 },
+    { name: "WRPROTECT", length: 3, byte: 1, bit: 5 },
+    { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
+    { name: "TRANSFER LENGTH", length: 32, byte: 10, bit: 0 },
+    { name: "GROUP NUMBER", length: 5, byte: 14, bit: 0 },
+    { name: "Reserved", length: 2, byte: 14, bit: 5, reserved: true },
+    { name: "Restricted for MMC-6", length: 1, byte: 14, bit: 7 },
+    { name: "CONTROL", length: 8, byte: 15, bit: 0 },
+]];
+
+// SBC-4 5.40 - WRITE AND VERIFY (32) command
+var writeAndVerify32 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "CONTROL", length: 8, byte: 1, bit: 0 },
+    { name: "Reserved", length: 32, byte: 2, bit: 0, reserved: true },
+    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
+    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
+    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
+    { name: "Reserved", length: 1, byte: 10, bit: 0, reserved: true },
+    { name: "BYTCHK", length: 2, byte: 10, bit: 1, obsolete: true },
+    { name: "Reserved", length: 1, byte: 10, bit: 3, reserved: true },
+    { name: "DPO", length: 1, byte: 10, bit: 4 },
+    { name: "WRPROTECT", length: 3, byte: 10, bit: 5 },
+    { name: "Reserved", length: 8, byte: 11, bit: 0, reserved: true },
+    { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 12, bit: 0 },
+    { name: "EXPECTED INITIAL LOGICAL BLOCK REFERENCE TAG", length: 32, byte: 20, bit: 0 },
+    { name: "EXPECTED LOGICAL BLOCK APPLICATION TAG", length: 16, byte: 24, bit: 0 },
+    { name: "LOGICAL BLOCK APPLICATION TAG MASK", length: 16, byte: 26, bit: 0 },
+    { name: "TRANSFER LENGTH", length: 32, byte: 28, bit: 0 },
+];
+
+// SBC-4 5.41 - WRITE LONG (10) command
+var writeLong10 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
+    { name: "Reserved", length: 4, byte: 1, bit: 1, reserved: true },
+    { name: "PBLOCK", length: 1, byte: 1, bit: 5 },
+    { name: "WR_UNCOR", length: 1, byte: 1, bit: 6 },
+    { name: "COR_DIS", length: 1, byte: 1, bit: 7 },
+    { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
+    { name: "Reserved", length: 8, byte: 6, bit: 0, reserved: true },
+    { name: "BYTE TRANSFER LENGTH", length: 16, byte: 7, bit: 0 },
+    { name: "CONTROL", length: 8, byte: 9, bit: 0 },
+];
+
+// SBC-4 5.42 - WRITE LONG (16) command
+var writeLong16 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
+    { name: "PBLOCK", length: 1, byte: 1, bit: 5 },
+    { name: "WR_UNCOR", length: 1, byte: 1, bit: 6 },
+    { name: "COR_DIS", length: 1, byte: 1, bit: 7 },
+    { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
+    { name: "Reserved", length: 16, byte: 10, bit: 0, reserved: true },
+    { name: "BYTE TRANSFER LENGTH", length: 16, byte: 12, bit: 0 },
+    { name: "Reserved", length: 16, byte: 14, bit: 0, reserved: true },
+    { name: "CONTROL", length: 8, byte: 15, bit: 0 },
+];
+
+// SBC-4 5.43 - WRITE SAME (10) command
+var writeSame10 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "Obsolete", length: 3, byte: 1, bit: 0, obsolete: true },
+    { name: "UNMAP", length: 1, byte: 1, bit: 3 },
+    { name: "ANCHOR", length: 1, byte: 1, bit: 4 },
+    { name: "WRPROTECT", length: 3, byte: 1, bit: 5 },
+    { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
+    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
+    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "NUMBER OF LOGICAL BLOCKS", length: 16, byte: 7, bit: 0 },
+    { name: "CONTROL", length: 8, byte: 9, bit: 0 },
+];
+
+// SBC-4 5.44 - WRITE SAME (16) command
+var writeSame16 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "NDOB", length: 1, byte: 1, bit: 0 },
+    { name: "Obsolete", length: 2, byte: 1, bit: 1, obsolete: true },
+    { name: "UNMAP", length: 1, byte: 1, bit: 3 },
+    { name: "ANCHOR", length: 1, byte: 1, bit: 4 },
+    { name: "WRPROTECT", length: 3, byte: 1, bit: 5 },
+    { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
+    { name: "NUMBER OF LOGICAL BLOCKS", length: 32, byte: 10, bit: 0 },
+    { name: "GROUP NUMBER", length: 5, byte: 14, bit: 0 },
+    { name: "Reserved", length: 3, byte: 15, bit: 5, reserved: true },
+    { name: "CONTROL", length: 8, byte: 15, bit: 0 },
+];
+
+// SBC-4 5.45 - WRITE SAME (32) command
+var writeSame32 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "CONTROL", length: 8, byte: 1, bit: 0 },
+    { name: "Reserved", length: 32, byte: 2, bit: 0, reserved: true },
+    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
+    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
+    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
+    { name: "NDOB", length: 1, byte: 10, bit: 0 },
+    { name: "Obsolete", length: 2, byte: 10, bit: 1 },
+    { name: "UNMAP", length: 1, byte: 10, bit: 3 },
+    { name: "ANCHOR", length: 1, byte: 10, bit: 4 },
+    { name: "WRPROTECT", length: 3, byte: 10, bit: 5 },
+    { name: "Reserved", length: 8, byte: 11, bit: 0, reserved: true },
+    { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 12, bit: 0 },
+    { name: "EXPECTED INITIAL LOGICAL BLOCK REFERENCE TAG", length: 32, byte: 20, bit: 0 },
+    { name: "EXPECTED LOGICAL BLOCK APPLICATION TAG", length: 16, byte: 24, bit: 0 },
+    { name: "LOGICAL BLOCK APPLICATION TAG MASK", length: 16, byte: 26, bit: 0 },
+    { name: "NUMBER OF LOGICAL BLOCKS", length: 32, byte: 28, bit: 0 },
+];
+
+// SBC-4 5.46 - WRITE USING TOKEN command
+var writeUsingToken = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
+    { name: "Reserved", length: 3, byte: 1, bit: 0 },
+    { name: "Reserved", length: 32, byte: 2, bit: 0 },
+    { name: "LIST IDENTIFIED", length: 32, byte: 6, bit: 0 },
+    { name: "PARAMETER LIST LENGTH", length: 32, byte: 10, bit: 0 },
+    { name: "GROUP NUMBER", length: 5, byte: 14, bit: 0 },
+    { name: "Reserved", length: 3, byte: 15, bit: 5, reserved: true },
+    { name: "CONTROL", length: 8, byte: 15, bit: 0 },
+];
+
+// SBC-4 5.47 - XDWRITEREAD (10) command
+var xdwriteread10 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "XORPINFO", length: 1, byte: 1, bit: 0 },
+    { name: "Obsolete", length: 1, byte: 1, bit: 1, obsolete: true },
+    { name: "DISABLE WRITE", length: 1, byte: 1, bit: 2 },
+    { name: "FUA", length: 1, byte: 1, bit: 3 },
+    { name: "DPO", length: 1, byte: 1, bit: 4 },
+    { name: "WRPROTECT", length: 3, byte: 1, bit: 5 },
+    { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
+    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
+    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "TRANSFER LENGTH", length: 16, byte: 7, bit: 0 },
+    { name: "CONTROL", length: 8, byte: 9, bit: 0 },
+];
+
+// SBC-4 5.56 - XDWRITEREAD (32) command
+var xdwriteread32 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "CONTROL", length: 8, byte: 1, bit: 0 },
+    { name: "Reserved", length: 32, byte: 2, bit: 0, reserved: true },
+    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
+    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
+    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
+    { name: "XORPINFO", length: 1, byte: 10, bit: 0 },
+    { name: "Obsolete", length: 1, byte: 10, bit: 1, obsolete: true },
+    { name: "DISABLE WRITE", length: 1, byte: 10, bit: 2 },
+    { name: "FUA", length: 1, byte: 10, bit: 3 },
+    { name: "DPO", length: 1, byte: 10, bit: 4 },
+    { name: "WRPROTECT", length: 3, byte: 10, bit: 5 },
+    { name: "Reserved", length: 8, byte: 11, bit: 0, reserved: true },
+    { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 12, bit: 0 },
+    { name: "Reserved", length: 64, byte: 20, bit: 0, reserved: true },
+    { name: "TRANSFER LENGTH", length: 32, byte: 28, bit: 0 },
+];
+
+// SBC-4 5.57 - XPWRITE (10) command
+var xpwrite10 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "XORPINFO", length: 1, byte: 1, bit: 0 },
+    { name: "Obsolete", length: 1, byte: 1, bit: 1, obsolete: true },
+    { name: "Reserved", length: 1, byte: 1, bit: 2, reserved: true },
+    { name: "FUA", length: 1, byte: 1, bit: 3 },
+    { name: "DPO", length: 1, byte: 1, bit: 4 },
+    { name: "Reserved", length: 3, byte: 1, bit: 5 },
+    { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
+    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
+    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "TRANSFER LENGTH", length: 16, byte: 7, bit: 0 },
+    { name: "CONTROL", length: 8, byte: 9, bit: 0 },
+];
+
+// SBC-4 5.58 - XPWRITE (32) command
+var xpwrite32 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "CONTROL", length: 8, byte: 1, bit: 0 },
+    { name: "Reserved", length: 32, byte: 2, bit: 0, reserved: true },
+    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
+    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
+    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
+    { name: "XORPINFO", length: 1, byte: 10, bit: 0 },
+    { name: "Obsolete", length: 1, byte: 10, bit: 1, obsolete: true },
+    { name: "Reserved", length: 1, byte: 10, bit: 2, reserved: true },
+    { name: "FUA", length: 1, byte: 10, bit: 3 },
+    { name: "DPO", length: 1, byte: 10, bit: 4 },
+    { name: "Reserved", length: 3, byte: 10, bit: 5, reserved: true },
+    { name: "Reserved", length: 8, byte: 11, bit: 0, reserved: true },
+    { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 12, bit: 0 },
+    { name: "Reserved", length: 64, byte: 20, bit: 0 },
+    { name: "TRANSFER LENGTH", length: 32, byte: 28, bit: 0 },
+];
+
+
 
 
 var testUnitReady = [
