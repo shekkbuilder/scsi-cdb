@@ -1065,9 +1065,145 @@ var service_action_info = [
   { opcode: 0x84, byte_offset: 1, byte_length: 1, bitmask: 0x1f },
 ];
 
+
+var layoutMap = [
+    // Messages defined in SPC-4
+    { operationCode: 0x86, layout: accessControlIn },
+    { operationCode: 0x87, layout: accessControlOut },
+
+    // Messages defined in SPC-5
+    { operationCode: 0xa4, serviceAction: 0x0b, layout: changeAliases },
+    { operationCode: 0x83, layout: extendedCopy },
+    { operationCode: 0x12, layout: inquiry },
+    { operationCode: 0x4c, layout: logSelect },
+    { operationCode: 0x4d, layout: logSense },
+    { operationCode: 0xa3, serviceAction: 0x00, layout: maintenanceIn },
+    { operationCode: 0xa3, serviceAction: 0x01, layout: maintenanceIn },
+    { operationCode: 0xa3, serviceAction: 0x02, layout: maintenanceIn },
+    { operationCode: 0xa3, serviceAction: 0x03, layout: maintenanceIn },
+    { operationCode: 0xa3, serviceAction: 0x04, layout: maintenanceIn },
+    { operationCode: 0xa3, serviceAction: 0x06, layout: maintenanceIn },
+    { operationCode: 0xa3, serviceAction: 0x07, layout: maintenanceIn },
+    { operationCode: 0xa3, serviceAction: 0x08, layout: maintenanceIn },
+    { operationCode: 0xa3, serviceAction: 0x09, layout: maintenanceIn },
+    { operationCode: 0xa4, serviceAction: 0x00, layout: maintenanceOut },
+    { operationCode: 0xa4, serviceAction: 0x01, layout: maintenanceOut },
+    { operationCode: 0xa4, serviceAction: 0x02, layout: maintenanceOut },
+    { operationCode: 0xa4, serviceAction: 0x03, layout: maintenanceOut },
+    { operationCode: 0xa4, serviceAction: 0x04, layout: maintenanceOut },
+    { operationCode: 0xa4, serviceAction: 0x05, layout: maintenanceOut },
+    { operationCode: 0xa4, serviceAction: 0x07, layout: maintenanceOut },
+    { operationCode: 0xa4, serviceAction: 0x08, layout: maintenanceOut },
+    { operationCode: 0xa4, serviceAction: 0x09, layout: maintenanceOut },
+    { operationCode: 0x15, layout: modeSelect6 },
+    { operationCode: 0x55, layout: modeSelect10 },
+    { operationCode: 0x1a, layout: modeSense6 },
+    { operationCode: 0x5a, layout: modeSense10 },
+    { operationCode: 0x5e, layout: persistentReserveIn },
+    { operationCode: 0x5f, layout: persistentReserveOut },
+    { operationCode: 0x8c, layout: readAttribute },
+    { operationCode: 0x3c, layout: readBuffer },
+    { operationCode: 0x84, layout: receiveCopyResults },
+    { operationCode: 0x1c, layour: receiveDiagnosticResults },
+    { operationCode: 0x07, layout: receiveRodTokenInformation },
+    { operationCode: 0xa3, serviceAction: 0x0b, layout: reportAliases },
+    { operationCode: 0x8d, layout: writeAttribute },
+    { operationCode: 0x3b, layout: writeBuffer },
+ 
+    // Messages defined in SBC-4
+    { operationCode: 0x9e, serviceAction: 0x15, layout: backgroundControl },
+    { operationCode: 0x89, layout: compareAndWrite },
+    { operationCode: 0x04, layout: formatUnit },
+    { operationCode: 0x9e, serviceAction: 0x12, layout: getLbaStatus },
+    { operationCode: 0x9e, serviceAction: 0x16, layout: getStreamStatus },
+    { operationCode: 0x8b, layout: orwrite16 },
+    { operationCode: 0x7f, serviceAction: 0x0e, layout: orwrite32 },
+    { operationCode: 0x83, serviceAction: 0x10, layout: populateToken },
+    { operationCode: 0x34, layout: preFetch10 },
+    { operationCode: 0x90, layout: preFetch16 },
+    { operationCode: 0x1e, layout: preventAllowMediumRemoval },
+    { operationCode: 0x28, layout: read10 },
+    { operationCode: 0xa8, layout: read12 },
+    { operationCode: 0x88, layout: read16 },
+    { operationCode: 0x7f, serviceAction: 0x09, layout: read32 },
+    { operationCode: 0x25, layout: readCapacity10 },
+    { operationCode: 0x9e, serviceAction: 0x10, layout: readCapacity16 },
+    { operationCode: 0x37, layout: readDefectData10 },
+    { operationCode: 0xb7, layout: readDefectData12 },
+    { operationCode: 0x3e, layout: readLong10, obsolete: true },
+    { operationCode: 0x9e, serviceAction: 0x11, layout: readLong16, obsolete: true },
+    { operationCode: 0x07, layout: reassignBlocks },
+    { operationCode: 0x9e, serviceAction: 0x13, layout: reportReferrals },
+    { operationCode: 0x48, layout: sanitize },
+    { operationCode: 0x1b, layout: startStopUnit },
+    { operationCode: 0x9e, serviceAction: 0x14, layout: streamControl },
+    { operationCode: 0x35, layout: synchronizeCache10 },
+    { operationCode: 0x91, layout: synchronizeCache16 },
+    { operationCode: 0x42, layout: unmap },
+    { operationCode: 0x2f, layout: verify10 },
+    { operationCode: 0xaf, layout: verify12 },
+    { operationCode: 0x8f, layout: verify16 },
+    { operationCode: 0x7f, serviceAction: 0x0a, layout: verify32 },
+    { operationCode: 0x2a, layout: write10 },
+    { operationCode: 0xaa, layout: write12 },
+    { operationCode: 0x8a, layout: write16 },
+    { operationCode: 0x7f, serviceAction: 0x0b, layout: write32 },
+    { operationCode: 0x2e, layout: writeAndVerify10 },
+    { operationCode: 0xae, layout: writeAndVerify12 },
+    { operationCode: 0x8e, layout: writeAndVerify16 },
+    { operationCode: 0x7f, serviceAction: 0x0c, layout: writeAndVerify32 },
+    { operationCode: 0x9c, layout: writeAtomic16 },
+    { operationCode: 0x7f, serviceAction: 0x0f, layout: writeAtomic32 },
+    { operationCode: 0x3f, layout: writeLong10 },
+    { operationCode: 0x9f, serviceAction: 0x11, layout: writeLong16 },
+    { operationCode: 0x41, layout: writeSame10 },
+    { operationCode: 0x93, layout: writeSame16 },
+    { operationCode: 0x7f, serviceAction: 0x0d, layout: writeSame32 },
+    { operationCode: 0x9a, layout: writeStream16 },
+    { operationCode: 0x7f, serviceAction: 0x10, layout: writeStream32 },
+    { operationCode: 0x83, serviceAction: 0x11, layout: writeUsingToken },
+    { operationCode: 0x53, layout: xdwriteread10 },
+    { operationCode: 0x7f, serviceAction: 0x07, layout: xdwriteread32 },
+    { operationCode: 0x51, layout: xpwrite10 },
+    { operationCode: 0x7f, serviceAction: 0x06, layout: xpwrite32 },
+
+
+
+
+    // Messages defined in SAT-3
+    { operationCode: 0xa1, layout: ataPassThrough12 },
+    { operationCode: 0x85, layout: ataPassThrough16 },
+
+    // Messages defined in ZBC
+    { operationCode: 0x94, serviceAction: 0x01, layout: closeZone },
+    { operationCode: 0x94, serviceAction: 0x03, layout: openZone },
+
+
+
+    { operationCode: 0x94, serviceAction: 0x02, layout: finishZone },
+
+];
+
 function parseTestUnitReady(input) {
     
 }
+
+var cdb = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+];
+
+var cdbOperationCode9e = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
+];
+
+
+var cdbOperationCode7f = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
+];
+
+
 
 var CDB = function() {
 };
@@ -1076,131 +1212,45 @@ function parseInt16(value) {
     return parseInt(value, 16);
 }
 
+function getMessageLayour(input_array) {
+    var layout = cdb;
+
+    var parser_output = parseMessage(input_array, cdb);
+
+    
+}
+
 CDB.prototype.decode = function(input) {
-    if (input.length == 0) {
-        return { truncated: true };
-    } else {
+    var input_array = input.split(" ");
+    input_array = input_array.map(function(value) {
+            return parseInt(value, 16);
+        });
 
-        var input_array = input.split(" ");
-        input_array = input_array.map(function(value) {
-                return parseInt(value, 16);
-            });
+    // Extract the Operation Code
 
-        var opcode = input_array[0];
-        var service_action;
+    // Based on the Operation Code, either identify the final message
+    // layout to use to decode the message, or the next level of layout.
 
-        for (var i = 0; i < service_action_info.length; i++) {
-            if (service_action_info[i].opcode == opcode) {
-                service_action = get_field(input_array,
-                                           service_action_info[i].byte_offset,
-                                           service_action_info[i].byte_length,
-                                           service_action_info[i].bitmask);
-                break;
-            }
-        }
-
-        // Identify the message type based on the OpCode and optional
-        // Service Action.
-        var name;
-        var length;
-
-        for (var i = 0; i < scsi_commands.length; i++) {
-            if (scsi_commands[i].opcode == opcode &&
-                scsi_commands[i].service_action == service_action) {
-                name = scsi_commands[i].name;
-                length = scsi_commands[i].length;
-                break;
-            }
-        }
-
-        var parser_output = parseMessage(input_array, testUnitReady);
+    // Can this be done in a recursive manner?  Maybe a function that
+    // returns the message layout that should be used.
 
 
-        var output = {
-            name: name,
-            fields: parser_output.fields,
-            truncated: parser_output.truncated,
-        };
+    var layout = cdb;
+        
+    var parser_output = parseMessage(input_array, cdb);
 
-        return output;
-    }
+    // Work out the next layout to use based on the output
+    var parser_output = parseMessage(input_array, testUnitReady);
+
+
+    var output = {
+        name: name,
+        fields: parser_output.fields,
+        truncated: parser_output.truncated,
+    };
+
+    return output;
 }
 
-// This function is restriced to returning values of 32 bits or less.
-function get_field(byte_array, start_offset, byte_length, bitmask) {
-  if (byte_length > 4) {
-    throw "byte_length too long";
-  }
-  if (byte_array.length > (start_offset + (byte_length - 1)))
-  {
-    var value = byte_array[start_offset];
+module.exports = CDB;
 
-    // Assume multi-byte values are encoded with the MSB at the highest index.
-    for (var i = start_offset + 1; i < (start_offset + (byte_length)); i++)
-    {
-      console.log("iter");
-      value = value << 8;
-      value += byte_array[i];
-    }
-
-    value &= bitmask;
-    return value;
-  } else {
-    throw "Data Truncated";
-  }
-}
-
-//
-CDB.prototype.parse = function(encodedCdb)
-    console.log("Parsing encoded CDB: " + encodedCdb);
-  if (Array.isArray(encodedCdb)) {
-    if (encodedCdb.length > 0) {
-      var opcode = encodedCdb[0];
-      var service_action;
-
-      // Find out if we need to get a Service Action to uniquely identify this
-      // command.
-      for (var i = 0; i < service_action_info.length; i++) {
-        if (service_action_info[i].opcode == opcode)
-        {
-          service_action = get_field(encodedCdb,
-                                     service_action_info[i].byte_offset,
-                                     service_action_info[i].byte_length,
-                                     service_action_info[i].bitmask);
-          break;
-        }
-      }
-
-      // Now we need to identify the message type based on the OpCode and the
-      // optional ServiceAction.
-      var name;
-      var length;
-
-      for (var i = 0; i < scsi_commands.length; i++) {
-        if (scsi_commands[i].opcode == opcode &&
-            scsi_commands[i].service_action == service_action) {
-          name = scsi_commands[i].name;
-          length = scsi_commands[i].length;
-          break;
-        }
-      }
-
-      this.name = name;
-      this.fields = scsi_commands[i].parser(encodedCdb);
-
-      // Check for truncation - complicated.
-      // Decode all fields.
-    } else {
-
-    }
-  } else {
-    throw "Invalid encodedCdb, must be an array";
-  }
-};
-
-
-if (typeof module === 'undefined') {
-
-} else {
-  module.exports = CDB;
-}
