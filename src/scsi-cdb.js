@@ -138,7 +138,7 @@ var preFetch10 = [
     { name: "CONTROL", length: 8, byte: 9, bit: 0 },
 ];
 
-// SBC-4 5.9 - PRE-FETCH (16) command
+// SBC-4 5.11 - PRE-FETCH (16) command
 var preFetch16 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
@@ -151,7 +151,7 @@ var preFetch16 = [
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
-// SBC-4 5.10 - PREVENT ALLOW MEDIUM REMOVAL command
+// SBC-4 5.12 - PREVENT ALLOW MEDIUM REMOVAL command
 var parsePreventAllowMediumRemoval = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Reserved", length: 8, byte: 1, bit: 0, reserved: true },
@@ -162,7 +162,7 @@ var parsePreventAllowMediumRemoval = [
     { name: "CONTROL",length: 8, byte: 5, bit: 0 },
 ];
 
-// SBC-4 5.11 - READ (10) command
+// SBC-4 5.13 - READ (10) command
 var read10 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
@@ -178,7 +178,7 @@ var read10 = [
     { name: "CONTROL", length: 8, byte: 9, bit: 0 },
 ];
 
-// SBC-4 5.12 - READ (12) command
+// SBC-4 5.14 - READ (12) command
 var read12 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
@@ -195,7 +195,7 @@ var read12 = [
     { name: "CONTROL", length: 8, byte: 11, bit: 0 },
 ];
 
-// SBC-4 5.13 - READ (16) command
+// SBC-4 5.15 - READ (16) command
 var read16 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Reserved", length: 1, byte: 1, bit: 0, reserved: true },
@@ -212,7 +212,7 @@ var read16 = [
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ]];
 
-// SBC-4 5.14 - READ (32) command
+// SBC-4 5.16 - READ (32) command
 var read32 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "CONTROL", length: 8, byte: 1, bit: 0 },
@@ -235,7 +235,7 @@ var read32 = [
     { name: "TRANSFER LENGTH", length: 32, byte: 28, bit: 0 },
 ];
 
-// SBC-4 5.15 - READ CAPACITY (10) command
+// SBC-4 5.17 - READ CAPACITY (10) command
 var readCapacity10 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
@@ -247,7 +247,7 @@ var readCapacity10 = [
     { name: "CONTROL", length: 8, byte: 9, bit: 0 },
 ];
 
-// SBC-4 5.16 - READ CAPACITY (16) command
+// SBC-4 5.18 - READ CAPACITY (16) command
 var readCapacity16 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
@@ -259,7 +259,7 @@ var readCapacity16 = [
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
-// SBC-4 5.17 - READ DEFECT DATA (10) command
+// SBC-4 5.19 - READ DEFECT DATA (10) command
 var readDefectData10 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Reserved", length: 8, byte: 1, bit: 0, reserved: true },
@@ -272,7 +272,7 @@ var readDefectData10 = [
     { name: "CONTROL", length: 8, byte: 9, bit: 0 },
 ];
 
-// SBC-4 5.18 - READ DEFECT DATA (12) command
+// SBC-4 5.20 - READ DEFECT DATA (12) command
 var readDefectData12 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "DEFECT LIST FORMAT", length: 3, byte: 1, bit: 0 },
@@ -285,7 +285,7 @@ var readDefectData12 = [
     { name: "CONTROL", length: 8, byte: 11, bit: 0 },
 ];
 
-// SBC-4 5.19 - READ LONG (10) command
+// SBC-4 5.21 - READ LONG (10) command
 var readLong10 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Obsolete", length: 1, byte: 1; bit: 0, obsolete: true },
@@ -298,7 +298,7 @@ var readLong10 = [
     { name: "CONTROL", length: 8, bytes: 9, bit: 0 },
 ];
 
-// SBC-4 5.20 - READ LONG (16) command
+// SBC-4 5.22 - READ LONG (16) command
 var readLong16 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
@@ -312,7 +312,7 @@ var readLong16 = [
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
-// SBC-4 5.21 - REASSIGN BLOCKS command
+// SBC-4 5.23 - REASSIGN BLOCKS command
 var reassignBlocks = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "LONGLIST", length: 1, byte: 1, bit: 0 },
@@ -322,19 +322,10 @@ var reassignBlocks = [
     { name: "CONTROL", length: 8, byte: 5, bit: 0 },
 ];
 
-// SPC-4 6.28 - RECEIVE ROD TOKEN INFORMATION command
-var receiveRodTokenInformation = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
-    { name: "Reserved", length: 3, byte: 1, bit: 5, reserved: true },
-    { name: "LIST IDENTIFIER", length: 32, byte: 2, bit: 0 },
-    { name: "Reserved", length: 32, byte: 6, bit: 0, reserved: true },
-    { name: "ALLOCATION LENGTH", length: 32, byte: 10, bit: 0 },
-    { name: "Reserved", length: 8, byte: 14, bit: 0, reserved: true },
-    { name: "CONTROL", length: 8, byte: 15, bit: 0 },
-];
+// SBC-4 5.24 - RECEIVE ROD TOKEN INFORMATION
+// See SPC-4
 
-// SBC-4 5.23 - REPORT REFERRALS command
+// SBC-4 5.25 - REPORT REFERRALS command
 var reportReferrals = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
@@ -346,7 +337,7 @@ var reportReferrals = [
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
-// SBC-4 5.24 - SANITIZE command
+// SBC-4 5.27 - SANITIZE command
 var sanitize = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
@@ -358,7 +349,7 @@ var sanitize = [
     { name: "CONTROL", length: 8, byte: 9, bit: 0 },
 ];
 
-// SBC-4 5.25 - START STOP UNIT command
+// SBC-4 5.28 - START STOP UNIT command
 var startStopUnit = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "IMMED", length: 1, byte: 1, bit: 0 },
@@ -369,7 +360,19 @@ var startStopUnit = [
     { name: "CONTROL", length: 8, byte: 5, bit: 0 },
 ];
 
-// SBC-4 5.26 - SYNCHRONIZE CACHE (10) command
+// SBC-4 5.29 - STREAM CONTROL command
+var streamControl = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
+    { name: "STR_CTL", length: 2, byte: 1, bit: 5 },
+    { name: "Reserved", length: 1, byte: 1, bit: 7, reserved: true },
+    { name: "Reserved", length: 16, byte: 2, bit: 0, reserved: true },
+    { name: "STR_ID", length: 16, byte: 4, bit: 0 },
+    { name: "Reserved", length: 72, byte: 6, bit: 0, reserved: true },
+    { name: "CONTROL", length: 8, byte: 15, bit: 0 },
+];
+
+// SBC-4 5.30 - SYNCHRONIZE CACHE (10) command
 var synchronizeCache10 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
@@ -383,7 +386,7 @@ var synchronizeCache10 = [
     { name: "CONTROL", length: 8, byte: 9, bit: 0 },
 ];
 
-// SBC-4 5.27 - SYNCHRONIZE CACHE (16) command
+// SBC-4 5.31 - SYNCHRONIZE CACHE (16) command
 var synchronizeCache16 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Reserved", length: 1, byte: 1, bit: 0, reserved: true },
@@ -397,7 +400,7 @@ var synchronizeCache16 = [
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
-// SBC-4 5.28 - UNMAP command
+// SBC-4 5.32 - UNMAP command
 var unmap = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "ANCHOR", length: 1, byte: 1, bit: 0 },
@@ -409,7 +412,7 @@ var unmap = [
     { name: "CONTROL", length: 8, byte: 9, bit: 0 },
 ];
 
-// SBC-4 5.29 - VERIFY (10) command
+// SBC-4 5.33 - VERIFY (10) command
 var verify10 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
@@ -425,7 +428,7 @@ var verify10 = [
     { name: "CONTROL", length: 8, byte: 9, bit: 0 },
 ];
 
-// SBC-4 5.30 - VERIFY (12) command
+// SBC-4 5.34 - VERIFY (12) command
 var verify12 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
@@ -441,7 +444,7 @@ var verify12 = [
     { name: "CONTROL", length: 8, byte: 11, bit: 0 },
 ];
 
-// SBC-4 5.31 - VERIFY (16) command
+// SBC-4 5.35 - VERIFY (16) command
 var verify16 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Reserved", length: 1, byte: 1, bit: 0, reserved: true },
@@ -457,7 +460,7 @@ var verify16 = [
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
-// SBC-4 5.32 - VERIFY (32) command
+// SBC-4 5.36 - VERIFY (32) command
 var verify32 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "CONTROL", length: 8, byte: 1, bit: 0 },
@@ -479,7 +482,7 @@ var verify32 = [
     { name: "VERIFICATION LENGTH", length: 32, byte: 28, bit: 0 },
 ];
 
-// SBC-4 5.33 - WRITE (10) command
+// SBC-4 5.37 - WRITE (10) command
 var write10 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
@@ -495,7 +498,7 @@ var write10 = [
     { name: "CONTROL", length: 8, byte: 9, bit: 0 },
 ];
 
-// SBC-4 5.34 - WRITE (12) command
+// SBC-4 5.38 - WRITE (12) command
 var write12 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
@@ -512,7 +515,7 @@ var write12 = [
     { name: "CONTROL", length: 8, byte: 11, bit: 0 },
 ];
 
-// SBC-4 5.35 - WRITE (16) command
+// SBC-4 5.39 - WRITE (16) command
 var write16 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Reserved", length: 1, byte: 1, bit: 0, reserved: true },
@@ -529,7 +532,7 @@ var write16 = [
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
-// SBC-4 5.36 - WRITE (32) command
+// SBC-4 5.40 - WRITE (32) command
 var write32 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "CONTROL", length: 8, byte: 1, bit: 0 },
@@ -552,7 +555,7 @@ var write32 = [
     { name: "TRANSFER LENGTH", length: 32, byte: 28, bit: 0 },
 ];
 
-// SBC-4 5.37 - WRITE AND VERIFY (10) command
+// SBC-4 5.41 - WRITE AND VERIFY (10) command
 var writeAndVerify10 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
@@ -567,7 +570,7 @@ var writeAndVerify10 = [
     { name: "CONTROL", length: 8, byte: 9, bit: 0 },
 ];
 
-// SBC-4 5.38 - WRITE AND VERIFY (12) command
+// SBC-4 5.42 - WRITE AND VERIFY (12) command
 var writeAndVerify12 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
@@ -583,7 +586,7 @@ var writeAndVerify12 = [
     { name: "CONTROL", length: 8, byte: 11, bit: 0 },
 ];
 
-// SBC-4 5.39 - WRITE AND VERIFY (16) command
+// SBC-4 5.43 - WRITE AND VERIFY (16) command
 var writeAndVerify16 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Reserved", length: 1, byte: 1, bit: 0, reserved: true },
@@ -599,7 +602,7 @@ var writeAndVerify16 = [
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ]];
 
-// SBC-4 5.40 - WRITE AND VERIFY (32) command
+// SBC-4 5.44 - WRITE AND VERIFY (32) command
 var writeAndVerify32 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "CONTROL", length: 8, byte: 1, bit: 0 },
@@ -621,7 +624,46 @@ var writeAndVerify32 = [
     { name: "TRANSFER LENGTH", length: 32, byte: 28, bit: 0 },
 ];
 
-// SBC-4 5.41 - WRITE LONG (10) command
+// SBC-4 5.45 - WRITE ATOMIC (16) command
+var writeAtomic16 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "Reserved", length: 3, byte: 1, bit: 0 },
+    { name: "FUA", length: 1, byte: 1, bit: 3 },
+    { name: "DPO", length: 1, byte: 1, bit: 4 },
+    { name: "WRPROTECT", length: 3, byte: 1, bit: 5 },
+    { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
+    { name: "ATOMIC BOUNDARY", length: 16, byte: 10, bit: 0 },
+    { name: "TRANSFER LENGTH", length: 16, byte: 12, bit: 0 },
+    { name: "GROUP NUMBER", length: 6, byte: 14, bit: 0 },
+    { name: "Reserved", length: 2, byte: 14, bit: 6 },
+    { name: "CONTROL", length: 8, byte: 15, bit: 0 },
+];
+
+// SBC-4 5.46 - WRITE ATOMIC (32) command
+var writeStream32 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "CONTROL", length: 8, byte: 1, bit: 0 },
+    { name: "Reserved", length: 16, byte: 2, bit: 0, reserved: true },
+    { name: "ATOMIC BOUNDARY", length: 16, byte: 4, bit: 0 },
+    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
+    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
+    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
+    { name: "Reserved", length: 1, byte: 10, bit: 0, reserved: true },
+    { name: "Obsolete", length: 1, byte: 10, bit: 1, obsolete: true },
+    { name: "Reserved", length: 1, byte: 10, bit: 2, reserved: true },
+    { name: "FUA", length: 1, byte: 10, bit: 3 },
+    { name: "DPO", length: 1, byte: 10, bit: 4 },
+    { name: "WRPROTECT", length: 3, byte: 10, bit: 5 },
+    { name: "Reserved", length: 8, byte: 11, bit: 0, reserved: true },
+    { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 12, bit: 0 },
+    { name: "EXPECTED INITIAL LOGICAL BLOCK REFERENCE TAG", length: 32, byte: 20, bit: 0 },
+    { name: "EXPECTED LOGICAL BLOCK APPLICATION TAG", length: 16, byte: 24, bit: 0 },
+    { name: "LOGICAL BLOCK APPLICATION TAG MASK", length: 16, byte: 26, bit: 0 },
+    { name: "TRANSFER LENGTH", length: 32, byte: 28, bit: 0 },
+];
+
+// SBC-4 5.47 - WRITE LONG (10) command
 var writeLong10 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
@@ -635,7 +677,7 @@ var writeLong10 = [
     { name: "CONTROL", length: 8, byte: 9, bit: 0 },
 ];
 
-// SBC-4 5.42 - WRITE LONG (16) command
+// SBC-4 5.48 - WRITE LONG (16) command
 var writeLong16 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
@@ -649,7 +691,7 @@ var writeLong16 = [
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
-// SBC-4 5.43 - WRITE SAME (10) command
+// SBC-4 5.49 - WRITE SAME (10) command
 var writeSame10 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Obsolete", length: 3, byte: 1, bit: 0, obsolete: true },
@@ -663,7 +705,7 @@ var writeSame10 = [
     { name: "CONTROL", length: 8, byte: 9, bit: 0 },
 ];
 
-// SBC-4 5.44 - WRITE SAME (16) command
+// SBC-4 5.50 - WRITE SAME (16) command
 var writeSame16 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "NDOB", length: 1, byte: 1, bit: 0 },
@@ -678,7 +720,7 @@ var writeSame16 = [
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
-// SBC-4 5.45 - WRITE SAME (32) command
+// SBC-4 5.51 - WRITE SAME (32) command
 var writeSame32 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "CONTROL", length: 8, byte: 1, bit: 0 },
@@ -700,7 +742,44 @@ var writeSame32 = [
     { name: "NUMBER OF LOGICAL BLOCKS", length: 32, byte: 28, bit: 0 },
 ];
 
-// SBC-4 5.46 - WRITE USING TOKEN command
+// SBC-4 5.52 - WRITE STREAM (16) command
+var writeStream16 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "Reserved", length: 3, byte: 1, bit: 0 },
+    { name: "FUA", length: 1, byte: 1, bit: 3 },
+    { name: "DPO", length: 1, byte: 1, bit: 4 },
+    { name: "WRPROTECT", length: 3, byte: 1, bit: 5 },
+    { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
+    { name: "STR_ID", length: 16, byte: 10, bit: 0 },
+    { name: "TRANSFER LENGTH", length: 16, byte: 12, bit: 0 },
+    { name: "GROUP NUMBER", length: 6, byte: 14, bit: 0 },
+    { name: "Reserved", length: 2, byte: 14, bit: 6 },
+    { name: "CONTROL", length: 8, byte: 15, bit: 0 },
+];
+
+// SBC-4 5.53 - WRITE STREAM (32) command
+var writeStream32 = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "CONTROL", length: 8, byte: 1, bit: 0 },
+    { name: "Reserved", length: 16, byte: 2, bit: 0, reserved: true },
+    { name: "STR_ID", length: 16, byte: 4, bit: 0 },
+    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
+    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
+    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
+    { name: "Reserved", length: 3, byte: 10, bit: 0 },
+    { name: "FUA", length: 1, byte: 10, bit: 3 },
+    { name: "DPO", length: 1, byte: 10, bit: 4 },
+    { name: "WRPROTECT", length: 3, byte: 10, bit: 5 },
+    { name: "Reserved", length: 8, byte: 11, bit: 0, reserved: true },
+    { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 12, bit: 0 },
+    { name: "EXPECTED INITIAL LOGICAL BLOCK REFERENCE TAG", length: 32, byte: 20, bit: 0 },
+    { name: "EXPECTED LOGICAL BLOCK APPLICATION TAG", length: 16, byte: 24, bit: 0 },
+    { name: "LOGICAL BLOCK APPLICATION TAG MASK", length: 16, byte: 26, bit: 0 },
+    { name: "TRANSFER LENGTH", length: 32, byte: 28, bit: 0 },
+];
+
+// SBC-4 5.54 - WRITE USING TOKEN command
 var writeUsingToken = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
@@ -713,7 +792,7 @@ var writeUsingToken = [
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
-// SBC-4 5.47 - XDWRITEREAD (10) command
+// SBC-4 5.55 - XDWRITEREAD (10) command
 var xdwriteread10 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "XORPINFO", length: 1, byte: 1, bit: 0 },
@@ -787,9 +866,21 @@ var xpwrite32 = [
     { name: "TRANSFER LENGTH", length: 32, byte: 28, bit: 0 },
 ];
 
+// SCSI Primary Commands - 4 (SPC-4)
 
+// SPC-4 6.28 - RECEIVE ROD TOKEN INFORMATION command
+var receiveRodTokenInformation = [
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
+    { name: "Reserved", length: 3, byte: 1, bit: 5, reserved: true },
+    { name: "LIST IDENTIFIER", length: 32, byte: 2, bit: 0 },
+    { name: "Reserved", length: 32, byte: 6, bit: 0, reserved: true },
+    { name: "ALLOCATION LENGTH", length: 32, byte: 10, bit: 0 },
+    { name: "Reserved", length: 8, byte: 14, bit: 0, reserved: true },
+    { name: "CONTROL", length: 8, byte: 15, bit: 0 },
+];
 
-
+// SPC-4 6.47 - TEST UNIT READY command
 var testUnitReady = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Reserved", length: 32, byte: 1, bit: 0, reserved: true },
