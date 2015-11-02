@@ -6,6 +6,8 @@
 
 "use strict";
 
+var bigInt = require('big-integer');
+
 // SBC-4 5.2 - BACKGROUND CONTROL command
 var backgroundControl = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
@@ -57,8 +59,8 @@ var getLbaStatus = [
     { name: "Reserved", length: 3, byte: 1, bit: 5 },
     { name: "STARTING LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
     { name: "ALLOCATION LENGTH", length: 32, byte: 10, bit: 0 },
-    { name: "Reserved", length: 8, byte: 14, bit: 0, reserved: true });
-    { name: "CONTROL", length: 8, byte: 15, bit: 0 };
+    { name: "Reserved", length: 8, byte: 14, bit: 0, reserved: true },
+    { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
 // SBC-4 5.6 - GET STREAM STATUS command
@@ -71,7 +73,7 @@ var getStreamStatus = [
     { name: "Reserved", length: 32, byte: 6, bit: 0, reserved: true },
     { name: "ALLOCATION LENGTH", length: 32, byte: 10, bit: 0 },
     { name: "Reserved", length: 8, byte: 14, bit: 0, reserved: true },
-    { name: "CONTROL", length: 8, byte: 15, bit: 0 });
+    { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
 // SBC-4 5.7 - ORWRITE (16) command
@@ -85,7 +87,7 @@ var orwrite16 = [
     { name: "TRANSFER LENGTH", length: 32, byte: 10, bit: 0 },
     { name: "GROUP NUMBER", length: 5, byte: 14, bit: 0 },
     { name: "Reserved", length: 3, byte: 14, bit: 5, reserved: true },
-    { name: "CONTROL", length: 8, byte: 15, bit: 0 });
+    { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
 // SBC-4 5.8 - ORWRITE (32) command
@@ -122,7 +124,7 @@ var populateToken = [
     { name: "PARAMETER LIST LENGTH", length: 32, byte: 10, bit: 0 },
     { name: "GROUP NUMBER", length: 5, byte: 14, bit: 0 },
     { name: "Reserved", length: 3, byte: 14, bit: 5, reserved: true },
-    { name: "CONTROL", length: 8, byte: 15, bit: 0 });
+    { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
 // SBC-4 5.10 - PRE-FETCH (10) command
@@ -210,7 +212,7 @@ var read16 = [
     { name: "Reserved", length: 2, byte: 14, bit: 5, reserved: true },
     { name: "Restricted for MMC-6", length: 1, byte: 14, bit: 7 },
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
-]];
+];
 
 // SBC-4 5.16 - READ (32) command
 var read32 = [
@@ -239,7 +241,7 @@ var read32 = [
 var readCapacity10 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
-    { name: "Reserved", length: 7, byte: 1, bit: 1, reserved: true });
+    { name: "Reserved", length: 7, byte: 1, bit: 1, reserved: true },
     { name: "Obsolete", length: 32, byte: 2, bit: 0, obsolete: true },
     { name: "Reserved", length: 16, byte: 6, bit: 0, reserved: true },
     { name: "Obsolete", length: 1, byte: 8, bit: 0, obsolete: true },
@@ -288,7 +290,7 @@ var readDefectData12 = [
 // SBC-4 5.21 - READ LONG (10) command
 var readLong10 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-    { name: "Obsolete", length: 1, byte: 1; bit: 0, obsolete: true },
+    { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
     { name: "CORRCT", length: 1, byte: 1, bit: 1 },
     { name: "PBLOCK", length: 1, byte: 1, bit: 2 },
     { name: "Reserved", length: 5, byte: 1, bit: 3, reserved: true },
@@ -600,7 +602,7 @@ var writeAndVerify16 = [
     { name: "Reserved", length: 2, byte: 14, bit: 5, reserved: true },
     { name: "Restricted for MMC-6", length: 1, byte: 14, bit: 7 },
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
-]];
+];
 
 // SBC-4 5.44 - WRITE AND VERIFY (32) command
 var writeAndVerify32 = [
@@ -887,6 +889,80 @@ var testUnitReady = [
     { name: "CONTROL", length: 8, byte: 5, bit: 0 },
 ];
 
+/**
+ * @param inputArray Array of bytes - the encoded message.
+ * @param fieldLength - the length in bits of the field to extract.
+ * @param byteOffset - Byte offset at which the field starts.
+ * @param bitOffset - Bit offset within the byte at which the field starts.
+ *
+ */
+function getField(inputArray, fieldLength, byteOffset, bitOffset) {
+    var startBit = (byteOffset * 8) + bitOffset;
+    var endBit = startBit + fieldLength - 1; // -1 is because we want the index of the last bit rather than the number of bits.
+    var endByte = parseInt((endBit) / 8);
+
+    console.log("startBit: " + startBit + " endBit: " + endBit + " endByte: " + endByte);
+
+    if ((endBit + 1) % 8 > 0) {
+        endByte++;
+    }
+    console.log("endByte: " + endByte);
+    if (endByte < inputArray.length) {
+        // Now we know the input array is long enough for use to extract the
+        // field from.
+        var value = bigInt();
+        var bitsDecoded = 0;
+
+        var byteIndex = byteOffset;
+        var bitIndex = bitOffset;
+        var bitsLeft = fieldLength;
+
+        while (bitsLeft > 0) {
+            var bitsAvailableInCurrentByte = (8 - bitIndex);
+            var bitsToDecode;
+            if (bitsLeft > bitsAvailableInCurrentByte) {
+                bitsToDecode = bitsAvailableInCurrentByte;
+            } else {
+                bitsToDecode = bitsLeft;
+            }
+
+            // Now the first part of the decoding - we take the byte at the
+            // current byteOffset, and right-shift it by bitOffset bits.  We
+            // then need to mask off just bitsToDecode bits of it.
+            var bitmask = (1 << bitsToDecode) - 1;
+            console.log("Decoding byte " + byteIndex + " of inputArray " + inputArray + "(bitIndex: " + bitIndex + ") bitmask " + bitmask);
+            var v = inputArray[byteIndex];
+            console.log("v is: " + v);
+            v = v >> bitIndex;
+            console.log("v is: " + v);
+            v = v & bitmask;
+            console.log("v is: " + v);
+
+            // Assume that we decode in MSB -> LSB order, so
+            // before ORing in the new value, left-shift the
+            // existing value to make space for it.
+            value = value.shiftLeft(bitsToDecode).or(v);
+
+            bitsDecoded += bitsToDecode;
+            bitsLeft -= bitsToDecode;
+
+            bitIndex += bitsToDecode;
+            if (bitIndex > 7) {
+                bitIndex = 0;
+                byteIndex++;
+            }
+        }
+
+        return value;
+    } else {
+        console.log("endByte: " + endByte + " input length: " + inputArray.length);
+        throw "Input truncated";
+    }
+
+}
+
+/*
+
 function parseMessage(input, layout) {
     var fields = [];
 
@@ -895,12 +971,14 @@ function parseMessage(input, layout) {
             // Need to work out the index of the last byte of the current field
             // and see if the input is long enough to decode it fully.  If it is
             // not then we exit.
+            var startBit = (byteOffset * 8) + bitOffset;
+            var endBit = startBit + fieldLength;
             var last_bit_index = (field.byte * 8) + field.bit + (field.length - 1);
             var last_byte_index = parseInt(last_bit_index / 8);
 
             if (last_byte_index < input.length) {
                 var value = 0;
-                var value_bitlength = 0; // Number of valid bits in value
+                var bitsDecoded = 0;
 
                 // At this point we are guaranteed to be able to extract
                 // the field from the input array.
@@ -972,13 +1050,6 @@ function parseMessage(input, layout) {
         return { fields: fields, truncated: true };
     }
 }
-
-var parseTestUnitReady = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-    { name: "Reserved", value: (encodedCdb[1] << 24) | (encodedCdb[2] << 16) | (encodedCdb[3] << 8) | encodedCdb[4], reserved: true });
-    { name: "CONTROL", value: encodedCdb[5] });
-    return fields;
-};
 
 var scsi_commands = [
   { name: "ACCESS CONTROL IN", opcode: 0x86, length: 16 },
@@ -1109,7 +1180,7 @@ var layoutMap = [
     { operationCode: 0xa3, serviceAction: 0x0b, layout: reportAliases },
     { operationCode: 0x8d, layout: writeAttribute },
     { operationCode: 0x3b, layout: writeBuffer },
- 
+
     // Messages defined in SBC-4
     { operationCode: 0x9e, serviceAction: 0x15, layout: backgroundControl },
     { operationCode: 0x89, layout: compareAndWrite },
@@ -1184,9 +1255,7 @@ var layoutMap = [
 
 ];
 
-function parseTestUnitReady(input) {
-    
-}
+*/
 
 var cdb = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
@@ -1197,28 +1266,28 @@ var cdbOperationCode9e = [
     { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
 ];
 
-
 var cdbOperationCode7f = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
 ];
+
+function getOperationCode(inputArray) {
+
+}
+
+function getServiceAction(inputArray) {
+
+}
+
+
+
 
 
 
 var CDB = function() {
 };
 
-function parseInt16(value) {
-    return parseInt(value, 16);
-}
-
-function getMessageLayour(input_array) {
-    var layout = cdb;
-
-    var parser_output = parseMessage(input_array, cdb);
-
-    
-}
+CDB.prototype.getField = getField;
 
 CDB.prototype.decode = function(input) {
     var input_array = input.split(" ");
@@ -1227,30 +1296,13 @@ CDB.prototype.decode = function(input) {
         });
 
     // Extract the Operation Code
+    var opCode;
 
-    // Based on the Operation Code, either identify the final message
-    // layout to use to decode the message, or the next level of layout.
+    try {
+        opCode = getField(input_array, 8, 0, 0);
+    } catch(e) {
 
-    // Can this be done in a recursive manner?  Maybe a function that
-    // returns the message layout that should be used.
-
-
-    var layout = cdb;
-        
-    var parser_output = parseMessage(input_array, cdb);
-
-    // Work out the next layout to use based on the output
-    var parser_output = parseMessage(input_array, testUnitReady);
-
-
-    var output = {
-        name: name,
-        fields: parser_output.fields,
-        truncated: parser_output.truncated,
-    };
-
-    return output;
+    }
 }
 
 module.exports = CDB;
-
