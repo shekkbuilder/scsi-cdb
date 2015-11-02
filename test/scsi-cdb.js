@@ -85,7 +85,7 @@ describe('CDB', function() {
             assert.deepEqual(output, {
                 name: "READ (16)",
                 fields: [
-                    { name: "OPERATION CODE", value: "88", reserved: false, obsolete: false},
+                    { name: "OPERATION CODE", value: "88", reserved: false, obsolete: false },
                     { name: "DLD2", value: "0", reserved: false, obsolete: false },
                     { name: "Obsolete", value: "0", reserved: false, obsolete: true },
                     { name: "RARC", value: "0", reserved: false, obsolete: false },
@@ -103,34 +103,23 @@ describe('CDB', function() {
             });
         });
 
-/*
-
-        it('should return a partial Test Unit Ready message indicating message truncated', function() {
+        it('should partially decode a truncated VERIFY (16) message successfully', function() {
             var cdb = new CDB();
-            var output = cdb.decode("00 00 00 00 00");
+            var output = cdb.decode("8f 00 00 00 00 00 12 34 56 78 00 00 00 07");
             assert.deepEqual(output, {
-                name: "TEST UNIT READY",
+                name: "VERIFY (16)",
                 fields: [
-                    { name: "OPERATION CODE", value: 0 },
-                    { name: "Reserved", value: 0, reserved: true },
+                    { name: "OPERATION CODE", value: "8f", reserved: false, obsolete: false },
+                    { name: "Reserved", value: "0", reserved: true, obsolete: false },
+                    { name: "BYTCHK", value: "0", reserved: false, obsolete: false },
+                    { name: "Reserved", value: "0", reserved: true, obsolete: false },
+                    { name: "DPO", value: "0", reserved: false, obsolete: false },
+                    { name: "VRPROTECT", value: "0", reserved: false, obsolete: false },
+                    { name: "LOGICAL BLOCK ADDRESS", value: "12345678", reserved: false, obsolete: false },
+                    { name: "VERIFICATION LENGTH", value: "7", reserved: false, obsolete: false },
                 ],
                 truncated: true,
             });
         });
-
-        it('should decode the TUR successfully, with the correct values in the fields', function() {
-            var cdb = new CDB();
-            var output = cdb.decode("00 23 45 67 89 ab");
-            assert.deepEqual(output, {
-                name: "TEST UNIT READY",
-                fields: [
-                    { name: "OPERATION CODE", value: 0 },
-                    { name: "Reserved", value: 0x23456789, reserved: true },
-                    { name: "CONTROL", value: 0xab },
-                ],
-                truncated: false,
-            });
-        });
-        */
-     });
+    });
 });

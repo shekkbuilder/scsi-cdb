@@ -41,8 +41,8 @@ var compareAndWrite = [
     { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
     { name: "Reserved", length: 24, byte: 10, bit: 0 },
     { name: "NUMBER OF LOGICAL BLOCKS", length: 8, byte: 13, bit: 0 },
-    { name: "GROUP NUMBER", length: 5, byte: 14, bit: 0 },
-    { name: "Reserved", length: 3, byte: 14, bit: 5 },
+    { name: "GROUP NUMBER", length: 6, byte: 14, bit: 0 },
+    { name: "Reserved", length: 2, byte: 14, bit: 6, reserved: true },
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
@@ -116,8 +116,8 @@ var orwrite16 = [
     { name: "ORPROTECT", length: 3, byte: 1, bit: 5 },
     { name: "STARTING LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
     { name: "TRANSFER LENGTH", length: 32, byte: 10, bit: 0 },
-    { name: "GROUP NUMBER", length: 5, byte: 14, bit: 0 },
-    { name: "Reserved", length: 3, byte: 14, bit: 5, reserved: true },
+    { name: "GROUP NUMBER", length: 6, byte: 14, bit: 0 },
+    { name: "Reserved", length: 2, byte: 14, bit: 6, reserved: true },
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
@@ -135,8 +135,8 @@ var orwrite32 = [
     { name: "PREVIOUS GENERATION PROCESSING", length: 4, byte: 3, bit: 0 },
     { name: "Reserved", length: 4, byte: 3, bit: 4, reserved: true },
     { name: "Reserved", length: 16, byte: 4, bit: 0, reserved: true },
-    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
-    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0 },
+    { name: "Reserved", length: 2, byte: 6, bit: 6, reserved: true },
     { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
     { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
     { name: "Reserved", length: 3, byte: 10, bit: 0, reserved: true },
@@ -164,8 +164,8 @@ var populateToken = [
     { name: "Reserved", length: 32, byte: 2, bit: 0, reserved: true },
     { name: "LIST IDENTIFIER", length: 32, byte: 6, bit: 0 },
     { name: "PARAMETER LIST LENGTH", length: 32, byte: 10, bit: 0 },
-    { name: "GROUP NUMBER", length: 5, byte: 14, bit: 0 },
-    { name: "Reserved", length: 3, byte: 14, bit: 5, reserved: true },
+    { name: "GROUP NUMBER", length: 6, byte: 14, bit: 0 },
+    { name: "Reserved", length: 2, byte: 14, bit: 6, reserved: true },
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
@@ -182,8 +182,8 @@ var preFetch10 = [
     { name: "IMMED", length: 1, byte: 1, bit: 1 },
     { name: "Reserved", length: 6, byte: 1, bit: 2 },
     { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
-    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
-    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0 },
+    { name: "Reserved", length: 2, byte: 6, bit: 6, reserved: true },
     { name: "PREFETCH LENGTH", length: 16, byte: 7, bit: 0 },
     { name: "CONTROL", length: 8, byte: 9, bit: 0 },
 ];
@@ -201,8 +201,8 @@ var preFetch16 = [
     { name: "Reserved", length: 6, byte: 1, bit: 2 },
     { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
     { name: "PREFETCH LENGTH", length: 32, byte: 10, bit: 0 },
-    { name: "GROUP NUMBER", length: 5, byte: 14, bit: 0 },
-    { name: "Reserved", length: 3, byte: 14, bit: 0, reserved: true },
+    { name: "GROUP NUMBER", length: 6, byte: 14, bit: 0 },
+    { name: "Reserved", length: 2, byte: 14, bit: 6, reserved: true },
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
@@ -237,8 +237,8 @@ var read10 = [
     { name: "DPO", length: 1, byte: 1, bit: 4 },
     { name: "RDPROTECT", length: 3, byte: 1, bit: 5 },
     { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
-    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
-    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0 },
+    { name: "Reserved", length: 2, byte: 6, bit: 6, reserved: true },
     { name: "TRANSFER LENGTH", length: 16, byte: 7, bit: 0 },
     { name: "CONTROL", length: 8, byte: 9, bit: 0 },
 ];
@@ -259,9 +259,8 @@ var read12 = [
     { name: "RDPROTECT", length: 3, byte: 1, bit: 5 },
     { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
     { name: "TRANSFER LENGTH", length: 32, byte: 6, bit: 0 },
-    { name: "GROUP NUMBER", length: 5, byte: 10, bit: 0 },
-    { name: "Reserved", length: 2, byte: 10, bit: 5, reserved: true },
-    { name: "Restricted for MMC-6", length: 1, byte: 10, bit: 7 },
+    { name: "GROUP NUMBER", length: 6, byte: 10, bit: 0 },
+    { name: "Reserved", length: 2, byte: 10, bit: 6, reserved: true },
     { name: "CONTROL", length: 8, byte: 11, bit: 0 },
 ];
 
@@ -297,8 +296,8 @@ var read32 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "CONTROL", length: 8, byte: 1, bit: 0 },
     { name: "Reserved", length: 32, byte: 2, bit: 0, reserved: true },
-    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
-    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0 },
+    { name: "Reserved", length: 2, byte: 6, bit: 6, reserved: true },
     { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
     { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
     { name: "Reserved", length: 1, byte: 10, bit: 0, reserved: true },
@@ -526,7 +525,7 @@ var synchronizeCache10 = [
     { name: "Reserved", length: 5, byte: 1, bit: 3, reserved: true },
     { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
     { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
-    { name: "Reserved", length: 3, byte: 6, bit: 5 },
+    { name: "Reserved", length: 2, byte: 6, bit: 6 },
     { name: "NUMBER OF LOGICAL BLOCKS", length: 16, byte: 7, bit: 0 },
     { name: "CONTROL", length: 8, byte: 9, bit: 0 },
 ];
@@ -545,8 +544,8 @@ var synchronizeCache16 = [
     { name: "Reserved", length: 5, byte: 1, bit: 3, reserved: true },
     { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
     { name: "NUMBER OF LOGICAL BLOCKS", length: 32, byte: 10, bit: 0 },
-    { name: "GROUP NUMBER", length: 5, byte: 14, bit: 0 },
-    { name: "Reserved", length: 3, byte: 14, bit: 5 },
+    { name: "GROUP NUMBER", length: 6, byte: 14, bit: 0 },
+    { name: "Reserved", length: 2, byte: 14, bit: 6 },
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
@@ -561,8 +560,8 @@ var unmap = [
     { name: "ANCHOR", length: 1, byte: 1, bit: 0 },
     { name: "Reserved", length: 7, byte: 1, bit: 1, reserved: true },
     { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
-    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
-    { name: "Reserved", length: 3, byte: 6, bit: 5 },
+    { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0 },
+    { name: "Reserved", length: 2, byte: 6, bit: 6 },
     { name: "PARAMETER LIST LENGTH", length: 16, byte: 7, bit: 0 },
     { name: "CONTROL", length: 8, byte: 9, bit: 0 },
 ];
@@ -581,9 +580,9 @@ var verify10 = [
     { name: "DPO", length: 1, byte: 1, bit: 4 },
     { name: "VRPROTECT", length: 3, byte: 1, bit: 5 },
     { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
-    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
-    { name: "Reserved", length: 2, byte: 6, bit: 5, reserved: true },
-    { name: "Restricted for MMC-6", length: 1, byte: 6, bit: 7, reserved: true },
+    { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0 },
+    { name: "Reserved", length: 1, byte: 6, bit: 6, reserved: true },
+    { name: "Restricted for MMC-6", length: 1, byte: 6, bit: 7 },
     { name: "VERIFICATION LENGTH", length: 16, byte: 7, bit: 0 },
     { name: "CONTROL", length: 8, byte: 9, bit: 0 },
 ];
@@ -603,9 +602,8 @@ var verify12 = [
     { name: "VRPROTECT", length: 3, byte: 1, bit: 5 },
     { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
     { name: "VERIFICATION LENGTH", length: 32, byte: 6, bit: 0 },
-    { name: "GROUP NUMBER", length: 5, byte: 10, bit: 0 },
+    { name: "GROUP NUMBER", length: 6, byte: 10, bit: 0 },
     { name: "Reserved", length: 2, byte: 10, bit: 5, reserved: true },
-    { name: "Restricted for MMC-6", length: 1, byte: 10, bit: 7 },
     { name: "CONTROL", length: 8, byte: 11, bit: 0 },
 ];
 
@@ -619,14 +617,13 @@ var verify16 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Reserved", length: 1, byte: 1, bit: 0, reserved: true },
     { name: "BYTCHK", length: 2, byte: 1, bit: 1 },
-    { name: "Reserved", length: 1, byte: 1, bit: 3 },
+    { name: "Reserved", length: 1, byte: 1, bit: 3, reserved: true },
     { name: "DPO", length: 1, byte: 1, bit: 4 },
     { name: "VRPROTECT", length: 3, byte: 1, bit: 5 },
     { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
     { name: "VERIFICATION LENGTH", length: 32, byte: 10, bit: 0 },
-    { name: "GROUP NUMBER", length: 5, byte: 14, bit: 0 },
-    { name: "Reserved", length: 2, byte: 14, bit: 5, reserved: true },
-    { name: "Restricted for MMC-6", length: 1, byte: 14, bit: 7 },
+    { name: "GROUP NUMBER", length: 6, byte: 14, bit: 0 },
+    { name: "Reserved", length: 2, byte: 14, bit: 6, reserved: true },
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
@@ -640,8 +637,8 @@ var verify32 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "CONTROL", length: 8, byte: 1, bit: 0 },
     { name: "Reserved", length: 32, byte: 2, bit: 0, reserved: true },
-    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
-    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0 },
+    { name: "Reserved", length: 2, byte: 6, bit: 6, reserved: true },
     { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
     { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
     { name: "Reserved", length: 1, byte: 10, bit: 0, reserved: true },
@@ -673,8 +670,8 @@ var write10 = [
     { name: "DPO", length: 1, byte: 1, bit: 4 },
     { name: "WRPROTECT", length: 3, byte: 1, bit: 5 },
     { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
-    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
-    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0 },
+    { name: "Reserved", length: 2, byte: 6, bit: 6, reserved: true },
     { name: "TRANSFER LENGTH", length: 16, byte: 7, bit: 0 },
     { name: "CONTROL", length: 8, byte: 9, bit: 0 },
 ];
@@ -695,8 +692,8 @@ var write12 = [
     { name: "WRPROTECT", length: 3, byte: 1, bit: 5 },
     { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
     { name: "TRANSFER LENGTH", length: 32, byte: 6, bit: 0 },
-    { name: "GROUP NUMBER", length: 5, byte: 10, bit: 0 },
-    { name: "Reserved", length: 2, byte: 10, bit: 5, reserved: true },
+    { name: "GROUP NUMBER", length: 6, byte: 10, bit: 0 },
+    { name: "Reserved", length: 1, byte: 10, bit: 6, reserved: true },
     { name: "Restricted for MMC-6", length: 1, byte: 10, bit: 7 },
     { name: "CONTROL", length: 8, byte: 11, bit: 0 },
 ];
@@ -709,7 +706,7 @@ commands.push({
 // SBC-4 5.39 - WRITE (16) command
 var write16 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-    { name: "Reserved", length: 1, byte: 1, bit: 0, reserved: true },
+    { name: "DLD2", length: 1, byte: 1, bit: 0 },
     { name: "Obsolete", length: 1, byte: 1, bit: 1, obsolete: true },
     { name: "Reserved", length: 1, byte: 1, bit: 2, reserved: true },
     { name: "FUA", length: 1, byte: 1, bit: 3 },
@@ -717,9 +714,9 @@ var write16 = [
     { name: "WRPROTECT", length: 3, byte: 1, bit: 5 },
     { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
     { name: "TRANSFER LENGTH", length: 32, byte: 10, bit: 0 },
-    { name: "GROUP NUMBER", length: 5, byte: 14, bit: 0 },
-    { name: "Reserved", length: 2, byte: 14, bit: 5, reserved: true },
-    { name: "Restricted for MMC-6", length: 1, byte: 14, bit: 7 },
+    { name: "GROUP NUMBER", length: 6, byte: 14, bit: 0 },
+    { name: "DLD0", length: 1, byte: 14, bit: 6 },
+    { name: "DLD1", length: 1, byte: 14, bit: 7 },
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
@@ -733,8 +730,8 @@ var write32 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "CONTROL", length: 8, byte: 1, bit: 0 },
     { name: "Reserved", length: 32, byte: 2, bit: 0, reserved: true },
-    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
-    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0 },
+    { name: "Reserved", length: 2, byte: 6, bit: 6, reserved: true },
     { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
     { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
     { name: "Reserved", length: 1, byte: 10, bit: 0, reserved: true },
@@ -766,8 +763,8 @@ var writeAndVerify10 = [
     { name: "DPO", length: 1, byte: 1, bit: 4 },
     { name: "WRPROTECT", length: 3, byte: 1, bit: 5 },
     { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
-    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
-    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0 },
+    { name: "Reserved", length: 2, byte: 6, bit: 6, reserved: true },
     { name: "TRANSFER LENGTH", length: 16, byte: 7, bit: 0 },
     { name: "CONTROL", length: 8, byte: 9, bit: 0 },
 ];
@@ -787,9 +784,8 @@ var writeAndVerify12 = [
     { name: "WRPROTECT", length: 3, byte: 1, bit: 5 },
     { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
     { name: "TRANSFER LENGTH", length: 32, byte: 6, bit: 0 },
-    { name: "GROUP NUMBER", length: 5, byte: 10, bit: 0 },
-    { name: "Reserved", length: 2, byte: 10, bit: 5, reserved: true },
-    { name: "Restricted for MMC-6", length: 1, byte: 10, bit: 7 },
+    { name: "GROUP NUMBER", length: 6, byte: 10, bit: 0 },
+    { name: "Reserved", length: 2, byte: 10, bit: 6, reserved: true },
     { name: "CONTROL", length: 8, byte: 11, bit: 0 },
 ];
 
@@ -808,9 +804,8 @@ var writeAndVerify16 = [
     { name: "WRPROTECT", length: 3, byte: 1, bit: 5 },
     { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
     { name: "TRANSFER LENGTH", length: 32, byte: 10, bit: 0 },
-    { name: "GROUP NUMBER", length: 5, byte: 14, bit: 0 },
-    { name: "Reserved", length: 2, byte: 14, bit: 5, reserved: true },
-    { name: "Restricted for MMC-6", length: 1, byte: 14, bit: 7 },
+    { name: "GROUP NUMBER", length: 6, byte: 14, bit: 0 },
+    { name: "Reserved", length: 2, byte: 14, bit: 6, reserved: true },
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
@@ -824,8 +819,8 @@ var writeAndVerify32 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "CONTROL", length: 8, byte: 1, bit: 0 },
     { name: "Reserved", length: 32, byte: 2, bit: 0, reserved: true },
-    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
-    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0 },
+    { name: "Reserved", length: 2, byte: 6, bit: 6, reserved: true },
     { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
     { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
     { name: "Reserved", length: 1, byte: 10, bit: 0, reserved: true },
@@ -873,8 +868,8 @@ var writeAtomic32 = [
     { name: "CONTROL", length: 8, byte: 1, bit: 0 },
     { name: "Reserved", length: 16, byte: 2, bit: 0, reserved: true },
     { name: "ATOMIC BOUNDARY", length: 16, byte: 4, bit: 0 },
-    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
-    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0 },
+    { name: "Reserved", length: 2, byte: 6, bit: 6, reserved: true },
     { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
     { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
     { name: "Reserved", length: 1, byte: 10, bit: 0, reserved: true },
@@ -902,12 +897,12 @@ var writeLong10 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
     { name: "Reserved", length: 4, byte: 1, bit: 1, reserved: true },
-    { name: "PBLOCK", length: 1, byte: 1, bit: 5 },
+    { name: "PBLOCK", length: 1, byte: 1, bit: 5, obsolete: true },
     { name: "WR_UNCOR", length: 1, byte: 1, bit: 6 },
-    { name: "COR_DIS", length: 1, byte: 1, bit: 7 },
+    { name: "COR_DIS", length: 1, byte: 1, bit: 7, obsolete: true },
     { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
     { name: "Reserved", length: 8, byte: 6, bit: 0, reserved: true },
-    { name: "BYTE TRANSFER LENGTH", length: 16, byte: 7, bit: 0 },
+    { name: "BYTE TRANSFER LENGTH", length: 16, byte: 7, bit: 0, obsolete: true },
     { name: "CONTROL", length: 8, byte: 9, bit: 0 },
 ];
 
@@ -920,12 +915,12 @@ commands.push({
 var writeLong16 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
-    { name: "PBLOCK", length: 1, byte: 1, bit: 5 },
+    { name: "PBLOCK", length: 1, byte: 1, bit: 5, obsolete: true },
     { name: "WR_UNCOR", length: 1, byte: 1, bit: 6 },
-    { name: "COR_DIS", length: 1, byte: 1, bit: 7 },
+    { name: "COR_DIS", length: 1, byte: 1, bit: 7, obsolete: true },
     { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
     { name: "Reserved", length: 16, byte: 10, bit: 0, reserved: true },
-    { name: "BYTE TRANSFER LENGTH", length: 16, byte: 12, bit: 0 },
+    { name: "BYTE TRANSFER LENGTH", length: 16, byte: 12, bit: 0, obsolete: true },
     { name: "Reserved", length: 16, byte: 14, bit: 0, reserved: true },
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
@@ -944,8 +939,8 @@ var writeSame10 = [
     { name: "ANCHOR", length: 1, byte: 1, bit: 4 },
     { name: "WRPROTECT", length: 3, byte: 1, bit: 5 },
     { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
-    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
-    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0 },
+    { name: "Reserved", length: 2, byte: 6, bit: 6, reserved: true },
     { name: "NUMBER OF LOGICAL BLOCKS", length: 16, byte: 7, bit: 0 },
     { name: "CONTROL", length: 8, byte: 9, bit: 0 },
 ];
@@ -965,8 +960,8 @@ var writeSame16 = [
     { name: "WRPROTECT", length: 3, byte: 1, bit: 5 },
     { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
     { name: "NUMBER OF LOGICAL BLOCKS", length: 32, byte: 10, bit: 0 },
-    { name: "GROUP NUMBER", length: 5, byte: 14, bit: 0 },
-    { name: "Reserved", length: 3, byte: 15, bit: 5, reserved: true },
+    { name: "GROUP NUMBER", length: 6, byte: 14, bit: 0 },
+    { name: "Reserved", length: 2, byte: 15, bit: 6, reserved: true },
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
@@ -980,8 +975,8 @@ var writeSame32 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "CONTROL", length: 8, byte: 1, bit: 0 },
     { name: "Reserved", length: 32, byte: 2, bit: 0, reserved: true },
-    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
-    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0 },
+    { name: "Reserved", length: 2, byte: 6, bit: 6, reserved: true },
     { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
     { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
     { name: "NDOB", length: 1, byte: 10, bit: 0 },
@@ -1059,8 +1054,8 @@ var writeUsingToken = [
     { name: "Reserved", length: 32, byte: 2, bit: 0 },
     { name: "LIST IDENTIFIED", length: 32, byte: 6, bit: 0 },
     { name: "PARAMETER LIST LENGTH", length: 32, byte: 10, bit: 0 },
-    { name: "GROUP NUMBER", length: 5, byte: 14, bit: 0 },
-    { name: "Reserved", length: 3, byte: 15, bit: 5, reserved: true },
+    { name: "GROUP NUMBER", length: 6, byte: 14, bit: 0 },
+    { name: "Reserved", length: 2, byte: 15, bit: 6, reserved: true },
     { name: "CONTROL", length: 8, byte: 15, bit: 0 },
 ];
 
@@ -1080,8 +1075,8 @@ var xdwriteread10 = [
     { name: "DPO", length: 1, byte: 1, bit: 4 },
     { name: "WRPROTECT", length: 3, byte: 1, bit: 5 },
     { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
-    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
-    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0 },
+    { name: "Reserved", length: 2, byte: 6, bit: 6, reserved: true },
     { name: "TRANSFER LENGTH", length: 16, byte: 7, bit: 0 },
     { name: "CONTROL", length: 8, byte: 9, bit: 0 },
 ];
@@ -1096,8 +1091,8 @@ var xdwriteread32 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "CONTROL", length: 8, byte: 1, bit: 0 },
     { name: "Reserved", length: 32, byte: 2, bit: 0, reserved: true },
-    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
-    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0 },
+    { name: "Reserved", length: 2, byte: 6, bit: 6, reserved: true },
     { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
     { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
     { name: "XORPINFO", length: 1, byte: 10, bit: 0 },
@@ -1128,8 +1123,8 @@ var xpwrite10 = [
     { name: "DPO", length: 1, byte: 1, bit: 4 },
     { name: "Reserved", length: 3, byte: 1, bit: 5 },
     { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
-    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
-    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0 },
+    { name: "Reserved", length: 2, byte: 6, bit: 6, reserved: true },
     { name: "TRANSFER LENGTH", length: 16, byte: 7, bit: 0 },
     { name: "CONTROL", length: 8, byte: 9, bit: 0 },
 ];
@@ -1144,8 +1139,8 @@ var xpwrite32 = [
     { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
     { name: "CONTROL", length: 8, byte: 1, bit: 0 },
     { name: "Reserved", length: 32, byte: 2, bit: 0, reserved: true },
-    { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
-    { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
+    { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0 },
+    { name: "Reserved", length: 2, byte: 6, bit: 6, reserved: true },
     { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
     { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
     { name: "XORPINFO", length: 1, byte: 10, bit: 0 },
@@ -1430,9 +1425,10 @@ CDB.prototype.decode = function(input) {
                     var value = getField(input_array, field.length, field.byte, field.bit);
                 } catch (e) {
                     console.log("Exception: ", e);
+                    output.truncated = true;
                 }
 
-                console.log("Value: " + value.toString);
+                console.log("Value: " + value.toString());
 
                 output.fields.push({
                     name: field.name,
