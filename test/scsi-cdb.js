@@ -44,7 +44,7 @@ describe('CDB', function() {
             }, /Input truncated/);
         });
 
-        if('decodes the top nibble of byte 1 and the bottom nibble of byte 2 correctly', function() {
+        it('decodes the top nibble of byte 1 and the bottom nibble of byte 2 correctly', function() {
             var cdb = new CDB();
             var output = cdb.getField(input, 8, 1, 4);
             assert.equal(output.toJSNumber(), 0x25);
@@ -58,26 +58,52 @@ describe('CDB', function() {
             var cdb = new CDB();
             var output = cdb.decode("");
             assert.deepEqual(output, { 
+                name: undefined,
                 fields: [],
                 truncated: true,
             });
         });
 
-/*
 
         it('should return a decoded Test Unit Ready message successfuly', function() {
             var cdb = new CDB();
             var output = cdb.decode("00 00 00 00 00 00");
             assert.deepEqual(output, {
+                name: "TEST UNIT READY",
                 fields: [
-                    { name: "OPERATION CODE", value: 0 },
-                    { name: "Reserved", value: 0, reserved: true },
-                    { name: "CONTROL", value: 0 },
+                    { name: "OPERATION CODE", value: "0", reserved: false, obsolete: false },
+                    { name: "Reserved", value: "0", reserved: true, obsolete: false },
+                    { name: "CONTROL", value: "0", reserved: false, obsolete: false },
                 ],
                 truncated: false,
             });
         });
 
+        it('should decode a READ (16) message successfully', function() {
+            var cdb = new CDB();
+            var output = cdb.decode("88 00 00 00 00 00 01 23 45 67 00 00 00 08 00 00");
+            assert.deepEqual(output, {
+                name: "READ (16)",
+                fields: [
+                    { name: "OPERATION CODE", value: "88", reserved: false, obsolete: false},
+                    { name: "DLD2", value: "0", reserved: false, obsolete: false },
+                    { name: "Obsolete", value: "0", reserved: false, obsolete: true },
+                    { name: "RARC", value: "0", reserved: false, obsolete: false },
+                    { name: "FUA", value: "0", reserved: false, obsolete: false },
+                    { name: "DPO", value: "0", reserved: false, obsolete: false },
+                    { name: "RDPROTECT", value: "0", reserved: false, obsolete: false },
+                    { name: "LOGICAL BLOCK ADDRESS", value: "1234567", reserved: false, obsolete: false },
+                    { name: "TRANSFER LENGTH", value: "8", reserved: false, obsolete: false },
+                    { name: "GROUP NUMBER", value: "0", reserved: false, obsolete: false },
+                    { name: "DLD0", value: "0", reserved: false, obsolete: false },
+                    { name: "DLD1", value: "0", reserved: false, obsolete: false },
+                    { name: "CONTROL", value: "0", reserved: false, obsolete: false },
+                ],
+                truncated: false,
+            });
+        });
+
+/*
 
         it('should return a partial Test Unit Ready message indicating message truncated', function() {
             var cdb = new CDB();
