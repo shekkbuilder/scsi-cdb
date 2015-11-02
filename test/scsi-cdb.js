@@ -42,26 +42,33 @@ describe('CDB', function() {
             assert.throws(function() {
                 var output = cdb.getField(input, 65, 0, 0);
             }, /Input truncated/);
-
-
-
         });
+
+        if('decodes the top nibble of byte 1 and the bottom nibble of byte 2 correctly', function() {
+            var cdb = new CDB();
+            var output = cdb.getField(input, 8, 1, 4);
+            assert.equal(output.toJSNumber(), 0x25);
+        });
+
     });
 
     describe('decode()', function() {
 
-/*
         it('should return truncated when passed an empty string', function() {
             var cdb = new CDB();
             var output = cdb.decode("");
-            assert.deepEqual(output, { truncated: true });
+            assert.deepEqual(output, { 
+                fields: [],
+                truncated: true,
+            });
         });
+
+/*
 
         it('should return a decoded Test Unit Ready message successfuly', function() {
             var cdb = new CDB();
             var output = cdb.decode("00 00 00 00 00 00");
             assert.deepEqual(output, {
-                name: "TEST UNIT READY",
                 fields: [
                     { name: "OPERATION CODE", value: 0 },
                     { name: "Reserved", value: 0, reserved: true },
@@ -70,6 +77,7 @@ describe('CDB', function() {
                 truncated: false,
             });
         });
+
 
         it('should return a partial Test Unit Ready message indicating message truncated', function() {
             var cdb = new CDB();

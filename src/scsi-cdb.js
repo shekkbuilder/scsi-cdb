@@ -901,12 +901,10 @@ function getField(inputArray, fieldLength, byteOffset, bitOffset) {
     var endBit = startBit + fieldLength - 1; // -1 is because we want the index of the last bit rather than the number of bits.
     var endByte = parseInt((endBit) / 8);
 
-    console.log("startBit: " + startBit + " endBit: " + endBit + " endByte: " + endByte);
-
     if ((endBit + 1) % 8 > 0) {
         endByte++;
     }
-    console.log("endByte: " + endByte);
+
     if (endByte < inputArray.length) {
         // Now we know the input array is long enough for use to extract the
         // field from.
@@ -930,13 +928,9 @@ function getField(inputArray, fieldLength, byteOffset, bitOffset) {
             // current byteOffset, and right-shift it by bitOffset bits.  We
             // then need to mask off just bitsToDecode bits of it.
             var bitmask = (1 << bitsToDecode) - 1;
-            console.log("Decoding byte " + byteIndex + " of inputArray " + inputArray + "(bitIndex: " + bitIndex + ") bitmask " + bitmask);
             var v = inputArray[byteIndex];
-            console.log("v is: " + v);
             v = v >> bitIndex;
-            console.log("v is: " + v);
             v = v & bitmask;
-            console.log("v is: " + v);
 
             // Assume that we decode in MSB -> LSB order, so
             // before ORing in the new value, left-shift the
@@ -955,8 +949,7 @@ function getField(inputArray, fieldLength, byteOffset, bitOffset) {
 
         return value;
     } else {
-        console.log("endByte: " + endByte + " input length: " + inputArray.length);
-        throw "Input truncated";
+        throw new Error("Input truncated");
     }
 
 }
@@ -1290,10 +1283,22 @@ var CDB = function() {
 CDB.prototype.getField = getField;
 
 CDB.prototype.decode = function(input) {
-    var input_array = input.split(" ");
-    input_array = input_array.map(function(value) {
-            return parseInt(value, 16);
-        });
+    var input_array;
+    if (input.length > 0) {
+        input_array = input.split(" ");
+        input_array = input_array.map(function(value) {
+                return parseInt(value, 16);
+            });
+    } else {
+        input_array = [];
+    }
+
+    console.log("CDB.prototype.decode: " + input_array);
+
+    var output = {
+        fields: [],
+        truncated: false,
+    };
 
     // Extract the Operation Code
     var opCode;
@@ -1301,8 +1306,12 @@ CDB.prototype.decode = function(input) {
     try {
         opCode = getField(input_array, 8, 0, 0);
     } catch(e) {
-
+        if (/Input truncated/.test(e)) {
+            output.truncated = true;
+        }
     }
+
+    return output;
 }
 
 module.exports = CDB;
