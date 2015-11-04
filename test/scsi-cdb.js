@@ -54,13 +54,13 @@ describe('CDB', function() {
 
     describe('decode()', function() {
 
-        it('should return truncated when passed an empty string', function() {
+        it('should return an empty decode when passed an empty string', function() {
             var cdb = new CDB();
             var output = cdb.decode("");
             assert.deepEqual(output, { 
                 name: undefined,
                 fields: [],
-                truncated: true,
+                truncated: false,
             });
         });
 
@@ -119,6 +119,36 @@ describe('CDB', function() {
                     { name: "VERIFICATION LENGTH", value: "7", reserved: false, obsolete: false },
                 ],
                 truncated: true,
+            });
+        });
+
+        it('should decode a WRITE (32) message successfully', function() {
+            var cdb = new CDB();
+            var output = cdb.decode("7f 00 00 00 00 00 00 18 00 0b 20 00 00 00 00 00 00 00 02 00 01 02 03 04 05 06 ff ff 00 00 00 08");
+            assert.deepEqual(output, {
+                name: "WRITE (32)",
+                fields: [
+                    { name: "OPERATION CODE", value: "7f", reserved: false, obsolete: false },
+                    { name: "CONTROL", value: "0", reserved: false, obsolete: false },
+                    { name: "Reserved", value: "0", reserved: true, obsolete: false },
+                    { name: "GROUP NUMBER", value: "0", reserved: false, obsolete: false },
+                    { name: "Reserved", value: "0", reserved: true, obsolete: false },
+                    { name: "ADDITIONAL CDB LENGTH", value: "18", reserved: false, obsolete: false },
+                    { name: "SERVICE ACTION", value: "b", reserved: false, obsolete: false },
+                    { name: "Reserved", value: "0", reserved: true, obsolete: false },
+                    { name: "Obsolete", value: "0", reserved: false, obsolete: true },
+                    { name: "Reserved", value: "0", reserved: true, obsolete: false },
+                    { name: "FUA", value: "0", reserved: false, obsolete: false },
+                    { name: "DPO", value: "0", reserved: false, obsolete: false },
+                    { name: "WRPROTECT", value: "1", reserved: false, obsolete: false },
+                    { name: "Reserved", value: "0", reserved: true, obsolete: false },
+                    { name: "LOGICAL BLOCK ADDRESS", value: "200", reserved: false, obsolete: false },
+                    { name: "EXPECTED INITIAL LOGICAL BLOCK REFERENCE TAG", value: "1020304", reserved: false, obsolete: false },
+                    { name: "EXPECTED LOGICAL BLOCK APPLICATION TAG", value: "506", reserved: false, obsolete: false },
+                    { name: "LOGICAL BLOCK APPLICATION TAG MASK", value: "ffff", reserved: false, obsolete: false },
+                    { name: "TRANSFER LENGTH", value: "8", reserved: false, obsolete: false },
+                ],
+                truncated: false,
             });
         });
     });

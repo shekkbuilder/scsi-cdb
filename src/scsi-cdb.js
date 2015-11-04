@@ -13,8 +13,8 @@ var commands = [];
 
 // SBC-4 5.2 - BACKGROUND CONTROL command
 var backgroundControl = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x9e },
+    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0, id: true, value: 0x15 },
     { name: "Reserved", length: 3, byte: 1, bit: 5, reserved: true },
     { name: "Reserved", length: 6, byte: 2, bit: 0, reserved: true },
     { name: "BO_CTL", length: 2, byte: 2, bit: 6 },
@@ -31,7 +31,7 @@ commands.push({
 
 // SBC-4 5.3 - COMPARE AND WRITE command
 var compareAndWrite = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x89 },
     { name: "Reserved", length: 1, byte: 1, bit: 0, reserved: true },
     { name: "FUA_NV", length: 1, byte: 1, bit: 1 },
     { name: "Reserved", length: 1, byte: 1, bit: 2, reserved: true },
@@ -53,14 +53,12 @@ commands.push({
 
 // SBC-4 5.4 - FORMAT UNIT command
 var formatUnit = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x04 },
     { name: "DEFECT LIST FORMAT", length: 3, byte: 1, bit: 0 },
     { name: "CMPLIST", length: 1, byte: 1, bit: 3 },
     { name: "FMTDATA", length: 1, byte: 1, bit: 4 },
     { name: "LONGLIST", length: 1, byte: 1, bit: 5 },
     { name: "FMTPINFO", length: 2, byte: 1, bit: 6 },
-
     { name: "Vendor specific", length: 8, byte: 2, bit: 0 },
     { name: "Obsolete", length: 16, byte: 3, bit: 0 },
     { name: "CONTROL", length: 8, byte: 5, bit: 0 },
@@ -73,8 +71,8 @@ commands.push({
 
 // SBC-4 5.5 - GET LBA STATUS command
 var getLbaStatus = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x9e },
+    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0, id: true, value: 0x12 },
     { name: "Reserved", length: 3, byte: 1, bit: 5 },
     { name: "STARTING LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
     { name: "ALLOCATION LENGTH", length: 32, byte: 10, bit: 0 },
@@ -90,8 +88,8 @@ commands.push({
 
 // SBC-4 5.6 - GET STREAM STATUS command
 var getStreamStatus = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x9e },
+    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0, id: true, value: 0x16 },
     { name: "Reserved", length: 3, byte: 1, bit: 5, reserved: true },
     { name: "Reserved", length: 16, byte: 2, bit: 0, reserved: true },
     { name: "STARTING STREAM IDENTIFIED", length: 16, byte: 4, bit: 0 },
@@ -109,7 +107,7 @@ commands.push({
 
 // SBC-4 5.7 - ORWRITE (16) command
 var orwrite16 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x8b },
     { name: "Reserved", length: 3, byte: 1, bit: 0, reserved: true },
     { name: "FUA", length: 1, byte: 1, bit: 3 },
     { name: "DPO", length: 1, byte: 1, bit: 4 },
@@ -128,14 +126,14 @@ commands.push({
 
 // SBC-4 5.8 - ORWRITE (32) command
 var orwrite32 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x7f },
     { name: "CONTROL", length: 8, byte: 1, bit: 0 },
     { name: "BMOP", length: 3, byte: 2, bit: 0 },
     { name: "Reserved", length: 5, byte: 2, bit: 3, reserved: true },
     { name: "PREVIOUS GENERATION PROCESSING", length: 4, byte: 3, bit: 0 },
     { name: "Reserved", length: 4, byte: 3, bit: 4, reserved: true },
     { name: "Reserved", length: 16, byte: 4, bit: 0, reserved: true },
-    { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0 },
+    { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0, id: true, value: 0x000e },
     { name: "Reserved", length: 2, byte: 6, bit: 6, reserved: true },
     { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
     { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
@@ -158,8 +156,8 @@ commands.push({
 
 // SBC-4 5.9 - POPULATE TOKEN command
 var populateToken = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x83 },
+    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0, id: true, value: 0x0010 },
     { name: "Reserved", length: 3, byte: 1, bit: 5, reserved: true },
     { name: "Reserved", length: 32, byte: 2, bit: 0, reserved: true },
     { name: "LIST IDENTIFIER", length: 32, byte: 6, bit: 0 },
@@ -177,7 +175,7 @@ commands.push({
 
 // SBC-4 5.10 - PRE-FETCH (10) command
 var preFetch10 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x34 },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
     { name: "IMMED", length: 1, byte: 1, bit: 1 },
     { name: "Reserved", length: 6, byte: 1, bit: 2 },
@@ -195,7 +193,7 @@ commands.push({
 
 // SBC-4 5.11 - PRE-FETCH (16) command
 var preFetch16 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x90 },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
     { name: "IMMED", length: 1, byte: 1, bit: 1 },
     { name: "Reserved", length: 6, byte: 1, bit: 2 },
@@ -213,7 +211,7 @@ commands.push({
 
 // SBC-4 5.12 - PREVENT ALLOW MEDIUM REMOVAL command
 var preventAllowMediumRemoval = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x1e },
     { name: "Reserved", length: 8, byte: 1, bit: 0, reserved: true },
     { name: "Reserved", length: 8, byte: 2, bit: 0, reserved: true },
     { name: "Reserved", length: 8, byte: 3, bit: 0, reserved: true },
@@ -229,7 +227,7 @@ commands.push({
 
 // SBC-4 5.13 - READ (10) command
 var read10 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x28 },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
     { name: "Obsolete", length: 1, byte: 1, bit: 1, obsolete: true },
     { name: "RARC", length: 1, byte: 1, bit: 2 },
@@ -250,7 +248,7 @@ commands.push({
 
 // SBC-4 5.14 - READ (12) command
 var read12 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0xa8 },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
     { name: "Obsolete", length: 1, byte: 1, bit: 1, obsolete: true },
     { name: "RARC", length: 1, byte: 1, bit: 2 },
@@ -271,7 +269,7 @@ commands.push({
 
 // SBC-4 5.15 - READ (16) command
 var read16 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x88 },
     { name: "DLD2", length: 1, byte: 1, bit: 0 },
     { name: "Obsolete", length: 1, byte: 1, bit: 1, obsolete: true },
     { name: "RARC", length: 1, byte: 1, bit: 2 },
@@ -293,13 +291,13 @@ commands.push({
 
 // SBC-4 5.16 - READ (32) command
 var read32 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x7f },
     { name: "CONTROL", length: 8, byte: 1, bit: 0 },
     { name: "Reserved", length: 32, byte: 2, bit: 0, reserved: true },
     { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0 },
     { name: "Reserved", length: 2, byte: 6, bit: 6, reserved: true },
     { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
-    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
+    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0, id: true, value: 0x0009 },
     { name: "Reserved", length: 1, byte: 10, bit: 0, reserved: true },
     { name: "Obsolete", length: 1, byte: 10, bit: 1, obsolete: true },
     { name: "RARC", length: 1, byte: 10, bit: 2 },
@@ -322,7 +320,7 @@ commands.push({
 
 // SBC-4 5.17 - READ CAPACITY (10) command
 var readCapacity10 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x25 },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
     { name: "Reserved", length: 7, byte: 1, bit: 1, reserved: true },
     { name: "Obsolete", length: 32, byte: 2, bit: 0, obsolete: true },
@@ -339,8 +337,8 @@ commands.push({
 
 // SBC-4 5.18 - READ CAPACITY (16) command
 var readCapacity16 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x9e },
+    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0, id: true, value: 0x10 },
     { name: "Reserved", length: 1, byte: 1, bit: 5, reserved: true },
     { name: "Obsolete", length: 64, byte: 2, bit: 0, obsolete: true },
     { name: "ALLOCATION LENGTH", length: 32, byte: 10, bit: 0 },
@@ -357,7 +355,7 @@ commands.push({
 
 // SBC-4 5.19 - READ DEFECT DATA (10) command
 var readDefectData10 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x37 },
     { name: "Reserved", length: 8, byte: 1, bit: 0, reserved: true },
     { name: "DEFECT LIST_FORMAT", length: 3, byte: 2, bit: 0 },
     { name: "REQ_GLIST", length: 1, byte: 2, bit: 3 },
@@ -375,7 +373,7 @@ commands.push({
 
 // SBC-4 5.20 - READ DEFECT DATA (12) command
 var readDefectData12 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0xb7 },
     { name: "DEFECT LIST FORMAT", length: 3, byte: 1, bit: 0 },
     { name: "REQ_GLIST", length: 1, byte: 1, bit: 3 },
     { name: "REQ_PLIST", length: 1, byte: 1, bit: 4 },
@@ -393,7 +391,7 @@ commands.push({
 
 // SBC-4 5.21 - READ LONG (10) command
 var readLong10 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x3e },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
     { name: "CORRCT", length: 1, byte: 1, bit: 1 },
     { name: "PBLOCK", length: 1, byte: 1, bit: 2 },
@@ -411,8 +409,8 @@ commands.push({
 
 // SBC-4 5.22 - READ LONG (16) command
 var readLong16 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x9e },
+    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0, id: true, value: 0x11 },
     { name: "Reserved", length: 3, byte: 1, bit: 5, reserved: true },
     { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
     { name: "Reserved", length: 16, byte: 10, bit: 0, reserved: true },
@@ -431,7 +429,7 @@ commands.push({
 
 // SBC-4 5.23 - REASSIGN BLOCKS command
 var reassignBlocks = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x07 },
     { name: "LONGLIST", length: 1, byte: 1, bit: 0 },
     { name: "LONGLBA", length: 1, byte: 1, bit: 1 },
     { name: "Reserved", length: 6, byte: 1, bit: 2, reserved: true },
@@ -449,8 +447,8 @@ commands.push({
 
 // SBC-4 5.25 - REPORT REFERRALS command
 var reportReferrals = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x9e },
+    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0, id: true, value: 0x13 },
     { name: "Reserved", length: 3, byte: 1, bit: 5, reserved: true },
     { name: "LOGICAL BLOCK ADDRESS", length: 64, byte: 2, bit: 0 },
     { name: "ALLOCATION LENGTH", length: 32, byte: 10, bit: 0 },
@@ -467,7 +465,7 @@ commands.push({
 
 // SBC-4 5.27 - SANITIZE command
 var sanitize = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x48 },
     { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
     { name: "AUSE", length: 1, byte: 1, bit: 5 },
     { name: "Reserved", length: 1, byte: 1, bit: 6 },
@@ -484,7 +482,7 @@ commands.push({
 
 // SBC-4 5.28 - START STOP UNIT command
 var startStopUnit = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x1b },
     { name: "IMMED", length: 1, byte: 1, bit: 0 },
     { name: "Reserved", length: 7, byte: 1, bit: 1 },
     { name: "Reserved", length: 8, byte: 2, bit: 0 },
@@ -500,8 +498,8 @@ commands.push({
 
 // SBC-4 5.29 - STREAM CONTROL command
 var streamControl = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x9e },
+    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0, id: true, value: 0x14 },
     { name: "STR_CTL", length: 2, byte: 1, bit: 5 },
     { name: "Reserved", length: 1, byte: 1, bit: 7, reserved: true },
     { name: "Reserved", length: 16, byte: 2, bit: 0, reserved: true },
@@ -518,7 +516,7 @@ commands.push({
 
 // SBC-4 5.30 - SYNCHRONIZE CACHE (10) command
 var synchronizeCache10 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x35 },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
     { name: "IMMED", length: 1, byte: 1, bit: 1 },
     { name: "Obsolete", length: 1, byte: 1, bit: 2, obsolete: true },
@@ -537,7 +535,7 @@ commands.push({
 
 // SBC-4 5.31 - SYNCHRONIZE CACHE (16) command
 var synchronizeCache16 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x91 },
     { name: "Reserved", length: 1, byte: 1, bit: 0, reserved: true },
     { name: "IMMED", length: 1, byte: 1, bit: 1 },
     { name: "Obsolete", length: 1, byte: 1, bit: 2, obsolete: true },
@@ -556,7 +554,7 @@ commands.push({
 
 // SBC-4 5.32 - UNMAP command
 var unmap = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x42 },
     { name: "ANCHOR", length: 1, byte: 1, bit: 0 },
     { name: "Reserved", length: 7, byte: 1, bit: 1, reserved: true },
     { name: "LOGICAL BLOCK ADDRESS", length: 32, byte: 2, bit: 0 },
@@ -573,7 +571,7 @@ commands.push({
 
 // SBC-4 5.33 - VERIFY (10) command
 var verify10 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x2f },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
     { name: "BYTCHK", length: 2, byte: 1, bit: 1 },
     { name: "Reserved", length: 1, byte: 1, bit: 3 },
@@ -594,7 +592,7 @@ commands.push({
 
 // SBC-4 5.34 - VERIFY (12) command
 var verify12 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0xaf },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
     { name: "BYTCHK", length: 2, byte: 1, bit: 1 },
     { name: "Reserved", length: 1, byte: 1, bit: 3 },
@@ -614,7 +612,7 @@ commands.push({
 
 // SBC-4 5.35 - VERIFY (16) command
 var verify16 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x8f },
     { name: "Reserved", length: 1, byte: 1, bit: 0, reserved: true },
     { name: "BYTCHK", length: 2, byte: 1, bit: 1 },
     { name: "Reserved", length: 1, byte: 1, bit: 3, reserved: true },
@@ -634,13 +632,13 @@ commands.push({
 
 // SBC-4 5.36 - VERIFY (32) command
 var verify32 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x7f },
     { name: "CONTROL", length: 8, byte: 1, bit: 0 },
     { name: "Reserved", length: 32, byte: 2, bit: 0, reserved: true },
     { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0 },
     { name: "Reserved", length: 2, byte: 6, bit: 6, reserved: true },
     { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
-    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
+    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0, id: true, value: 0x000a },
     { name: "Reserved", length: 1, byte: 10, bit: 0, reserved: true },
     { name: "BYTCHK", length: 2, byte: 10, bit: 1 },
     { name: "Reserved", length: 1, byte: 10, bit: 2, reserved: true },
@@ -662,7 +660,7 @@ commands.push({
 
 // SBC-4 5.37 - WRITE (10) command
 var write10 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x2a },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
     { name: "Obsolete", length: 1, byte: 1, bit: 1, obsolete: true },
     { name: "Reserved", length: 1, byte: 1, bit: 2, reserved: true },
@@ -683,7 +681,7 @@ commands.push({
 
 // SBC-4 5.38 - WRITE (12) command
 var write12 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0xaa },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
     { name: "Obsolete", length: 1, byte: 1, bit: 1, obsolete: true },
     { name: "Reserved", length: 1, byte: 1, bit: 2, reserved: true },
@@ -705,7 +703,7 @@ commands.push({
 
 // SBC-4 5.39 - WRITE (16) command
 var write16 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x8a },
     { name: "DLD2", length: 1, byte: 1, bit: 0 },
     { name: "Obsolete", length: 1, byte: 1, bit: 1, obsolete: true },
     { name: "Reserved", length: 1, byte: 1, bit: 2, reserved: true },
@@ -727,13 +725,13 @@ commands.push({
 
 // SBC-4 5.40 - WRITE (32) command
 var write32 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x7f },
     { name: "CONTROL", length: 8, byte: 1, bit: 0 },
     { name: "Reserved", length: 32, byte: 2, bit: 0, reserved: true },
     { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0 },
     { name: "Reserved", length: 2, byte: 6, bit: 6, reserved: true },
     { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
-    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
+    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0, id: true, value: 0x000b },
     { name: "Reserved", length: 1, byte: 10, bit: 0, reserved: true },
     { name: "Obsolete", length: 1, byte: 10, bit: 1, obsolete: true },
     { name: "Reserved", length: 1, byte: 10, bit: 2, reserved: true },
@@ -756,7 +754,7 @@ commands.push({
 
 // SBC-4 5.41 - WRITE AND VERIFY (10) command
 var writeAndVerify10 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x2e },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
     { name: "BYTCHK", length: 2, byte: 1, bit: 1 },
     { name: "Reserved", length: 1, byte: 1, bit: 3, reserved: true },
@@ -776,7 +774,7 @@ commands.push({
 
 // SBC-4 5.42 - WRITE AND VERIFY (12) command
 var writeAndVerify12 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0xae },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
     { name: "BYTCHK", length: 2, byte: 1, bit: 1 },
     { name: "Reserved", length: 1, byte: 1, bit: 3, reserved: true },
@@ -796,7 +794,7 @@ commands.push({
 
 // SBC-4 5.43 - WRITE AND VERIFY (16) command
 var writeAndVerify16 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x8e },
     { name: "Reserved", length: 1, byte: 1, bit: 0, reserved: true },
     { name: "BYTCHK", length: 2, byte: 1, bit: 1 },
     { name: "Reserved", length: 1, byte: 1, bit: 3, reserved: true },
@@ -816,13 +814,13 @@ commands.push({
 
 // SBC-4 5.44 - WRITE AND VERIFY (32) command
 var writeAndVerify32 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x7f },
     { name: "CONTROL", length: 8, byte: 1, bit: 0 },
     { name: "Reserved", length: 32, byte: 2, bit: 0, reserved: true },
     { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0 },
     { name: "Reserved", length: 2, byte: 6, bit: 6, reserved: true },
     { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
-    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
+    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0, id: true, value: 0x000c },
     { name: "Reserved", length: 1, byte: 10, bit: 0, reserved: true },
     { name: "BYTCHK", length: 2, byte: 10, bit: 1, obsolete: true },
     { name: "Reserved", length: 1, byte: 10, bit: 3, reserved: true },
@@ -844,7 +842,7 @@ commands.push({
 
 // SBC-4 5.45 - WRITE ATOMIC (16) command
 var writeAtomic16 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x9c },
     { name: "Reserved", length: 3, byte: 1, bit: 0 },
     { name: "FUA", length: 1, byte: 1, bit: 3 },
     { name: "DPO", length: 1, byte: 1, bit: 4 },
@@ -864,14 +862,14 @@ commands.push({
 
 // SBC-4 5.46 - WRITE ATOMIC (32) command
 var writeAtomic32 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x7f },
     { name: "CONTROL", length: 8, byte: 1, bit: 0 },
     { name: "Reserved", length: 16, byte: 2, bit: 0, reserved: true },
     { name: "ATOMIC BOUNDARY", length: 16, byte: 4, bit: 0 },
     { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0 },
     { name: "Reserved", length: 2, byte: 6, bit: 6, reserved: true },
     { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
-    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
+    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0, id: true, value: 0x000f },
     { name: "Reserved", length: 1, byte: 10, bit: 0, reserved: true },
     { name: "Obsolete", length: 1, byte: 10, bit: 1, obsolete: true },
     { name: "Reserved", length: 1, byte: 10, bit: 2, reserved: true },
@@ -894,7 +892,7 @@ commands.push({
 
 // SBC-4 5.47 - WRITE LONG (10) command
 var writeLong10 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x3f },
     { name: "Obsolete", length: 1, byte: 1, bit: 0, obsolete: true },
     { name: "Reserved", length: 4, byte: 1, bit: 1, reserved: true },
     { name: "PBLOCK", length: 1, byte: 1, bit: 5, obsolete: true },
@@ -913,8 +911,8 @@ commands.push({
 
 // SBC-4 5.48 - WRITE LONG (16) command
 var writeLong16 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x9f },
+    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0, id: true, value: 0x11 },
     { name: "PBLOCK", length: 1, byte: 1, bit: 5, obsolete: true },
     { name: "WR_UNCOR", length: 1, byte: 1, bit: 6 },
     { name: "COR_DIS", length: 1, byte: 1, bit: 7, obsolete: true },
@@ -933,7 +931,7 @@ commands.push({
 
 // SBC-4 5.49 - WRITE SAME (10) command
 var writeSame10 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x41 },
     { name: "Obsolete", length: 3, byte: 1, bit: 0, obsolete: true },
     { name: "UNMAP", length: 1, byte: 1, bit: 3 },
     { name: "ANCHOR", length: 1, byte: 1, bit: 4 },
@@ -952,7 +950,7 @@ commands.push({
 
 // SBC-4 5.50 - WRITE SAME (16) command
 var writeSame16 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x93 },
     { name: "NDOB", length: 1, byte: 1, bit: 0 },
     { name: "Obsolete", length: 2, byte: 1, bit: 1, obsolete: true },
     { name: "UNMAP", length: 1, byte: 1, bit: 3 },
@@ -972,13 +970,13 @@ commands.push({
 
 // SBC-4 5.51 - WRITE SAME (32) command
 var writeSame32 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x7f },
     { name: "CONTROL", length: 8, byte: 1, bit: 0 },
     { name: "Reserved", length: 32, byte: 2, bit: 0, reserved: true },
     { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0 },
     { name: "Reserved", length: 2, byte: 6, bit: 6, reserved: true },
     { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
-    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
+    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0, id: true, value: 0x000d },
     { name: "NDOB", length: 1, byte: 10, bit: 0 },
     { name: "Obsolete", length: 2, byte: 10, bit: 1 },
     { name: "UNMAP", length: 1, byte: 10, bit: 3 },
@@ -1000,7 +998,7 @@ commands.push({
 
 // SBC-4 5.52 - WRITE STREAM (16) command
 var writeStream16 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x9a },
     { name: "Reserved", length: 3, byte: 1, bit: 0 },
     { name: "FUA", length: 1, byte: 1, bit: 3 },
     { name: "DPO", length: 1, byte: 1, bit: 4 },
@@ -1020,14 +1018,14 @@ commands.push({
 
 // SBC-4 5.53 - WRITE STREAM (32) command
 var writeStream32 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x7f },
     { name: "CONTROL", length: 8, byte: 1, bit: 0 },
     { name: "Reserved", length: 16, byte: 2, bit: 0, reserved: true },
     { name: "STR_ID", length: 16, byte: 4, bit: 0 },
     { name: "GROUP NUMBER", length: 5, byte: 6, bit: 0 },
     { name: "Reserved", length: 3, byte: 6, bit: 5, reserved: true },
     { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
-    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
+    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0, id: true, value: 0x0010 },
     { name: "Reserved", length: 3, byte: 10, bit: 0 },
     { name: "FUA", length: 1, byte: 10, bit: 3 },
     { name: "DPO", length: 1, byte: 10, bit: 4 },
@@ -1048,8 +1046,8 @@ commands.push({
 
 // SBC-4 5.54 - WRITE USING TOKEN command
 var writeUsingToken = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x83 },
+    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0, id: true, value: 0x11 },
     { name: "Reserved", length: 3, byte: 1, bit: 0 },
     { name: "Reserved", length: 32, byte: 2, bit: 0 },
     { name: "LIST IDENTIFIED", length: 32, byte: 6, bit: 0 },
@@ -1067,7 +1065,7 @@ commands.push({
 
 // SBC-4 5.55 - XDWRITEREAD (10) command
 var xdwriteread10 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x53 },
     { name: "XORPINFO", length: 1, byte: 1, bit: 0 },
     { name: "Obsolete", length: 1, byte: 1, bit: 1, obsolete: true },
     { name: "DISABLE WRITE", length: 1, byte: 1, bit: 2 },
@@ -1088,13 +1086,13 @@ commands.push({
 
 // SBC-4 5.56 - XDWRITEREAD (32) command
 var xdwriteread32 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x7f },
     { name: "CONTROL", length: 8, byte: 1, bit: 0 },
     { name: "Reserved", length: 32, byte: 2, bit: 0, reserved: true },
     { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0 },
     { name: "Reserved", length: 2, byte: 6, bit: 6, reserved: true },
     { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
-    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
+    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0, id: true, value: 0x0007 },
     { name: "XORPINFO", length: 1, byte: 10, bit: 0 },
     { name: "Obsolete", length: 1, byte: 10, bit: 1, obsolete: true },
     { name: "DISABLE WRITE", length: 1, byte: 10, bit: 2 },
@@ -1115,7 +1113,7 @@ commands.push({
 
 // SBC-4 5.57 - XPWRITE (10) command
 var xpwrite10 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x51 },
     { name: "XORPINFO", length: 1, byte: 1, bit: 0 },
     { name: "Obsolete", length: 1, byte: 1, bit: 1, obsolete: true },
     { name: "Reserved", length: 1, byte: 1, bit: 2, reserved: true },
@@ -1136,13 +1134,13 @@ commands.push({
 
 // SBC-4 5.58 - XPWRITE (32) command
 var xpwrite32 = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x7f },
     { name: "CONTROL", length: 8, byte: 1, bit: 0 },
     { name: "Reserved", length: 32, byte: 2, bit: 0, reserved: true },
     { name: "GROUP NUMBER", length: 6, byte: 6, bit: 0 },
     { name: "Reserved", length: 2, byte: 6, bit: 6, reserved: true },
     { name: "ADDITIONAL CDB LENGTH", length: 8, byte: 7, bit: 0 },
-    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0 },
+    { name: "SERVICE ACTION", length: 16, byte: 8, bit: 0, id: true, value: 0x0006 },
     { name: "XORPINFO", length: 1, byte: 10, bit: 0 },
     { name: "Obsolete", length: 1, byte: 10, bit: 1, obsolete: true },
     { name: "Reserved", length: 1, byte: 10, bit: 2, reserved: true },
@@ -1165,8 +1163,8 @@ commands.push({
 
 // SPC-4 6.28 - RECEIVE ROD TOKEN INFORMATION command
 var receiveRodTokenInformation = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x84 },
+    { name: "SERVICE ACTION", length: 5, byte: 1, bit: 0, id: true, value: 0x07 },
     { name: "Reserved", length: 3, byte: 1, bit: 5, reserved: true },
     { name: "LIST IDENTIFIER", length: 32, byte: 2, bit: 0 },
     { name: "Reserved", length: 32, byte: 6, bit: 0, reserved: true },
@@ -1183,7 +1181,7 @@ commands.push({
 
 // SPC-4 6.47 - TEST UNIT READY command
 var testUnitReady = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
+    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0, id: true, value: 0x00 },
     { name: "Reserved", length: 32, byte: 1, bit: 0, reserved: true },
     { name: "CONTROL", length: 8, byte: 5, bit: 0 },
 ];
@@ -1258,126 +1256,7 @@ function getField(inputArray, fieldLength, byteOffset, bitOffset) {
 
 }
 
-/*
-
-function parseMessage(input, layout) {
-    var fields = [];
-
-    try {
-        layout.forEach(function(field) {
-            // Need to work out the index of the last byte of the current field
-            // and see if the input is long enough to decode it fully.  If it is
-            // not then we exit.
-            var startBit = (byteOffset * 8) + bitOffset;
-            var endBit = startBit + fieldLength;
-            var last_bit_index = (field.byte * 8) + field.bit + (field.length - 1);
-            var last_byte_index = parseInt(last_bit_index / 8);
-
-            if (last_byte_index < input.length) {
-                var value = 0;
-                var bitsDecoded = 0;
-
-                // At this point we are guaranteed to be able to extract
-                // the field from the input array.
-
-                var bits_left = field.length;
-
-                var byte_index = field.byte;
-                var bit_index = field.bit;
-
-                while (bits_left > 0) {
-                    var v = 0;
-
-                    // The number of bits we will extract this time around
-                    var v_bitlength = 0;
-
-                    var bits_available_in_current_byte = (8 - bit_index);
-
-                    if (bits_left <= bits_available_in_current_byte) {
-                        v_bitlength = bits_left;
-                    } else {
-                        v_bitlength = bits_available_in_current_byte;
-                    }
-
-                    var bitmask = 0;
-
-                    if (v_bitlength == 1) { bitmask = 0x01; }
-                    if (v_bitlength == 2) { bitmask = 0x03; }
-                    if (v_bitlength == 3) { bitmask = 0x07; }
-                    if (v_bitlength == 4) { bitmask = 0x0f; }
-                    if (v_bitlength == 5) { bitmask = 0x1f; }
-                    if (v_bitlength == 6) { bitmask = 0x3f; }
-                    if (v_bitlength == 7) { bitmask = 0x7f; }
-                    if (v_bitlength == 8) { bitmask = 0xff; }
-
-                    // Now we can right-shift the byte at byte_index
-                    // by bit_index, then mask the resulting value with
-                    // bitmask to give the value that we are extracting
-                    // from byte_index.
-                    v = (input[byte_index] >> bit_index) & bitmask;
-
-                    // Assume that we decode in MSB -> LSB order, so
-                    // before ORing in the new value, left-shift the
-                    // existing value to make space for it.
-                    value = (value << v_bitlength) | v;
-
-                    value_bitlength += v_bitlength;
-                    bits_left -= v_bitlength;
-
-                    bit_index += v_bitlength;
-                    if (bit_index > 7) {
-                        bit_index = 0;
-                        byte_index++;
-                    }
-                }
-                var f = { name: field.name, value: value };
-                if (field.reserved) {
-                    f.reserved = field.reserved;
-                }
-                if (field.obsolete) {
-                    f.obsolete = field.obsolete;
-                }
-                f);
-            } else {
-                throw "Message Truncated";
-            }
-        });
-        return { fields: fields, truncated: false };
-    } catch(e) {
-        return { fields: fields, truncated: true };
-    }
-}
-
-*/
-
-var cdb = [
-    { name: "OPERATION CODE", length: 8, byte: 0, bit: 0 },
-];
-
-
-
-
 var CDB = function() {
-    var commandTree = {};
-
-    // Build up a data structure based on the list of commands above.
-
-    commands.forEach(function(command) {
-        var operationCode = command.operationCode;
-        var serviceAction = command.serviceAction;
-
-        if (serviceAction === undefined) {
-            // Unique Operation Code - assert that a node with this Operation
-            // Code does not exist before inserting the new one.
-            var key = operationCode.toString(16);
-            assert.strictEqual(commandTree[key], undefined);
-            commandTree[key] = { name: command.name, layout: command.layout };
-        } else {
-
-        }
-    });
-
-    this.commandTree = commandTree;
 };
 
 CDB.prototype.getField = getField;
@@ -1393,8 +1272,6 @@ CDB.prototype.decode = function(input) {
         input_array = [];
     }
 
-    console.log("CDB.prototype.decode: " + input_array);
-
     var output = {
         name: undefined,
         fields: [],
@@ -1404,52 +1281,62 @@ CDB.prototype.decode = function(input) {
     // Extract the Operation Code
     var opCode;
 
-    try {
-        opCode = getField(input_array, 8, 0, 0);
+    // We're basically just going to try and decode the input as every message
+    // type we can until we find a message definition whose id fields are
+    // correct.
+    for (var i = 0; i < commands.length; i++) {
+        var id_fields = commands[i].layout.filter(function(field) {
+            return field.id == true;
+        });
 
-        var key = opCode.toString(16);
+        // Now id_fields contains just the fields needed to identify
+        // commands[i].  Attempt to decode those fields in a try-catch
+        // block - if we can decode all of the id_fields and the decoded
+        // values match those expected, we have identifed our message
+        // and can go on to decode all of the fields.
 
         var command;
 
-        if (this.commandTree[key]) {
-            command = this.commandTree[key];
-        }
-
-        if (command) {
-            output.name = command.name;
-
-            command.layout.forEach(function(field) {
-                console.log("Extracting field " + field.name);
-
-                try {
-                    var value = getField(input_array, field.length, field.byte, field.bit);
-                } catch (e) {
-                    console.log("Exception: ", e);
-                    output.truncated = true;
+        try {
+            id_fields.forEach(function(field) {
+                var value = getField(input_array, field.length, field.byte, field.bit);
+                if (value != field.value) {
+                    throw new Error();
                 }
-
-                console.log("Value: " + value.toString());
-
-                output.fields.push({
-                    name: field.name,
-                    value: value.toString(16),
-                    reserved: field.reserved ? true : false,
-                    obsolete: field.obsolete ? true : false,
-                });
             });
+            command = commands[i];
+        } catch (e) {
+            continue;
         }
 
+        // If we get here, we've not hit any exceptions.  If command is defined
+        // then we have identified our message correctly, and can now decode it.
 
+        if (command != undefined) {
 
-        console.log("Command: ", command);
-
-        console.log("Output: ", output);
-
-        return output;
-
-    } catch(e) {
-        if (/Input truncated/.test(e)) {
-            output.truncated = true;
+            // We have identified our message correctly, now try and decode it.
+            output.name = command.name;
+                
+            try {
+                command.layout.forEach(function(field) {
+                    var value = getField(input_array, field.length, field.byte, field.bit);
+                    output.fields.push({
+                        name: field.name,
+                        value: value.toString(16),
+                        reserved: field.reserved ? true : false,
+                        obsolete: field.obsolete ? true : false,
+                    });
+                });
+            } catch (e) {
+                if (/Input truncated/.test(e)) {
+                    console.log("Input truncated:", input_array, command);
+                    output.truncated = true;
+                } else {
+                    console.log("Unknown exception: ", e);
+                }
+            }
+            // And now break out of the for-loop.
+            break;
         }
     }
 
