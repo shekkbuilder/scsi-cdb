@@ -67,7 +67,7 @@ describe('CDB', function() {
 
         it('should return a decoded Test Unit Ready message successfuly', function() {
             var cdb = new CDB();
-            var output = cdb.decode("00 00 00 00 00 00");
+            var output = cdb.decode("000000000000");
             assert.deepEqual(output, {
                 name: "TEST UNIT READY",
                 fields: [
@@ -81,7 +81,7 @@ describe('CDB', function() {
 
         it('should decode a READ (16) message successfully', function() {
             var cdb = new CDB();
-            var output = cdb.decode("88 00 00 00 00 00 01 23 45 67 00 00 00 08 00 00");
+            var output = cdb.decode("88000000000001234567000000080000");
             assert.deepEqual(output, {
                 name: "READ (16)",
                 fields: [
@@ -105,7 +105,7 @@ describe('CDB', function() {
 
         it('should partially decode a truncated VERIFY (16) message successfully', function() {
             var cdb = new CDB();
-            var output = cdb.decode("8f 00 00 00 00 00 12 34 56 78 00 00 00 07");
+            var output = cdb.decode("8f00000000001234567800000007");
             assert.deepEqual(output, {
                 name: "VERIFY (16)",
                 fields: [
@@ -124,7 +124,7 @@ describe('CDB', function() {
 
         it('should decode a WRITE (32) message successfully', function() {
             var cdb = new CDB();
-            var output = cdb.decode("7f 00 00 00 00 00 00 18 00 0b 20 00 00 00 00 00 00 00 02 00 01 02 03 04 05 06 ff ff 00 00 00 08");
+            var output = cdb.decode("7f00000000000018000b20000000000000000200010203040506ffff00000008");
             assert.deepEqual(output, {
                 name: "WRITE (32)",
                 fields: [

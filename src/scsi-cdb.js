@@ -1263,8 +1263,10 @@ CDB.prototype.getField = getField;
 
 CDB.prototype.decode = function(input) {
     var input_array;
-    if (input.length > 0) {
-        input_array = input.split(" ");
+    if (input.length % 2 != 0) {
+        
+    } else  if (input.length > 0) {
+        input_array = input.match(/(..?)/g);
         input_array = input_array.map(function(value) {
                 return parseInt(value, 16);
             });
