@@ -1329,7 +1329,6 @@ CDB.prototype.decode = function(input) {
                 });
             } catch (e) {
                 if (/Input truncated/.test(e)) {
-                    console.log("Input truncated:", input_array, command);
                     output.truncated = true;
                 } else {
                     console.log("Unknown exception: ", e);
