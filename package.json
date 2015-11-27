@@ -1,6 +1,6 @@
 {
   "name": "scsi-cdb",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "SCSI CDB Decoder / Encoder",
   "main": "src/scsi-cdb.js",
   "scripts": {
